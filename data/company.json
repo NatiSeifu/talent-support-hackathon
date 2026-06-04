@@ -1,0 +1,145 @@
+{
+  "employees": [
+    {
+      "id": "emp_sarah",
+      "name": "Sarah Chen",
+      "initials": "SC",
+      "role": "Senior Backend Engineer",
+      "team": "Platform",
+      "skills": ["OAuth", "OIDC", "SSO", "Auth Service", "Python", "Go", "Incident Response"],
+      "domains": ["Authentication", "Identity", "Mobile Login"],
+      "commits": 43,
+      "ticketsResolved": 17,
+      "docsAuthored": 4,
+      "incidentsLed": 3,
+      "authenticationScore": 94
+    },
+    {
+      "id": "emp_mike",
+      "name": "Mike Rodriguez",
+      "initials": "MR",
+      "role": "Backend Engineer",
+      "team": "Platform",
+      "skills": ["APIs", "Go", "Backend", "SSO"],
+      "domains": ["Platform APIs", "SSO"],
+      "commits": 12,
+      "ticketsResolved": 6,
+      "docsAuthored": 1,
+      "incidentsLed": 0,
+      "authenticationScore": 51
+    },
+    {
+      "id": "emp_priya",
+      "name": "Priya Patel",
+      "initials": "PP",
+      "role": "Software Engineer",
+      "team": "Mobile",
+      "skills": ["React Native", "Mobile", "Session Management", "APIs"],
+      "domains": ["Mobile Login", "Mobile"],
+      "commits": 15,
+      "ticketsResolved": 8,
+      "docsAuthored": 1,
+      "incidentsLed": 0,
+      "authenticationScore": 42
+    },
+    {
+      "id": "emp_alex",
+      "name": "Alex Kim",
+      "initials": "AK",
+      "role": "Platform Engineer",
+      "team": "Infrastructure",
+      "skills": ["Kubernetes", "Observability", "Python", "APIs"],
+      "domains": ["Infrastructure", "Platform APIs"],
+      "commits": 9,
+      "ticketsResolved": 5,
+      "docsAuthored": 0,
+      "incidentsLed": 1,
+      "authenticationScore": 31
+    },
+    {
+      "id": "emp_lena",
+      "name": "Lena Ortiz",
+      "initials": "LO",
+      "role": "Staff Engineer",
+      "team": "Payments",
+      "skills": ["Payments", "Java", "Distributed Systems", "PCI"],
+      "domains": ["Payments", "Billing"],
+      "commits": 37,
+      "ticketsResolved": 20,
+      "docsAuthored": 3,
+      "incidentsLed": 2,
+      "authenticationScore": 18
+    },
+    {
+      "id": "emp_james",
+      "name": "James Walker",
+      "initials": "JW",
+      "role": "Data Engineer",
+      "team": "Data",
+      "skills": ["Python", "Kafka", "Airflow", "Snowflake"],
+      "domains": ["Data Pipeline", "Analytics"],
+      "commits": 32,
+      "ticketsResolved": 14,
+      "docsAuthored": 2,
+      "incidentsLed": 2,
+      "authenticationScore": 13
+    },
+    {
+      "id": "emp_noah",
+      "name": "Noah Williams",
+      "initials": "NW",
+      "role": "Security Engineer",
+      "team": "Security",
+      "skills": ["Threat Modeling", "Security Reviews", "IAM", "SIEM"],
+      "domains": ["Security", "Identity"],
+      "commits": 8,
+      "ticketsResolved": 11,
+      "docsAuthored": 3,
+      "incidentsLed": 1,
+      "authenticationScore": 29
+    },
+    {
+      "id": "emp_emily",
+      "name": "Emily Davis",
+      "initials": "ED",
+      "role": "Frontend Engineer",
+      "team": "Growth",
+      "skills": ["TypeScript", "React", "Experimentation", "Design Systems"],
+      "domains": ["Web", "Growth"],
+      "commits": 28,
+      "ticketsResolved": 16,
+      "docsAuthored": 1,
+      "incidentsLed": 0,
+      "authenticationScore": 12
+    },
+    {
+      "id": "emp_david",
+      "name": "David Park",
+      "initials": "DP",
+      "role": "Site Reliability Engineer",
+      "team": "Infrastructure",
+      "skills": ["SRE", "Kubernetes", "Incident Response", "Go"],
+      "domains": ["Reliability", "Infrastructure"],
+      "commits": 19,
+      "ticketsResolved": 13,
+      "docsAuthored": 2,
+      "incidentsLed": 4,
+      "authenticationScore": 24
+    }
+  ],
+  "systems": [
+    { "id": "sys_auth", "name": "Authentication Service", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": ["sys_sso", "sys_mobile_login"] },
+    { "id": "sys_sso", "name": "SSO Gateway", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": ["sys_oauth"] },
+    { "id": "sys_mobile_login", "name": "Mobile Login", "domain": "Mobile", "criticality": "medium", "primaryExpert": "emp_sarah", "dependencies": ["sys_auth"] },
+    { "id": "sys_oauth", "name": "OAuth Refresh Token Flow", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": [] },
+    { "id": "sys_payments", "name": "Payment Orchestrator", "domain": "Payments", "criticality": "high", "primaryExpert": "emp_lena", "dependencies": [] },
+    { "id": "sys_pipeline", "name": "Events Data Pipeline", "domain": "Data Pipeline", "criticality": "high", "primaryExpert": "emp_james", "dependencies": [] }
+  ],
+  "docs": [
+    { "id": "doc_auth_arch", "title": "Authentication Architecture", "author": "emp_sarah", "domain": "Authentication", "coverage": "high" },
+    { "id": "doc_incident", "title": "Authentication Incident Runbook", "author": "emp_sarah", "domain": "Authentication", "coverage": "medium" }
+  ],
+  "tickets": [
+    { "id": "ticket_001", "title": "OAuth refresh token failure", "assignee": "emp_sarah", "domain": "Authentication", "severity": "critical" }
+  ]
+}

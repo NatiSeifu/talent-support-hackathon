@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --bg: #071019;
+  --panel: #0b1722;
+  --panel-soft: #0e1b27;
+  --line: rgba(145, 170, 186, 0.14);
+  --muted: #8295a3;
+  --text: #edf7f8;
+  --mint: #64e6c1;
+  --cyan: #54bcea;
+  --amber: #f5a949;
+  --red: #fa6e62;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 50% -25%, rgba(50, 121, 135, 0.18), transparent 45%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+button { cursor: pointer; }
+
+.panel {
+  background: linear-gradient(145deg, rgba(15, 30, 42, 0.95), rgba(9, 20, 30, 0.92));
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+}
+.hairline { border-color: var(--line); }
+.muted { color: var(--muted); }
+.mint { color: var(--mint); }
+.amber { color: var(--amber); }
+.red { color: var(--red); }
+.tiny-label {
+  color: #89a0ad;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(130, 170, 180, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130, 170, 180, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.risk-ring {
+  background: conic-gradient(var(--ring-color) calc(var(--score) * 1%), rgba(255,255,255,.07) 0);
+  border-radius: 999px;
+  padding: 7px;
+}
+.risk-ring::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: #0d1b27;
+}
+.risk-ring > * { position: relative; z-index: 1; }
+.glow-mint { box-shadow: 0 0 30px rgba(100, 230, 193, 0.08); }
+.glow-red { box-shadow: 0 0 35px rgba(250, 110, 98, 0.1); }
+.react-flow__attribution { display: none; }
+.react-flow__controls {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.react-flow__controls-button {
+  background: #10212e;
+  border-bottom-color: var(--line);
+  fill: #8aa0ac;
+}
+.react-flow__controls-button:hover { background: #163040; }
+.react-flow__edge-text { fill: #8ba1ad; font-size: 10px; }
+@keyframes pulse-soft {
+  0%, 100% { opacity: .65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+.pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
