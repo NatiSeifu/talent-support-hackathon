@@ -1,0 +1,737 @@
+{
+  "signalSources": {
+    "github": {
+      "name": "GitHub",
+      "type": "Code Intelligence",
+      "description": "Repository activity, code ownership, and collaboration patterns",
+      "signals": [
+        "Pull requests authored (count, size, complexity)",
+        "Pull requests reviewed (depth of review, comments quality)",
+        "Commits by repository and directory",
+        "Code ownership % per file/module",
+        "Review turnaround time",
+        "Merge conflict resolution",
+        "CI/CD pipeline contributions",
+        "Release authorship",
+        "Hotfix / emergency commits",
+        "Cross-repo contributions"
+      ],
+      "dataPoints": {
+        "totalPRs": 2413,
+        "totalCommits": 14892,
+        "totalReviews": 3201,
+        "repos": ["auth-service", "platform-api", "mobile-app", "infra-config", "docs-site", "shared-libs"]
+      }
+    },
+    "jira": {
+      "name": "Jira / Linear",
+      "type": "Project Intelligence",
+      "description": "Task ownership, complexity, and delivery patterns",
+      "signals": [
+        "Tickets resolved by domain/component",
+        "Story point throughput",
+        "Bug vs feature ratio",
+        "Sprint velocity trends",
+        "Blocked ticket resolution (unblocking others)",
+        "Epic ownership and completion",
+        "Cross-team ticket contributions",
+        "Ticket reassignment patterns (who gets escalated to)",
+        "Priority distribution (P0-P4)",
+        "Estimation accuracy"
+      ],
+      "dataPoints": {
+        "totalTickets": 891,
+        "averageVelocity": 34,
+        "p0Tickets": 12,
+        "epicsOwned": 28
+      }
+    },
+    "pagerduty": {
+      "name": "PagerDuty",
+      "type": "Incident Intelligence",
+      "description": "Incident response, on-call patterns, and crisis leadership",
+      "signals": [
+        "Incidents led as primary responder",
+        "Mean time to resolution (MTTR)",
+        "On-call shifts completed",
+        "Escalation frequency (how often paged in off-shift)",
+        "Postmortem authorship",
+        "Runbook contributions",
+        "Alert tuning / noise reduction",
+        "Cross-service incident involvement",
+        "After-hours response rate",
+        "Incident severity distribution"
+      ],
+      "dataPoints": {
+        "totalIncidents": 48,
+        "avgMTTR": "23 min",
+        "postmortems": 14,
+        "runbooks": 31
+      }
+    },
+    "confluence": {
+      "name": "Confluence / Notion",
+      "type": "Documentation Intelligence",
+      "description": "Knowledge documentation, architecture decisions, and internal teaching",
+      "signals": [
+        "Pages authored by topic area",
+        "Architecture Decision Records (ADRs)",
+        "Runbook / playbook authorship",
+        "Internal blog posts / tech talks",
+        "Page view count (measures usefulness)",
+        "Documentation freshness (last updated)",
+        "API documentation contributions",
+        "Onboarding guide authorship",
+        "Comment/feedback on others docs",
+        "Diagram creation (system architecture)"
+      ],
+      "dataPoints": {
+        "totalDocs": 83,
+        "adrs": 14,
+        "techTalks": 7,
+        "avgPageViews": 142
+      }
+    },
+    "slack": {
+      "name": "Slack",
+      "type": "Communication Intelligence",
+      "description": "Who people go to for answers — organic authority signals",
+      "signals": [
+        "Direct questions received by topic",
+        "Help channel responses",
+        "Thread depth on technical discussions",
+        "Mentions in incident channels",
+        "Cross-team DM patterns (who gets pulled in)",
+        "Emoji reactions on technical explanations (quality signal)",
+        "Channel membership overlap with domain",
+        "First-responder frequency in support channels"
+      ],
+      "dataPoints": {
+        "questionsAnswered": 412,
+        "helpChannelResponses": 89,
+        "crossTeamMentions": 67
+      }
+    },
+    "calendar": {
+      "name": "Google Calendar",
+      "type": "Collaboration Intelligence",
+      "description": "Meeting patterns, mentoring, and knowledge-sharing activities",
+      "signals": [
+        "1:1 mentoring sessions (frequency, who with)",
+        "Architecture review attendance",
+        "Interview panel participation",
+        "Knowledge-sharing meeting leadership",
+        "Cross-team meeting invites (breadth of influence)",
+        "Pairing session frequency",
+        "Onboarding buddy sessions"
+      ],
+      "dataPoints": {
+        "mentoringSessions": 156,
+        "archReviews": 24,
+        "interviewsConducted": 38
+      }
+    },
+    "learning": {
+      "name": "Learning Platforms",
+      "type": "Growth Intelligence",
+      "description": "Certifications, courses, and active upskilling",
+      "signals": [
+        "Certifications earned (AWS, GCP, security, etc.)",
+        "Internal training completed",
+        "Conference talks given",
+        "Open source contributions",
+        "Hackathon participation",
+        "Patent filings",
+        "Published papers or blog posts"
+      ],
+      "dataPoints": {
+        "certifications": 12,
+        "conferenceTalks": 4,
+        "ossContributions": 23
+      }
+    },
+    "security": {
+      "name": "Security Tools",
+      "type": "Security Intelligence",
+      "description": "Security posture, vulnerability response, and compliance ownership",
+      "signals": [
+        "Vulnerability remediation speed",
+        "Security review participation",
+        "Penetration test finding resolution",
+        "Compliance audit contributions",
+        "Secret rotation ownership",
+        "Access control policy authorship",
+        "Security incident response involvement"
+      ],
+      "dataPoints": {
+        "vulnsRemediated": 34,
+        "securityReviews": 18,
+        "complianceAudits": 6
+      }
+    }
+  },
+  "scoringEngine": {
+    "description": "How raw signals become expertise scores. Not ML — transparent weighted formulas that the AI agent interprets contextually.",
+    "formula": {
+      "expertiseScore": {
+        "components": [
+          { "signal": "codeOwnership", "weight": 0.25, "source": "github", "description": "% of code in domain authored/maintained by this person" },
+          { "signal": "reviewAuthority", "weight": 0.15, "source": "github", "description": "How often they review (and are requested to review) code in this domain" },
+          { "signal": "incidentLeadership", "weight": 0.20, "source": "pagerduty", "description": "Led incident resolution in this domain (high signal — proves real ownership)" },
+          { "signal": "ticketDepth", "weight": 0.15, "source": "jira", "description": "Resolved complex tickets (P0-P1) in this domain" },
+          { "signal": "documentationAuthority", "weight": 0.10, "source": "confluence", "description": "Authored key docs, ADRs, runbooks for this domain" },
+          { "signal": "peerRecognition", "weight": 0.10, "source": "slack", "description": "Organically asked questions by peers in this domain" },
+          { "signal": "mentoring", "weight": 0.05, "source": "calendar", "description": "Actively teaching others in this domain" }
+        ],
+        "scale": "0-100 per domain per person",
+        "threshold": {
+          "expert": 80,
+          "proficient": 60,
+          "familiar": 40,
+          "novice": 20
+        }
+      },
+      "riskScore": {
+        "components": [
+          { "factor": "singlePointOfFailure", "weight": 0.30, "description": "Only person with score > 80 in a critical domain" },
+          { "factor": "noBackupAboveThreshold", "weight": 0.25, "description": "No second person above 60 in same domain" },
+          { "factor": "documentationGap", "weight": 0.15, "description": "Critical knowledge exists only in person's head (no docs, no runbooks)" },
+          { "factor": "departureSignals", "weight": 0.15, "description": "Tenure milestones, reduced engagement, market conditions" },
+          { "factor": "systemCriticality", "weight": 0.15, "description": "How business-critical are the systems this person owns" }
+        ],
+        "scale": "0-100 overall risk",
+        "threshold": {
+          "critical": 75,
+          "high": 50,
+          "moderate": 25,
+          "low": 0
+        }
+      }
+    }
+  },
+  "employeeSignals": {
+    "emp_sarah": {
+      "name": "Sarah Chen",
+      "github": {
+        "prsAuthored": 156,
+        "prsReviewed": 234,
+        "commits": 743,
+        "codeOwnership": {
+          "auth-service": 0.73,
+          "platform-api/auth": 0.61,
+          "shared-libs/oauth": 0.89,
+          "mobile-app/login": 0.22
+        },
+        "reviewRequestsReceived": 187,
+        "hotfixCommits": 14,
+        "avgPRSize": "342 lines",
+        "mergeConflictsResolved": 23
+      },
+      "jira": {
+        "ticketsResolved": 89,
+        "p0Resolved": 7,
+        "p1Resolved": 12,
+        "escalatedTo": 31,
+        "avgResolutionTime": "1.2 days",
+        "epicsOwned": ["Auth Migration v2", "SSO Enterprise Rollout", "OAuth Token Refresh Rewrite", "MFA Implementation"],
+        "storyPointsDelivered": 412
+      },
+      "pagerduty": {
+        "incidentsLed": 12,
+        "avgMTTR": "18 min",
+        "onCallShifts": 48,
+        "escalatedToOffShift": 8,
+        "postmortemsAuthored": 6,
+        "runbooksWritten": 9,
+        "severityBreakdown": { "sev1": 3, "sev2": 5, "sev3": 4 }
+      },
+      "confluence": {
+        "docsAuthored": 14,
+        "adrsWritten": 5,
+        "runbooksAuthored": 9,
+        "avgPageViews": 234,
+        "lastDocUpdate": "2 weeks ago",
+        "undocumentedSystems": ["OAuth token rotation logic", "SSO failover procedure", "Legacy SAML bridge"]
+      },
+      "slack": {
+        "questionsReceived": 142,
+        "topTopics": ["auth errors", "token refresh", "SSO config", "OAuth scopes"],
+        "helpChannelResponses": 34,
+        "avgResponseTime": "8 min",
+        "crossTeamMentions": 28
+      },
+      "calendar": {
+        "mentoringSessions": 23,
+        "archReviewsLed": 4,
+        "interviewsConducted": 12,
+        "pairingSessionsPerWeek": 2.1,
+        "knowledgeSharingTalks": 3
+      },
+      "security": {
+        "vulnsRemediated": 11,
+        "securityReviews": 8,
+        "accessPoliciesAuthored": 4,
+        "secretRotationsOwned": ["auth-service-keys", "oauth-client-secrets", "sso-signing-certs"]
+      },
+      "computedScores": {
+        "Authentication": { "score": 94, "breakdown": { "codeOwnership": 24, "reviewAuthority": 14, "incidentLeadership": 20, "ticketDepth": 15, "documentation": 9, "peerRecognition": 8, "mentoring": 4 } },
+        "SSO": { "score": 91, "breakdown": { "codeOwnership": 23, "reviewAuthority": 13, "incidentLeadership": 18, "ticketDepth": 14, "documentation": 10, "peerRecognition": 9, "mentoring": 4 } },
+        "OAuth": { "score": 96, "breakdown": { "codeOwnership": 25, "reviewAuthority": 15, "incidentLeadership": 20, "ticketDepth": 15, "documentation": 9, "peerRecognition": 8, "mentoring": 4 } }
+      }
+    },
+    "emp_mike": {
+      "name": "Mike Rodriguez",
+      "github": {
+        "prsAuthored": 67,
+        "prsReviewed": 45,
+        "commits": 312,
+        "codeOwnership": {
+          "platform-api": 0.52,
+          "auth-service/sso": 0.18,
+          "shared-libs/grpc": 0.61,
+          "infra-config/api-gateway": 0.34
+        },
+        "reviewRequestsReceived": 23,
+        "hotfixCommits": 3,
+        "avgPRSize": "189 lines",
+        "mergeConflictsResolved": 7
+      },
+      "jira": {
+        "ticketsResolved": 41,
+        "p0Resolved": 1,
+        "p1Resolved": 4,
+        "escalatedTo": 5,
+        "avgResolutionTime": "2.4 days",
+        "epicsOwned": ["API Rate Limiting", "gRPC Migration"],
+        "storyPointsDelivered": 198
+      },
+      "pagerduty": {
+        "incidentsLed": 2,
+        "avgMTTR": "34 min",
+        "onCallShifts": 16,
+        "escalatedToOffShift": 1,
+        "postmortemsAuthored": 1,
+        "runbooksWritten": 3,
+        "severityBreakdown": { "sev1": 0, "sev2": 1, "sev3": 1 }
+      },
+      "confluence": {
+        "docsAuthored": 4,
+        "adrsWritten": 1,
+        "runbooksAuthored": 3,
+        "avgPageViews": 87,
+        "lastDocUpdate": "3 months ago",
+        "undocumentedSystems": []
+      },
+      "slack": {
+        "questionsReceived": 31,
+        "topTopics": ["API design", "gRPC setup", "rate limiting"],
+        "helpChannelResponses": 12,
+        "avgResponseTime": "22 min",
+        "crossTeamMentions": 8
+      },
+      "calendar": {
+        "mentoringSessions": 5,
+        "archReviewsLed": 1,
+        "interviewsConducted": 4,
+        "pairingSessionsPerWeek": 0.5,
+        "knowledgeSharingTalks": 0
+      },
+      "security": {
+        "vulnsRemediated": 4,
+        "securityReviews": 2,
+        "accessPoliciesAuthored": 0,
+        "secretRotationsOwned": []
+      },
+      "computedScores": {
+        "Platform APIs": { "score": 85, "breakdown": { "codeOwnership": 22, "reviewAuthority": 10, "incidentLeadership": 8, "ticketDepth": 14, "documentation": 10, "peerRecognition": 6, "mentoring": 3 } },
+        "SSO": { "score": 62, "breakdown": { "codeOwnership": 12, "reviewAuthority": 8, "incidentLeadership": 6, "ticketDepth": 12, "documentation": 8, "peerRecognition": 4, "mentoring": 2 } }
+      }
+    },
+    "emp_alex": {
+      "name": "Alex Kim",
+      "github": {
+        "prsAuthored": 89,
+        "prsReviewed": 56,
+        "commits": 456,
+        "codeOwnership": {
+          "infra-config": 0.81,
+          "platform-api/deploy": 0.44,
+          "shared-libs/observability": 0.72,
+          "auth-service/infra": 0.31
+        },
+        "reviewRequestsReceived": 48,
+        "hotfixCommits": 8,
+        "avgPRSize": "267 lines",
+        "mergeConflictsResolved": 12
+      },
+      "jira": {
+        "ticketsResolved": 63,
+        "p0Resolved": 4,
+        "p1Resolved": 8,
+        "escalatedTo": 14,
+        "avgResolutionTime": "1.8 days",
+        "epicsOwned": ["K8s Migration", "Observability Stack", "Zero-Downtime Deploys"],
+        "storyPointsDelivered": 287
+      },
+      "pagerduty": {
+        "incidentsLed": 5,
+        "avgMTTR": "21 min",
+        "onCallShifts": 36,
+        "escalatedToOffShift": 4,
+        "postmortemsAuthored": 3,
+        "runbooksWritten": 7,
+        "severityBreakdown": { "sev1": 1, "sev2": 2, "sev3": 2 }
+      },
+      "confluence": {
+        "docsAuthored": 7,
+        "adrsWritten": 3,
+        "runbooksAuthored": 7,
+        "avgPageViews": 198,
+        "lastDocUpdate": "1 week ago",
+        "undocumentedSystems": ["K8s custom controller logic"]
+      },
+      "slack": {
+        "questionsReceived": 87,
+        "topTopics": ["deployment issues", "k8s config", "terraform", "monitoring alerts"],
+        "helpChannelResponses": 23,
+        "avgResponseTime": "12 min",
+        "crossTeamMentions": 19
+      },
+      "calendar": {
+        "mentoringSessions": 12,
+        "archReviewsLed": 2,
+        "interviewsConducted": 8,
+        "pairingSessionsPerWeek": 1.2,
+        "knowledgeSharingTalks": 2
+      },
+      "security": {
+        "vulnsRemediated": 9,
+        "securityReviews": 5,
+        "accessPoliciesAuthored": 2,
+        "secretRotationsOwned": ["infra-deploy-keys", "monitoring-tokens"]
+      },
+      "computedScores": {
+        "Infrastructure": { "score": 92, "breakdown": { "codeOwnership": 24, "reviewAuthority": 13, "incidentLeadership": 18, "ticketDepth": 14, "documentation": 9, "peerRecognition": 9, "mentoring": 5 } },
+        "Platform APIs": { "score": 72, "breakdown": { "codeOwnership": 16, "reviewAuthority": 10, "incidentLeadership": 12, "ticketDepth": 12, "documentation": 8, "peerRecognition": 8, "mentoring": 3 } }
+      }
+    },
+    "emp_priya": {
+      "name": "Priya Patel",
+      "github": {
+        "prsAuthored": 54,
+        "prsReviewed": 38,
+        "commits": 287,
+        "codeOwnership": {
+          "mobile-app": 0.48,
+          "mobile-app/login": 0.62,
+          "shared-libs/session": 0.33,
+          "platform-api/mobile-endpoints": 0.29
+        },
+        "reviewRequestsReceived": 12,
+        "hotfixCommits": 2,
+        "avgPRSize": "156 lines",
+        "mergeConflictsResolved": 4
+      },
+      "jira": {
+        "ticketsResolved": 52,
+        "p0Resolved": 1,
+        "p1Resolved": 3,
+        "escalatedTo": 3,
+        "avgResolutionTime": "2.8 days",
+        "epicsOwned": ["Mobile Biometric Login"],
+        "storyPointsDelivered": 167
+      },
+      "pagerduty": {
+        "incidentsLed": 1,
+        "avgMTTR": "45 min",
+        "onCallShifts": 12,
+        "escalatedToOffShift": 0,
+        "postmortemsAuthored": 0,
+        "runbooksWritten": 1,
+        "severityBreakdown": { "sev1": 0, "sev2": 0, "sev3": 1 }
+      },
+      "confluence": {
+        "docsAuthored": 3,
+        "adrsWritten": 1,
+        "runbooksAuthored": 1,
+        "avgPageViews": 56,
+        "lastDocUpdate": "6 weeks ago",
+        "undocumentedSystems": []
+      },
+      "slack": {
+        "questionsReceived": 18,
+        "topTopics": ["mobile login flow", "session tokens", "biometrics"],
+        "helpChannelResponses": 8,
+        "avgResponseTime": "35 min",
+        "crossTeamMentions": 4
+      },
+      "calendar": {
+        "mentoringSessions": 8,
+        "archReviewsLed": 0,
+        "interviewsConducted": 3,
+        "pairingSessionsPerWeek": 1.5,
+        "knowledgeSharingTalks": 1
+      },
+      "security": {
+        "vulnsRemediated": 3,
+        "securityReviews": 1,
+        "accessPoliciesAuthored": 0,
+        "secretRotationsOwned": []
+      },
+      "computedScores": {
+        "Mobile Login": { "score": 78, "breakdown": { "codeOwnership": 20, "reviewAuthority": 8, "incidentLeadership": 6, "ticketDepth": 14, "documentation": 8, "peerRecognition": 5, "mentoring": 4 } }
+      }
+    },
+    "emp_jordan": {
+      "name": "Jordan Lee",
+      "github": {
+        "prsAuthored": 43,
+        "prsReviewed": 29,
+        "commits": 198,
+        "codeOwnership": {
+          "docs-site": 0.56,
+          "platform-api/docs": 0.41,
+          "shared-libs/sdk": 0.38,
+          "auth-service/tests": 0.12
+        },
+        "reviewRequestsReceived": 15,
+        "hotfixCommits": 1,
+        "avgPRSize": "112 lines",
+        "mergeConflictsResolved": 3
+      },
+      "jira": {
+        "ticketsResolved": 38,
+        "p0Resolved": 0,
+        "p1Resolved": 2,
+        "escalatedTo": 2,
+        "avgResolutionTime": "3.1 days",
+        "epicsOwned": ["Developer Portal Redesign"],
+        "storyPointsDelivered": 134
+      },
+      "pagerduty": {
+        "incidentsLed": 0,
+        "avgMTTR": null,
+        "onCallShifts": 8,
+        "escalatedToOffShift": 0,
+        "postmortemsAuthored": 0,
+        "runbooksWritten": 2,
+        "severityBreakdown": { "sev1": 0, "sev2": 0, "sev3": 0 }
+      },
+      "confluence": {
+        "docsAuthored": 12,
+        "adrsWritten": 2,
+        "runbooksAuthored": 2,
+        "avgPageViews": 312,
+        "lastDocUpdate": "3 days ago",
+        "undocumentedSystems": []
+      },
+      "slack": {
+        "questionsReceived": 24,
+        "topTopics": ["API docs", "SDK usage", "developer portal"],
+        "helpChannelResponses": 15,
+        "avgResponseTime": "18 min",
+        "crossTeamMentions": 6
+      },
+      "calendar": {
+        "mentoringSessions": 4,
+        "archReviewsLed": 0,
+        "interviewsConducted": 2,
+        "pairingSessionsPerWeek": 0.8,
+        "knowledgeSharingTalks": 1
+      },
+      "security": {
+        "vulnsRemediated": 2,
+        "securityReviews": 1,
+        "accessPoliciesAuthored": 0,
+        "secretRotationsOwned": []
+      },
+      "computedScores": {
+        "Platform APIs": { "score": 48, "breakdown": { "codeOwnership": 12, "reviewAuthority": 6, "incidentLeadership": 2, "ticketDepth": 10, "documentation": 10, "peerRecognition": 5, "mentoring": 3 } }
+      }
+    }
+  },
+  "companyProfiles": {
+    "description": "Each company configures which signals matter most based on their industry, culture, and values. Admins set weights during onboarding — AI uses these to compute expertise scores.",
+    "active": {
+      "name": "Nexus Technologies",
+      "industry": "SaaS",
+      "selectedPreset": "balanced",
+      "description": "Generic balanced configuration — all signals contribute. This is the default before a company customizes.",
+      "weights": {
+        "codeOwnership": 0.25,
+        "reviewAuthority": 0.15,
+        "incidentLeadership": 0.20,
+        "ticketDepth": 0.15,
+        "documentation": 0.10,
+        "peerRecognition": 0.10,
+        "mentoring": 0.05
+      },
+      "enabledSources": ["github", "jira", "pagerduty", "confluence", "slack", "calendar"],
+      "disabledSources": [],
+      "customRules": []
+    },
+    "availablePresets": {
+      "cybersecurity": {
+        "name": "Cybersecurity / Security-First",
+        "examples": ["Palo Alto Networks", "CrowdStrike", "Zscaler"],
+        "rationale": "Incident response and security posture are king. A missed vulnerability = breach. On-call heroics matter more than docs.",
+        "weights": {
+          "codeOwnership": 0.20,
+          "reviewAuthority": 0.10,
+          "incidentLeadership": 0.30,
+          "ticketDepth": 0.10,
+          "documentation": 0.05,
+          "peerRecognition": 0.05,
+          "mentoring": 0.05,
+          "securitySignals": 0.15
+        },
+        "enabledSources": ["github", "jira", "pagerduty", "security", "slack", "confluence"],
+        "disabledSources": ["learning", "calendar"],
+        "customRules": [
+          "Weight vulnerability remediation speed 2x for critical/high severity",
+          "Penalize if on-call MTTR > 30 min for sev1",
+          "Bonus for security certifications (CISSP, OSCP)"
+        ]
+      },
+      "developer_tools": {
+        "name": "Developer Tools / DevEx",
+        "examples": ["Stripe", "Vercel", "Datadog", "Twilio"],
+        "rationale": "Documentation and API design are as important as code. External-facing expertise matters. OSS contributions show thought leadership.",
+        "weights": {
+          "codeOwnership": 0.20,
+          "reviewAuthority": 0.15,
+          "incidentLeadership": 0.10,
+          "ticketDepth": 0.10,
+          "documentation": 0.20,
+          "peerRecognition": 0.10,
+          "mentoring": 0.05,
+          "ossContributions": 0.10
+        },
+        "enabledSources": ["github", "jira", "confluence", "slack", "learning", "pagerduty"],
+        "disabledSources": ["security"],
+        "customRules": [
+          "Weight documentation page views (external dev adoption signal)",
+          "Bonus for open source contributions to company SDKs",
+          "Conference talks count 2x for developer advocacy roles"
+        ]
+      },
+      "fintech": {
+        "name": "Fintech / Financial Services",
+        "examples": ["Stripe", "Plaid", "Robinhood", "Square"],
+        "rationale": "Compliance and correctness are non-negotiable. Code review depth matters more than speed. Audit trail ownership is critical.",
+        "weights": {
+          "codeOwnership": 0.20,
+          "reviewAuthority": 0.20,
+          "incidentLeadership": 0.15,
+          "ticketDepth": 0.15,
+          "documentation": 0.10,
+          "peerRecognition": 0.05,
+          "mentoring": 0.05,
+          "complianceSignals": 0.10
+        },
+        "enabledSources": ["github", "jira", "pagerduty", "confluence", "security", "slack"],
+        "disabledSources": ["learning"],
+        "customRules": [
+          "Review depth (comments per PR) weighted higher than review count",
+          "Compliance audit contributions count 3x",
+          "Penalize if code changes bypass required review gates"
+        ]
+      },
+      "ai_ml": {
+        "name": "AI / Machine Learning",
+        "examples": ["Anthropic", "OpenAI", "Scale AI", "Hugging Face"],
+        "rationale": "Research output and experimentation velocity matter. Published papers, model training expertise, and novel approaches are the signals.",
+        "weights": {
+          "codeOwnership": 0.15,
+          "reviewAuthority": 0.10,
+          "incidentLeadership": 0.05,
+          "ticketDepth": 0.10,
+          "documentation": 0.15,
+          "peerRecognition": 0.15,
+          "mentoring": 0.10,
+          "researchOutput": 0.20
+        },
+        "enabledSources": ["github", "confluence", "slack", "learning", "calendar", "jira"],
+        "disabledSources": ["security"],
+        "customRules": [
+          "Published papers and preprints weighted heavily",
+          "Experiment notebooks and model cards count as documentation",
+          "Mentoring junior researchers counts 2x",
+          "Conference presentations and invited talks are top signals"
+        ]
+      },
+      "enterprise_saas": {
+        "name": "Enterprise SaaS",
+        "examples": ["Salesforce", "ServiceNow", "Workday", "Atlassian"],
+        "rationale": "Reliability at scale is everything. Cross-team collaboration signals matter because the codebase is massive and interconnected.",
+        "weights": {
+          "codeOwnership": 0.25,
+          "reviewAuthority": 0.15,
+          "incidentLeadership": 0.20,
+          "ticketDepth": 0.15,
+          "documentation": 0.10,
+          "peerRecognition": 0.10,
+          "mentoring": 0.05
+        },
+        "enabledSources": ["github", "jira", "pagerduty", "confluence", "slack", "calendar"],
+        "disabledSources": [],
+        "customRules": [
+          "Cross-repo and cross-team contributions weighted 1.5x",
+          "Escalation-target frequency is a strong expertise signal",
+          "Sprint velocity consistency matters more than peak output"
+        ]
+      },
+      "startup_early": {
+        "name": "Early-Stage Startup",
+        "examples": ["Seed to Series B, <50 engineers"],
+        "rationale": "Breadth over depth. Everyone wears many hats. Velocity and shipping matter more than process signals.",
+        "weights": {
+          "codeOwnership": 0.30,
+          "reviewAuthority": 0.05,
+          "incidentLeadership": 0.15,
+          "ticketDepth": 0.20,
+          "documentation": 0.05,
+          "peerRecognition": 0.15,
+          "mentoring": 0.10
+        },
+        "enabledSources": ["github", "jira", "slack", "pagerduty"],
+        "disabledSources": ["confluence", "learning", "security", "calendar"],
+        "customRules": [
+          "Breadth of contribution across repos weighted highly",
+          "Shipped features (closed epics) matter more than tickets",
+          "Ignore process metrics — just code output and peer trust"
+        ]
+      }
+    },
+    "customConfiguration": {
+      "description": "Companies can fully customize beyond presets",
+      "options": {
+        "addCustomSource": "Connect any tool via webhook or API — weight it however you want",
+        "adjustWeights": "Drag sliders per signal source from 0% to 100%",
+        "domainOverrides": "Different weights per domain (e.g., infra team weights PagerDuty higher than frontend team)",
+        "roleOverrides": "Different weights per role (e.g., Staff Engineer weights mentoring higher)",
+        "seasonalAdjustments": "Boost incident signals during on-call rotations, boost shipping signals during sprints",
+        "excludeSignals": "Turn off any signal entirely if irrelevant"
+      },
+      "onboardingFlow": [
+        "1. Select industry preset (or start blank)",
+        "2. Connect data sources (GitHub, Jira, etc.) via OAuth",
+        "3. AI suggests weights based on your org structure and connected data",
+        "4. Admin reviews and adjusts with sliders",
+        "5. Run first analysis — AI shows confidence levels per score",
+        "6. Iterate: adjust weights as you learn what signals are actually predictive for YOUR org"
+      ]
+    }
+  },
+  "integrationSpec": {
+    "description": "How to connect each source in production",
+    "apis": {
+      "github": { "endpoint": "https://api.github.com", "auth": "OAuth App or GitHub App", "rateLimit": "5000 req/hr", "dataFreshness": "real-time webhooks" },
+      "jira": { "endpoint": "https://your-domain.atlassian.net/rest/api/3", "auth": "API Token + OAuth 2.0", "rateLimit": "900 req/min", "dataFreshness": "webhooks + daily sync" },
+      "pagerduty": { "endpoint": "https://api.pagerduty.com", "auth": "API Key v2", "rateLimit": "960 req/min", "dataFreshness": "webhooks" },
+      "confluence": { "endpoint": "https://your-domain.atlassian.net/wiki/rest/api", "auth": "API Token", "rateLimit": "900 req/min", "dataFreshness": "daily sync" },
+      "slack": { "endpoint": "https://slack.com/api", "auth": "Bot Token (xoxb-)", "rateLimit": "varies by method", "dataFreshness": "event subscriptions" },
+      "google_calendar": { "endpoint": "https://www.googleapis.com/calendar/v3", "auth": "OAuth 2.0 Service Account", "rateLimit": "unlimited (quota)", "dataFreshness": "push notifications" }
+    }
+  }
+}

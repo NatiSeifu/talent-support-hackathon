@@ -1,4 +1,16 @@
 {
+  "organization": {
+    "name": "Nexus Technologies",
+    "type": "SaaS",
+    "headcount": 147,
+    "engineeringTeams": 8
+  },
+  "team": {
+    "name": "Platform Engineering",
+    "headcount": 8,
+    "knowledgeHealth": 64,
+    "domains": ["Authentication", "SSO", "OAuth", "Mobile Login", "Platform APIs", "Infrastructure"]
+  },
   "employees": [
     {
       "id": "emp_sarah",
@@ -6,13 +18,35 @@
       "initials": "SC",
       "role": "Senior Backend Engineer",
       "team": "Platform",
-      "skills": ["OAuth", "OIDC", "SSO", "Auth Service", "Python", "Go", "Incident Response"],
-      "domains": ["Authentication", "Identity", "Mobile Login"],
-      "commits": 43,
-      "ticketsResolved": 17,
-      "docsAuthored": 4,
-      "incidentsLed": 3,
-      "authenticationScore": 94
+      "tenure": "4.2 years",
+      "skills": ["OAuth 2.0", "OIDC", "SSO/SAML", "Auth Service", "Python", "Go", "Incident Response", "Distributed Systems"],
+      "domains": ["Authentication", "Identity", "Mobile Login", "SSO"],
+      "signals": {
+        "prsAuthored": 156,
+        "prsReviewed": 234,
+        "commits": 743,
+        "ticketsResolved": 89,
+        "incidentsLed": 12,
+        "docsAuthored": 14,
+        "codeReviewsInDomain": 187,
+        "mentoringSessions": 23,
+        "architectureDecisions": 8,
+        "onCallShifts": 48
+      },
+      "expertiseScores": {
+        "Authentication": 94,
+        "SSO": 91,
+        "OAuth": 96,
+        "Mobile Login": 72,
+        "Platform APIs": 45,
+        "Infrastructure": 30
+      },
+      "riskFactors": {
+        "busFactorSystems": 4,
+        "knowledgeConcentration": 0.72,
+        "documentationGaps": 3,
+        "soloOwnedCriticalPaths": 5
+      }
     },
     {
       "id": "emp_mike",
@@ -20,13 +54,35 @@
       "initials": "MR",
       "role": "Backend Engineer",
       "team": "Platform",
-      "skills": ["APIs", "Go", "Backend", "SSO"],
+      "tenure": "2.1 years",
+      "skills": ["APIs", "Go", "Backend", "SSO", "gRPC", "PostgreSQL"],
       "domains": ["Platform APIs", "SSO"],
-      "commits": 12,
-      "ticketsResolved": 6,
-      "docsAuthored": 1,
-      "incidentsLed": 0,
-      "authenticationScore": 51
+      "signals": {
+        "prsAuthored": 67,
+        "prsReviewed": 45,
+        "commits": 312,
+        "ticketsResolved": 41,
+        "incidentsLed": 2,
+        "docsAuthored": 4,
+        "codeReviewsInDomain": 23,
+        "mentoringSessions": 5,
+        "architectureDecisions": 1,
+        "onCallShifts": 16
+      },
+      "expertiseScores": {
+        "Authentication": 51,
+        "SSO": 62,
+        "OAuth": 28,
+        "Mobile Login": 15,
+        "Platform APIs": 85,
+        "Infrastructure": 40
+      },
+      "riskFactors": {
+        "busFactorSystems": 0,
+        "knowledgeConcentration": 0.12,
+        "documentationGaps": 1,
+        "soloOwnedCriticalPaths": 0
+      }
     },
     {
       "id": "emp_priya",
@@ -34,13 +90,35 @@
       "initials": "PP",
       "role": "Software Engineer",
       "team": "Mobile",
-      "skills": ["React Native", "Mobile", "Session Management", "APIs"],
+      "tenure": "1.8 years",
+      "skills": ["React Native", "Mobile", "Session Management", "APIs", "TypeScript"],
       "domains": ["Mobile Login", "Mobile"],
-      "commits": 15,
-      "ticketsResolved": 8,
-      "docsAuthored": 1,
-      "incidentsLed": 0,
-      "authenticationScore": 42
+      "signals": {
+        "prsAuthored": 54,
+        "prsReviewed": 38,
+        "commits": 287,
+        "ticketsResolved": 52,
+        "incidentsLed": 1,
+        "docsAuthored": 3,
+        "codeReviewsInDomain": 12,
+        "mentoringSessions": 8,
+        "architectureDecisions": 2,
+        "onCallShifts": 12
+      },
+      "expertiseScores": {
+        "Authentication": 42,
+        "SSO": 18,
+        "OAuth": 35,
+        "Mobile Login": 78,
+        "Platform APIs": 55,
+        "Infrastructure": 20
+      },
+      "riskFactors": {
+        "busFactorSystems": 1,
+        "knowledgeConcentration": 0.31,
+        "documentationGaps": 2,
+        "soloOwnedCriticalPaths": 1
+      }
     },
     {
       "id": "emp_alex",
@@ -48,13 +126,35 @@
       "initials": "AK",
       "role": "Platform Engineer",
       "team": "Infrastructure",
-      "skills": ["Kubernetes", "Observability", "Python", "APIs"],
+      "tenure": "3.0 years",
+      "skills": ["Kubernetes", "Observability", "Python", "APIs", "Terraform", "AWS"],
       "domains": ["Infrastructure", "Platform APIs"],
-      "commits": 9,
-      "ticketsResolved": 5,
-      "docsAuthored": 0,
-      "incidentsLed": 1,
-      "authenticationScore": 31
+      "signals": {
+        "prsAuthored": 89,
+        "prsReviewed": 56,
+        "commits": 456,
+        "ticketsResolved": 63,
+        "incidentsLed": 5,
+        "docsAuthored": 7,
+        "codeReviewsInDomain": 8,
+        "mentoringSessions": 12,
+        "architectureDecisions": 4,
+        "onCallShifts": 36
+      },
+      "expertiseScores": {
+        "Authentication": 31,
+        "SSO": 15,
+        "OAuth": 10,
+        "Mobile Login": 8,
+        "Platform APIs": 72,
+        "Infrastructure": 92
+      },
+      "riskFactors": {
+        "busFactorSystems": 2,
+        "knowledgeConcentration": 0.45,
+        "documentationGaps": 1,
+        "soloOwnedCriticalPaths": 2
+      }
     },
     {
       "id": "emp_lena",
@@ -62,13 +162,35 @@
       "initials": "LO",
       "role": "Staff Engineer",
       "team": "Payments",
-      "skills": ["Payments", "Java", "Distributed Systems", "PCI"],
+      "tenure": "5.1 years",
+      "skills": ["Payments", "Java", "Distributed Systems", "PCI", "Event Sourcing"],
       "domains": ["Payments", "Billing"],
-      "commits": 37,
-      "ticketsResolved": 20,
-      "docsAuthored": 3,
-      "incidentsLed": 2,
-      "authenticationScore": 18
+      "signals": {
+        "prsAuthored": 198,
+        "prsReviewed": 312,
+        "commits": 1024,
+        "ticketsResolved": 134,
+        "incidentsLed": 18,
+        "docsAuthored": 22,
+        "codeReviewsInDomain": 5,
+        "mentoringSessions": 34,
+        "architectureDecisions": 12,
+        "onCallShifts": 52
+      },
+      "expertiseScores": {
+        "Authentication": 18,
+        "SSO": 5,
+        "OAuth": 12,
+        "Mobile Login": 3,
+        "Platform APIs": 40,
+        "Infrastructure": 35
+      },
+      "riskFactors": {
+        "busFactorSystems": 2,
+        "knowledgeConcentration": 0.68,
+        "documentationGaps": 2,
+        "soloOwnedCriticalPaths": 3
+      }
     },
     {
       "id": "emp_james",
@@ -76,13 +198,35 @@
       "initials": "JW",
       "role": "Data Engineer",
       "team": "Data",
-      "skills": ["Python", "Kafka", "Airflow", "Snowflake"],
+      "tenure": "2.8 years",
+      "skills": ["Python", "Kafka", "Airflow", "Snowflake", "dbt", "Spark"],
       "domains": ["Data Pipeline", "Analytics"],
-      "commits": 32,
-      "ticketsResolved": 14,
-      "docsAuthored": 2,
-      "incidentsLed": 2,
-      "authenticationScore": 13
+      "signals": {
+        "prsAuthored": 112,
+        "prsReviewed": 78,
+        "commits": 567,
+        "ticketsResolved": 87,
+        "incidentsLed": 8,
+        "docsAuthored": 9,
+        "codeReviewsInDomain": 3,
+        "mentoringSessions": 15,
+        "architectureDecisions": 5,
+        "onCallShifts": 24
+      },
+      "expertiseScores": {
+        "Authentication": 13,
+        "SSO": 2,
+        "OAuth": 5,
+        "Mobile Login": 0,
+        "Platform APIs": 25,
+        "Infrastructure": 42
+      },
+      "riskFactors": {
+        "busFactorSystems": 2,
+        "knowledgeConcentration": 0.58,
+        "documentationGaps": 3,
+        "soloOwnedCriticalPaths": 2
+      }
     },
     {
       "id": "emp_noah",
@@ -90,13 +234,35 @@
       "initials": "NW",
       "role": "Security Engineer",
       "team": "Security",
-      "skills": ["Threat Modeling", "Security Reviews", "IAM", "SIEM"],
+      "tenure": "2.3 years",
+      "skills": ["Threat Modeling", "Security Reviews", "IAM", "SIEM", "Penetration Testing"],
       "domains": ["Security", "Identity"],
-      "commits": 8,
-      "ticketsResolved": 11,
-      "docsAuthored": 3,
-      "incidentsLed": 1,
-      "authenticationScore": 29
+      "signals": {
+        "prsAuthored": 34,
+        "prsReviewed": 89,
+        "commits": 178,
+        "ticketsResolved": 56,
+        "incidentsLed": 6,
+        "docsAuthored": 11,
+        "codeReviewsInDomain": 34,
+        "mentoringSessions": 18,
+        "architectureDecisions": 6,
+        "onCallShifts": 20
+      },
+      "expertiseScores": {
+        "Authentication": 29,
+        "SSO": 22,
+        "OAuth": 25,
+        "Mobile Login": 10,
+        "Platform APIs": 15,
+        "Infrastructure": 55
+      },
+      "riskFactors": {
+        "busFactorSystems": 0,
+        "knowledgeConcentration": 0.22,
+        "documentationGaps": 1,
+        "soloOwnedCriticalPaths": 0
+      }
     },
     {
       "id": "emp_emily",
@@ -104,42 +270,192 @@
       "initials": "ED",
       "role": "Frontend Engineer",
       "team": "Growth",
-      "skills": ["TypeScript", "React", "Experimentation", "Design Systems"],
+      "tenure": "1.5 years",
+      "skills": ["TypeScript", "React", "Experimentation", "Design Systems", "Next.js"],
       "domains": ["Web", "Growth"],
-      "commits": 28,
-      "ticketsResolved": 16,
-      "docsAuthored": 1,
-      "incidentsLed": 0,
-      "authenticationScore": 12
-    },
-    {
-      "id": "emp_david",
-      "name": "David Park",
-      "initials": "DP",
-      "role": "Site Reliability Engineer",
-      "team": "Infrastructure",
-      "skills": ["SRE", "Kubernetes", "Incident Response", "Go"],
-      "domains": ["Reliability", "Infrastructure"],
-      "commits": 19,
-      "ticketsResolved": 13,
-      "docsAuthored": 2,
-      "incidentsLed": 4,
-      "authenticationScore": 24
+      "signals": {
+        "prsAuthored": 78,
+        "prsReviewed": 45,
+        "commits": 412,
+        "ticketsResolved": 67,
+        "incidentsLed": 1,
+        "docsAuthored": 5,
+        "codeReviewsInDomain": 2,
+        "mentoringSessions": 6,
+        "architectureDecisions": 2,
+        "onCallShifts": 8
+      },
+      "expertiseScores": {
+        "Authentication": 12,
+        "SSO": 5,
+        "OAuth": 8,
+        "Mobile Login": 15,
+        "Platform APIs": 30,
+        "Infrastructure": 10
+      },
+      "riskFactors": {
+        "busFactorSystems": 0,
+        "knowledgeConcentration": 0.15,
+        "documentationGaps": 1,
+        "soloOwnedCriticalPaths": 0
+      }
     }
   ],
   "systems": [
-    { "id": "sys_auth", "name": "Authentication Service", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": ["sys_sso", "sys_mobile_login"] },
-    { "id": "sys_sso", "name": "SSO Gateway", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": ["sys_oauth"] },
-    { "id": "sys_mobile_login", "name": "Mobile Login", "domain": "Mobile", "criticality": "medium", "primaryExpert": "emp_sarah", "dependencies": ["sys_auth"] },
-    { "id": "sys_oauth", "name": "OAuth Refresh Token Flow", "domain": "Authentication", "criticality": "high", "primaryExpert": "emp_sarah", "dependencies": [] },
-    { "id": "sys_payments", "name": "Payment Orchestrator", "domain": "Payments", "criticality": "high", "primaryExpert": "emp_lena", "dependencies": [] },
-    { "id": "sys_pipeline", "name": "Events Data Pipeline", "domain": "Data Pipeline", "criticality": "high", "primaryExpert": "emp_james", "dependencies": [] }
+    {
+      "id": "sys_auth",
+      "name": "Authentication Service",
+      "domain": "Authentication",
+      "criticality": "critical",
+      "primaryExpert": "emp_sarah",
+      "backupExperts": ["emp_mike", "emp_noah"],
+      "dependencies": ["sys_sso", "sys_oauth", "sys_mobile_login"],
+      "healthScore": 34,
+      "lastIncident": "2026-04-12",
+      "description": "Core identity verification service handling 2M+ auth requests/day"
+    },
+    {
+      "id": "sys_sso",
+      "name": "SSO Gateway",
+      "domain": "SSO",
+      "criticality": "critical",
+      "primaryExpert": "emp_sarah",
+      "backupExperts": ["emp_mike"],
+      "dependencies": ["sys_oauth"],
+      "healthScore": 28,
+      "lastIncident": "2026-03-28",
+      "description": "Enterprise SAML/OIDC integration gateway for 200+ enterprise clients"
+    },
+    {
+      "id": "sys_oauth",
+      "name": "OAuth Token Service",
+      "domain": "OAuth",
+      "criticality": "critical",
+      "primaryExpert": "emp_sarah",
+      "backupExperts": [],
+      "dependencies": [],
+      "healthScore": 18,
+      "lastIncident": "2026-05-01",
+      "description": "Token lifecycle management — refresh, rotation, revocation"
+    },
+    {
+      "id": "sys_mobile_login",
+      "name": "Mobile Login SDK",
+      "domain": "Mobile Login",
+      "criticality": "high",
+      "primaryExpert": "emp_sarah",
+      "backupExperts": ["emp_priya"],
+      "dependencies": ["sys_auth"],
+      "healthScore": 45,
+      "lastIncident": "2026-02-15",
+      "description": "React Native authentication SDK used by 3 mobile applications"
+    },
+    {
+      "id": "sys_payments",
+      "name": "Payment Orchestrator",
+      "domain": "Payments",
+      "criticality": "critical",
+      "primaryExpert": "emp_lena",
+      "backupExperts": [],
+      "dependencies": [],
+      "healthScore": 22,
+      "lastIncident": "2026-04-30",
+      "description": "Multi-provider payment processing with PCI compliance"
+    },
+    {
+      "id": "sys_pipeline",
+      "name": "Events Data Pipeline",
+      "domain": "Data Pipeline",
+      "criticality": "high",
+      "primaryExpert": "emp_james",
+      "backupExperts": [],
+      "dependencies": [],
+      "healthScore": 30,
+      "lastIncident": "2026-03-10",
+      "description": "Kafka-based event streaming processing 50M events/day"
+    }
   ],
-  "docs": [
-    { "id": "doc_auth_arch", "title": "Authentication Architecture", "author": "emp_sarah", "domain": "Authentication", "coverage": "high" },
-    { "id": "doc_incident", "title": "Authentication Incident Runbook", "author": "emp_sarah", "domain": "Authentication", "coverage": "medium" }
+  "hiringPriorities": [
+    {
+      "rank": 1,
+      "domain": "Authentication",
+      "severity": "critical",
+      "reason": "Single expert (Sarah Chen) owns 4 critical systems with no qualified successor",
+      "recommendedAction": "hire_external",
+      "estimatedImpact": "3-6 month recovery if unaddressed",
+      "internalOption": {
+        "candidate": "emp_mike",
+        "currentScore": 51,
+        "targetScore": 75,
+        "estimatedTimeToReady": "8-12 weeks with intensive pairing"
+      }
+    },
+    {
+      "rank": 2,
+      "domain": "Data Pipeline",
+      "severity": "high",
+      "reason": "James Walker is sole owner of event streaming infrastructure",
+      "recommendedAction": "cross_train",
+      "estimatedImpact": "2-4 week recovery",
+      "internalOption": {
+        "candidate": "emp_alex",
+        "currentScore": 42,
+        "targetScore": 65,
+        "estimatedTimeToReady": "6 weeks"
+      }
+    },
+    {
+      "rank": 3,
+      "domain": "Payments",
+      "severity": "high",
+      "reason": "Lena Ortiz has critical concentration in payment orchestration",
+      "recommendedAction": "cross_train",
+      "estimatedImpact": "4-8 week recovery",
+      "internalOption": null
+    }
   ],
-  "tickets": [
-    { "id": "ticket_001", "title": "OAuth refresh token failure", "assignee": "emp_sarah", "domain": "Authentication", "severity": "critical" }
-  ]
+  "knowledgeCaptureTopics": {
+    "emp_sarah": [
+      {
+        "topic": "OAuth Token Refresh Architecture",
+        "priority": "critical",
+        "reason": "Zero documentation exists. Sarah is sole committer (156 commits). Handles 2M requests/day.",
+        "suggestedQuestions": [
+          "Walk me through the OAuth refresh flow end-to-end, from token expiry to new token issuance.",
+          "What's the race condition you fixed on mobile backgrounding, and why is the mutex lock approach correct?",
+          "Explain the 30-second clock skew grace window — which enterprise clients need it and why?"
+        ]
+      },
+      {
+        "topic": "SSO Enterprise Integration Patterns",
+        "priority": "critical",
+        "reason": "200+ enterprise clients depend on this. Only Sarah has debugged SAML assertion failures.",
+        "suggestedQuestions": [
+          "What are the top 3 failure modes you see with enterprise SSO integrations?",
+          "Walk me through the SAML assertion validation — what's the retry with exponential backoff for?",
+          "Which enterprise clients have custom configurations that deviate from standard?"
+        ]
+      },
+      {
+        "topic": "Auth Incident Response Playbook",
+        "priority": "high",
+        "reason": "Sarah led all 12 auth incidents. No written playbook exists.",
+        "suggestedQuestions": [
+          "When you get paged at 2am for an auth issue, what are your first 3 diagnostic steps?",
+          "Which monitoring alerts actually indicate real problems vs. noise?",
+          "What's the escalation path and who outside the team needs to be looped in?"
+        ]
+      },
+      {
+        "topic": "Architecture Decision History",
+        "priority": "medium",
+        "reason": "No ADRs exist. Sarah made key architectural choices 3+ years ago.",
+        "suggestedQuestions": [
+          "Why was auth built as a separate service instead of part of the monolith?",
+          "What alternatives did you consider for token storage and why did you choose this approach?",
+          "What would you build differently if you started from scratch today?"
+        ]
+      }
+    ]
+  }
 }

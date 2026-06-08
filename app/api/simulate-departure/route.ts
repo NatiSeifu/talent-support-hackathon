@@ -8,5 +8,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "employeeId is required" }, { status: 400 });
   }
 
-  return NextResponse.json(simulateDeparture(employeeId));
+  try {
+    const result = simulateDeparture(employeeId);
+    return NextResponse.json(result);
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Simulation failed" },
+      { status: 500 }
+    );
+  }
 }

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import "@xyflow/react/dist/style.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Expertise Risk AI",
-  description: "Make critical expertise measurable, risk visible, and hiring evidence-based."
+  title: "TalentLens — Hiring Intelligence Platform",
+  description: "AI-powered organizational intelligence that turns team expertise data into precise hiring decisions."
 };
 
 export default function RootLayout({
@@ -12,7 +11,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      </head>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
