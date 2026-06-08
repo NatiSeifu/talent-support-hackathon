@@ -1,0 +1,46 @@
+---
+description: Project-wide guidance for Expertise Risk AI
+alwaysApply: true
+---
+
+# Expertise Risk AI
+
+This is a Next.js and TypeScript hackathon demo for organizational knowledge
+risk and evidence-based talent planning.
+
+## Core Workflow
+
+1. Map expertise from organizational signals.
+2. Show evidence for who knows each critical domain.
+3. Simulate an expert leaving.
+4. Identify impacted systems and successor gaps.
+5. Capture undocumented expert knowledge.
+6. Generate a transfer, onboarding, or hiring plan.
+
+## Repository Map
+
+- `app/api/agents/`: Knowledge Mapper, Knowledge Capturer, Talent Strategist
+- `lib/agents/`: prompts, tool execution, model orchestration
+- `lib/expertise.ts`: deterministic domain calculations
+- `data/`: synthetic company and signal data
+- `components/`: user-facing demo flows
+
+## Coding Rules
+
+- Use strict TypeScript and descriptive names.
+- Follow existing Next.js App Router patterns.
+- Validate API input with Zod.
+- Keep risk and readiness calculations deterministic.
+- Ground model responses in tool results and source evidence.
+- Use structured outputs when model responses feed application logic.
+- Never hardcode secrets or expose provider errors to clients.
+- Keep deterministic fallbacks for external model and video calls.
+- Avoid broad refactors during hackathon feature work.
+- Run `npm run build` after meaningful changes.
+
+## Product Rules
+
+- The expertise graph is the source of truth; the LLM explains it.
+- Never present inferred expertise as fact without evidence or confidence.
+- Prefer actionable outputs over generic summaries.
+- Keep the demo path fast, stable, and easy to present live.
