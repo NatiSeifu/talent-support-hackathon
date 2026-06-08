@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TalentLens — Hiring Intelligence Platform",
+  title: "SuccessionAI — Hiring Intelligence Platform",
   description: "AI-powered organizational intelligence that turns team expertise data into precise hiring decisions."
 };
 

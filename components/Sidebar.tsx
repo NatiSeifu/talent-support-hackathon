@@ -32,7 +32,7 @@ export default function Sidebar({
         </div>
         <div>
           <div className="text-[15px] font-bold text-[var(--color-text-primary)]">
-            TalentLens
+            SuccessionAI
           </div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--color-primary-600)]">
             Hiring Intelligence
