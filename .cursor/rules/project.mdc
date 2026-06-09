@@ -1,46 +1,57 @@
 ---
-description: Project-wide guidance for Expertise Risk AI
+description: Project-wide guidance for SuccessionAI
 alwaysApply: true
 ---
 
-# Expertise Risk AI
+# SuccessionAI
 
-This is a Next.js and TypeScript hackathon demo for organizational knowledge
-risk and evidence-based talent planning.
+Inference-time organizational knowledge auditing and workforce readiness evaluation.
 
-## Core Workflow
+## What This Is
 
-1. Map expertise from organizational signals.
-2. Show evidence for who knows each critical domain.
-3. Simulate an expert leaving.
-4. Identify impacted systems and successor gaps.
-5. Capture undocumented expert knowledge.
-6. Generate a transfer, onboarding, or hiring plan.
+A multi-agent reasoning system that audits an organization's collective knowledge,
+identifies undocumented expertise, interviews the people who hold it, and converts
+that expertise into hiring and onboarding intelligence.
 
-## Repository Map
+## Core Flow
 
-- `app/api/agents/`: Knowledge Mapper, Knowledge Capturer, Talent Strategist
-- `lib/agents/`: prompts, tool execution, model orchestration
-- `lib/expertise.ts`: deterministic domain calculations
-- `data/`: synthetic company and signal data
-- `components/`: user-facing demo flows
+1. Detect knowledge risk (who holds critical undocumented knowledge).
+2. Run multi-agent audit (5 agents debate, verify, challenge in parallel).
+3. Conduct targeted exit interview (gap-driven, investigator tone).
+4. Generate hiring spec from confirmed knowledge gaps.
+5. Evaluate candidates via gap analysis + adaptability assessment.
+
+## Architecture
+
+- One LLM endpoint (OpenAI-compatible). Claude in dev, vLLM on GPU day.
+- Five agents: Evidence, Expertise, Risk, Skeptic, Question.
+- Agents debate in rounds — findings slide in, disagreements highlighted.
+- Tavus for video interviewer. No custom avatar infra.
+- JSON data files (no real Jira/GitHub integration for demo).
+
+## Read .cursor/SPEC.md for full implementation details.
 
 ## Coding Rules
 
 - Use strict TypeScript and descriptive names.
 - Follow existing Next.js App Router patterns.
 - Validate API input with Zod.
-- Keep risk and readiness calculations deterministic.
-- Ground model responses in tool results and source evidence.
-- Use structured outputs when model responses feed application logic.
-- Never hardcode secrets or expose provider errors to clients.
-- Keep deterministic fallbacks for external model and video calls.
-- Avoid broad refactors during hackathon feature work.
+- All agents call `lib/llm.ts` — never call Claude directly.
+- Agent outputs are structured JSON (Zod-validated).
+- Show confidence levels and evidence citations on every claim.
+- Never claim omniscience — expose uncertainty.
+- Never say "best candidate" — say "gap coverage" (factual).
+- Use shadcn/ui components. Light mode only.
+- Design: Linear + Vercel + Stripe aesthetic. Minimal, professional.
+- Keep the demo path fast, stable, and easy to present live.
 - Run `npm run build` after meaningful changes.
 
-## Product Rules
+## Do NOT Build
 
-- The expertise graph is the source of truth; the LLM explains it.
-- Never present inferred expertise as fact without evidence or confidence.
-- Prefer actionable outputs over generic summaries.
-- Keep the demo path fast, stable, and easy to present live.
+- Digital twin / fine-tuning / LoRA
+- GRPO / RL training
+- Dark mode
+- Complex video avatar (LivePortrait, voice cloning)
+- Full Jira/GitHub OAuth integration
+- Admin settings / user accounts
+- Knowledge graph 3D visualization (optional, cut if time-tight)
