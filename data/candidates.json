@@ -1,0 +1,136 @@
+[
+  {
+    "id": "candidate_alex_park",
+    "name": "Alex Park",
+    "current_role": "Senior Software Engineer",
+    "current_company": "Cloudflare",
+    "years_experience": 7,
+    "summary": "Backend engineer with strong distributed systems background. Built OAuth2 provider at previous startup. Experience with Redis, PostgreSQL, and event-driven architectures. Led team of 4 on identity platform rewrite.",
+    "skills": [
+      "OAuth2/OIDC",
+      "Redis",
+      "Node.js/TypeScript",
+      "PostgreSQL",
+      "Kubernetes",
+      "Event-driven architecture",
+      "API design",
+      "Team leadership"
+    ],
+    "relevant_experience": [
+      {
+        "role": "Senior Engineer — Identity Platform",
+        "company": "AuthStack (startup)",
+        "duration": "2 years",
+        "highlights": [
+          "Built OAuth2 provider serving 50M tokens/day",
+          "Designed Redis-based session management with failover",
+          "Led SOC2 compliance implementation",
+          "Migrated from PostgreSQL to Redis for token storage"
+        ]
+      },
+      {
+        "role": "Software Engineer — Platform",
+        "company": "Cloudflare",
+        "duration": "3 years",
+        "highlights": [
+          "Worked on Workers KV (distributed key-value store)",
+          "Incident response rotation — responded to 20+ P1 incidents",
+          "Built rate limiting middleware for API gateway"
+        ]
+      }
+    ],
+    "education": "MS Computer Science, UC Berkeley",
+    "incident_experience": true,
+    "saml_experience": false,
+    "enterprise_sso_experience": false
+  },
+  {
+    "id": "candidate_rachel_foster",
+    "name": "Rachel Foster",
+    "current_role": "Staff Engineer — Security",
+    "current_company": "Okta",
+    "years_experience": 9,
+    "summary": "Identity and security specialist. Deep SAML/OIDC expertise from 4 years at Okta. Has architected enterprise SSO for Fortune 500 clients. Strong documentation practices. Less hands-on with infrastructure/Redis.",
+    "skills": [
+      "SAML",
+      "OIDC/OAuth2",
+      "Enterprise SSO",
+      "Security architecture",
+      "Certificate management",
+      "Python",
+      "Java",
+      "Technical writing"
+    ],
+    "relevant_experience": [
+      {
+        "role": "Staff Engineer — Identity",
+        "company": "Okta",
+        "duration": "4 years",
+        "highlights": [
+          "Designed SSO integration framework used by 2000+ enterprise clients",
+          "Led SAML certificate rotation automation project",
+          "Authored 40+ technical design documents",
+          "Mentored 6 junior engineers on identity protocols"
+        ]
+      },
+      {
+        "role": "Senior Security Engineer",
+        "company": "Stripe",
+        "duration": "3 years",
+        "highlights": [
+          "Built token vaulting service (PCI DSS compliant)",
+          "Designed API authentication middleware",
+          "Led incident response for 3 P0 security events"
+        ]
+      }
+    ],
+    "education": "BS Computer Science, Stanford",
+    "incident_experience": true,
+    "saml_experience": true,
+    "enterprise_sso_experience": true
+  },
+  {
+    "id": "candidate_james_morrison",
+    "name": "James Morrison",
+    "current_role": "Software Engineer II",
+    "current_company": "Startup (Series A)",
+    "years_experience": 3,
+    "summary": "Strong fundamentals, fast learner, built auth from scratch at current startup. Less experience with enterprise-scale systems or complex failure modes. High adaptability signal from rapid growth trajectory.",
+    "skills": [
+      "Node.js/TypeScript",
+      "React",
+      "PostgreSQL",
+      "Basic Redis",
+      "OAuth2 (implementation level)",
+      "AWS",
+      "Docker"
+    ],
+    "relevant_experience": [
+      {
+        "role": "Full-Stack Engineer",
+        "company": "TaskFlow (Series A startup)",
+        "duration": "2 years",
+        "highlights": [
+          "Built entire auth system from scratch (JWT + refresh tokens)",
+          "Solo backend engineer for first 8 months",
+          "Scaled from 0 to 10K users",
+          "On-call for everything — handled all incidents solo"
+        ]
+      },
+      {
+        "role": "Junior Engineer",
+        "company": "Accenture",
+        "duration": "1 year",
+        "highlights": [
+          "Enterprise Java development",
+          "Basic SAML integration work",
+          "Left to join startup"
+        ]
+      }
+    ],
+    "education": "BS Computer Science, Georgia Tech",
+    "incident_experience": true,
+    "saml_experience": false,
+    "enterprise_sso_experience": false
+  }
+]

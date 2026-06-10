@@ -1087,7 +1087,193 @@ The idea is locked. The biggest challenge is now 100% execution:
 2. Make generated challenges feel TAILORED (not generic interview questions)
 3. Make the demo FLOW (tight, emotional, no dead air)
 
-### Status: READY TO BUILD
+### Status: READY TO BUILD. No more planning. No more ideation. Build.
 
-No more planning. No more ideation. Build.
+---
+
+## 2026-06-09 — The Pitch (Final, Memorize This)
+
+### The Idea (For Teammates / Anyone)
+
+An AI-powered organizational knowledge audit.
+
+When a key employee is leaving, we ingest company signals (PRs, incidents, tickets, docs) and run 5 specialized agents:
+
+- **Evidence Agent** → finds raw signals
+- **Expertise Agent** → determines who actually knows what
+- **Risk Agent** → identifies undocumented/high-risk knowledge
+- **Skeptic Agent** → challenges conclusions and finds contradictions
+- **Question Agent** → generates targeted interview questions
+
+The agents debate in multiple rounds until they either reach confidence or identify unresolved questions.
+
+Those unresolved questions are handed to an **AI video interviewer** (Tavus). Instead of generic exit interview questions, it asks things like:
+
+> "You were the only reviewer on AUTH-4831. Why?"
+
+> "Four outages reference refresh token failures. What was the root cause?"
+
+The answers resolve uncertainty, fill documentation gaps, and reduce organizational knowledge risk.
+
+Finally, we convert captured knowledge into:
+1. A hiring specification tailored to the exact missing expertise
+2. Candidate gap analysis
+3. Adaptability/ramp-up assessments generated from real organizational knowledge gaps
+
+**Inference-time compute angle:** We use GPU budget for multi-agent investigation, debate, verification, and uncertainty reduction — not just a chatbot.
+
+---
+
+### How We Use 8 H100s (For Teammates / Judges)
+
+We're not using the GPUs to run one chatbot. We're using them to scale inference-time investigation.
+
+```
+vLLM serving Llama 3.3 70B:
+  tensor_parallel_size = 2  (2 GPUs per model replica)
+  data_parallel_size = 4    (4 replicas)
+  2 × 4 = 8 H100s fully utilized
+```
+
+Each replica handles different agent workloads in parallel:
+
+| Replica | Workload |
+|---------|----------|
+| 1 | Evidence Agent — scans PRs, incidents, tickets, docs, code ownership |
+| 2 | Expertise Agent — infers who knows what, assigns confidence levels |
+| 3 | Risk Agent — finds undocumented, stale, single-owner, high-criticality knowledge |
+| 4 | Skeptic Agent — challenges conclusions, searches for contradictory evidence |
+
+Then additional rounds:
+- Agents respond to Skeptic's objections
+- Unresolved claims trigger deeper investigation
+- Question Agent generates targeted interview questions
+- Final synthesis produces: risk score, open questions, hiring spec, candidate challenges
+
+**GPU budget is used for:**
+- Parallel multi-agent reasoning
+- More debate rounds
+- More evidence verification
+- Larger org-scale context
+- More hypotheses tested before the interview
+- Faster generation of targeted interview questions and hiring intelligence
+
+**The sentence to memorize:**
+> "We use 8 H100s as parallel inference lanes for multi-agent investigation, not as one giant chatbot."
+
+**Implementation:**
+```
+vLLM → Llama 3.3 70B → tensor_parallel=2 → data_parallel=4 → 8 H100s
+OpenAI-compatible endpoint → your app just calls one URL
+```
+
+---
+
+## 2026-06-09 — Final Mercor Positioning + Demo Time Split
+
+### The Core Distinction
+
+**Mercor:** Starts with the CANDIDATE → evaluates capability → matches to job
+**SuccessionAI:** Starts with KNOWLEDGE LEAVING → audits what's at risk → determines what's needed → evaluates candidates against that
+
+Different starting point. Different category.
+
+### If a Mercor Founder Challenges You
+
+> "Mercor starts with the candidate and tries to understand capability. We start with the organization's missing knowledge and determine what capability is actually required."
+
+### Where Our Moat Is
+
+| Uniqueness | Feature |
+|-----------|---------|
+| **Highly unique** | Multi-agent organizational knowledge audit |
+| **Highly unique** | Discovering undocumented expertise from signals |
+| **Highly unique** | Converting knowledge loss into hiring requirements |
+| **Highly unique** | Exit interview driven by evidence-based gaps |
+| **Somewhat unique** | Adaptability challenges generated from real org gaps |
+| **Not unique** | Resume scoring, AI interviewing, candidate ranking |
+
+### Demo Time Split (Final)
+
+**80% on audit + capture (what makes us different)**
+**20% on hiring (what proves business value)**
+
+The hiring side proves we're useful. The audit side proves we're novel.
+
+### Adaptability Claim (Be Careful)
+
+**Don't say:** "We can predict who learns fastest" (hard claim, pushback guaranteed)
+**Do say:** "We generate domain-specific reasoning challenges derived from identified knowledge gaps and evaluate candidate responses" (defendable)
+
+### What's Actually Unique About Us
+
+Not the hiring. Not the interview. Not the resume scoring.
+
+It's: **"What knowledge will disappear if Sarah leaves?"**
+
+And specifically:
+> "Sarah is the only person who knows: Redis failover edge cases, token refresh outage history, why AUTH-4831 exists."
+
+That's the sentence that makes judges pay attention.
+
+---
+
+## Decision 22: Why The Interview Exists (Judge Defense)
+
+**Date:** June 9, 2026
+
+**The question judges will ask:** "If the agents are so smart, why do you need the interview?"
+
+**The answer:** Agents can only reason over existing evidence (PRs, tickets, incidents, docs, code). They cannot see Sarah's brain. They are detectives — they gather evidence, form theories, challenge theories. But eventually they reach **known unknowns** that no amount of data analysis can resolve.
+
+**Example:** Agents find 4 outages involving refresh tokens. Risk Agent finds Redis correlation. Skeptic says "no proof of causation." Status: UNRESOLVED. The interview question becomes: "Sarah, why was Redis bypassed in AUTH-4831?" — because only Sarah can explain the causal reasoning that was never written down.
+
+**The pitch line:** "The interview is only triggered when the agents cannot resolve uncertainty from available evidence."
+
+**Why this is strong:** The goal isn't to replace Sarah. The goal is to identify exactly what ONLY Sarah can explain.
+
+---
+
+## Decision 23: Risk Scoring — Evidence, Not Magic Numbers
+
+**Date:** June 9, 2026
+
+**Problem:** A judge will ask "Why 94 and not 67?" if we show numeric scores.
+
+**Solution:** Use qualitative levels (LOW / MEDIUM / HIGH / CRITICAL) earned by evidence factors. Show the EXPLANATION, not the formula.
+
+**Display pattern:**
+```
+Knowledge Risk: HIGH
+Confidence: 91%
+
+Why HIGH?
+✓ Bus Factor: 1
+✓ Documentation Freshness: 18%
+✓ Incident Ownership: 92%
+✓ Business Criticality: High
+✓ Departure: Confirmed
+```
+
+After interview: `HIGH → MEDIUM` (not `94 → 31`)
+
+**Why:** Qualitative levels are easier to defend. Nobody argues "is it really 94 vs 88?" but they DO understand "this is CRITICAL because one person holds all the knowledge."
+
+---
+
+## Decision 24: Presentation = Story, Not Architecture
+
+**Date:** June 9, 2026
+
+**Most teams will fail by:** spending 3 minutes explaining agents, MCPs, vector databases, RAG, H100s, vLLM.
+
+**Our approach:** Tell a mini-movie. Start with "Sarah is leaving Friday." End with "Nobody panics." Never say "multi-agent reasoning framework" to judges.
+
+**Rule:** If judges care about Sarah, they'll care about everything after that. The best demos make people emotionally feel the problem before explaining the solution.
+
+**12 slides:** See SPEC.md for full structure. Key moments:
+- Slide 6: Agents arguing like a group chat
+- Slide 7: "We still don't know" (UNRESOLVED)
+- Slide 9: ⚡ CRITICAL KNOWLEDGE RECOVERED (money shot)
+- Slide 12: Without/With comparison (funny ending)
 

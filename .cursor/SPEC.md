@@ -12,9 +12,11 @@
 
 ## Core Demo Flow
 
-Sarah is leaving. System audits company data → finds what knowledge will disappear → interviews Sarah → captures missing knowledge → generates hiring spec → scores candidates.
+Sarah is leaving. System audits company data → agents debate to find what knowledge will disappear → unresolved questions become a live Tavus video interview → Sarah's answers feed back into agents → confidence scores update → generates hiring spec → scores candidates.
 
 **That's it. Do not build extra features.**
+
+**The loop:** H100s (audit + debate) → Tavus (video interview) → H100s (synthesize + hiring spec)
 
 ---
 
@@ -48,13 +50,14 @@ Sarah is leaving. System audits company data → finds what knowledge will disap
 - Evidence citations on every claim
 - Real-time — findings appear as agents reason
 
-### Screen 3: AI Exit Interview
+### Screen 3: AI Exit Interview (Tavus Video)
 
-- Tavus video interviewer
-- Targeted questions (from Agent 5's output)
-- Live transcript
-- "⚡ Critical insight captured" animation
+- Tavus video interviewer (live Mercor-style video call)
+- Questions generated from UNRESOLVED agent disputes — not generic HR questions
+- Live transcript with evidence citations
+- "⚡ Critical insight captured" animation when answer resolves a gap
 - Investigator tone — not HR tone
+- Answers feed BACK into agents → confidence scores update in real-time
 
 ### Screen 4: Knowledge Recovery
 
@@ -183,6 +186,107 @@ Round 4: Final synthesis — confirmed gaps, confidence scores, questions
 
 ---
 
+### Agent Deliberation Loop (The Real Innovation)
+
+The mistake: "Agent 1 says X, Agent 2 says Y, done." That's just parallel prompting.
+
+The actual architecture: **uncertainty resolution through debate.**
+
+```
+Round 1: Initial claims
+┌────────────────────────────────────────────────────────────────┐
+│ Evidence Agent:  "Sarah owns OAuth."           Confidence: 72% │
+│ Risk Agent:      "Bus factor = 1."             Confidence: 88% │
+│ Skeptic Agent:   "Disagree. Mike reviewed 40% of auth PRs."   │
+└────────────────────────────────────────────────────────────────┘
+
+Round 2: Challenge + investigation
+┌────────────────────────────────────────────────────────────────┐
+│ Evidence Agent (challenged):                                    │
+│   "Revising. Mike reviewed PRs but never authored code."       │
+│   "Mike has 0 commits in auth-service/src/"                    │
+│   Confidence: 72% → 83%                                        │
+│                                                                 │
+│ Skeptic Agent:                                                  │
+│   "Concede code authorship. But what about incidents?"         │
+│   "Mike appears in 0 auth incident responses."                 │
+└────────────────────────────────────────────────────────────────┘
+
+Round 3: Convergence OR escalation
+┌────────────────────────────────────────────────────────────────┐
+│ Risk Agent (updated):                                           │
+│   "Bus factor confirmed = 1. Mike is surface-level only."      │
+│   Confidence: 88% → 94%                                        │
+│                                                                 │
+│ UNRESOLVED:                                                     │
+│   "Can Mike operate auth independently in an incident?"        │
+│   Evidence: CONFLICTING                                         │
+│   → REQUIRES INTERVIEW TO RESOLVE                              │
+└────────────────────────────────────────────────────────────────┘
+
+Round 4: Question generation
+┌────────────────────────────────────────────────────────────────┐
+│ Question Agent:                                                  │
+│   "Sarah, has Mike ever handled an auth incident without you?" │
+│   "If you were unavailable during AUTH-431, who would know     │
+│    about the Redis bypass?"                                     │
+│   Source: UNRESOLVED DISPUTE between Evidence and Skeptic       │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**The loop continues until:**
+1. Confidence threshold reached (≥90% on all critical claims)
+2. Compute budget exhausted (max rounds hit)
+3. Interview required (agents can't resolve from data alone)
+
+**The interview is the TIE-BREAKER.** When agents disagree and evidence is conflicting, the unresolved questions become interview questions. Sarah's answers close the loop:
+
+```
+BEFORE INTERVIEW:
+  "Can Mike operate auth independently?"
+  Confidence: 43% | Status: UNRESOLVED
+
+Sarah answers: "Mike reviews auth PRs but has never been primary 
+incident responder. He wouldn't know about the Redis bypass."
+
+AFTER INTERVIEW:
+  "Can Mike operate auth independently?"  
+  Confidence: 91% | Status: RESOLVED (NO)
+  Bus Factor: CONFIRMED = 1
+```
+
+**Why this needs inference-time compute:**
+
+The product isn't computing an answer. It's computing:
+```
+Hypothesis generation
+       ↓
+  Challenges
+       ↓
+Evidence retrieval
+       ↓
+Counterarguments
+       ↓
+More hypotheses
+       ↓
+Uncertainty reduction
+       ↓
+(repeat until confident or interview needed)
+```
+
+More compute = more investigation rounds = more certainty = fewer unanswered questions.
+
+**The UI shows:**
+- Confidence scores updating in real-time
+- Open questions that haven't been resolved
+- Which claims are confirmed vs disputed vs unknown
+- When an interview question is generated, you can see WHY (which dispute triggered it)
+
+**The one-line framing:**
+> "The product isn't 'find knowledge.' The product is 'resolve uncertainty about organizational knowledge.'"
+
+---
+
 ## LLM Abstraction (GPU Adapter Layer)
 
 ```typescript
@@ -227,6 +331,63 @@ App doesn't know or care which one it's talking to.
 
 ## GPU Setup (Hackathon Day)
 
+### GPU Allocation: All 8 H100s → Reasoning Brain
+
+```
+GPUs 0–7: Multi-agent audit (ALL reasoning)
+
+vLLM → Llama 3.3 70B
+├── 2 GPUs per replica (tensor parallelism)
+├── 4 replicas (data parallelism)
+└── = 8 H100s total
+
+Powers:
+├── Evidence Agent
+├── Expertise Agent
+├── Risk Agent
+├── Skeptic Agent
+├── Question Agent
+├── Debate rounds (multi-round challenges)
+├── Unresolved-question generation
+├── Post-interview synthesis
+├── Hiring spec generation
+└── Candidate gap/adaptability assessment
+```
+
+### Video Interview: Tavus (External, No GPU Needed)
+
+The video interview is powered by Tavus — NOT our H100s. Tavus handles video avatar rendering externally. Our system only:
+1. Sends Tavus the generated questions
+2. Receives transcript/answer back
+3. Feeds answers back into agents
+4. Recalculates risk/confidence scores
+
+### The Full Loop
+
+```
+8 H100s (Phase 1)
+  → Multi-agent audit
+  → Debate rounds
+  → Unresolved questions identified
+        │
+        ▼
+Tavus (External)
+  → Video interview with departing employee
+  → Employee answers unresolved questions
+  → Transcript captured
+        │
+        ▼
+8 H100s (Phase 2)
+  → Synthesize interview answers
+  → Update risk scores + confidence
+  → Generate hiring spec
+  → Score candidates
+```
+
+**Tavus = interview face. H100s = reasoning brain.**
+
+### vLLM Command
+
 ```bash
 docker run --gpus all \
   --ipc=host \
@@ -252,100 +413,215 @@ docker run --gpus all \
 
 ## Why 8 GPUs? (Judge Answer)
 
-> "We are not using GPUs for one chatbot. We use them to scale inference-time investigation. Each H100 lane runs independent auditors, skeptics, and question generators over the same org history. More inference budget means more hypotheses tested, more contradictions caught, and more undocumented knowledge gaps discovered."
+> "The 8 H100s are used for the multi-agent reasoning audit, not for rendering the video. The video interview is powered by Tavus. The agents identify unresolved questions, Tavus delivers them in a live video interview, and then the answers are fed back into the reasoning system to update the knowledge-risk score. More compute = more debate rounds = more certainty = fewer unanswered questions."
 
 ---
 
-## 7-Day Build Plan
-
-### Day 1: Story + Dataset
-- Finalize the Sarah/auth/Redis/OAuth incident universe
-- Create realistic JSON data files (PRs, incidents, Jira, docs)
-- Make it feel like a real company
-
-### Day 2: UI Skeleton
-- Build all 5 screens with fake/hardcoded states
-- Make it beautiful BEFORE making it real
-- shadcn/ui components, Framer Motion transitions
-
-### Day 3: Agent Backend
-- Build all 5 agents with structured JSON output
-- Build the debate loop (rounds 1-4)
-- Test with Claude API
-
-### Day 4: Connect Audit → UI
-- Stream agent findings to frontend
-- Show live cards sliding in
-- Highlight disagreements
-- Show evidence citations
-
-### Day 5: Tavus Interview
-- Connect Tavus to interview flow
-- Feed questions from Agent 5
-- Show live transcript + insight captures
-- Even ONE great targeted question is enough
-
-### Day 6: Hiring Spec + Resume Scoring
-- Build hiring spec generation from confirmed gaps
-- Build candidate scoring (resume → gap overlap)
-- This is the money screen. Polish it.
-
-### Day 7: Polish + Pitch
-- Animations, transitions, loading states
-- Practice demo 3x with timer
-- No new features
-- Record fallback video
+> **Build plan lives in `PLAN.md`.** This spec covers WHAT to build. The plan covers WHEN.
 
 ---
 
-## Presentation Structure
+## Presentation Structure (12 Slides — Tell A Story, Not Architecture)
+
+**Most teams will spend 3 minutes explaining agents, MCPs, vector databases, RAG, H100s, vLLM. Judges won't remember any of that. They'll remember a story.**
 
 ### Slide 1
 **"Sarah is leaving Friday."**
 
 Tiny text: *"So is everything she knows."*
 
-### Slide 2
-Show company chaos.
+Nothing else. Pause. Let it sit.
 
-"Docs say 'TODO.' Jira says 'ask Sarah.' Slack says 'Sarah fixed this last time.'"
+### Slide 2
+Show chaos.
+
+```
+Confluence:    "TODO"
+Jira:          "Ask Sarah"
+Runbook:       "Outdated"
+Slack:         "Sarah fixed this last time"
+```
+
+Then: *"Every company has a Sarah."*
 
 ### Slide 3
-Your product.
+The relatable conversation:
 
-**"We find what your company is about to forget."**
+> Manager: "Can someone explain why authentication keeps failing?"
+> Team: "Sarah knew."
+> Manager: "Can we ask her?"
+> Team: "She left two weeks ago."
+
+(Gets a laugh.)
 
 ### Slide 4
-**Live Demo.** (No talking too much. Just show.)
+The Big Reveal. Don't say "AI." Don't say "agents."
+
+Say: **"We don't know what knowledge we're about to lose."**
+
+Then: *"So we built an organizational knowledge audit."*
 
 ### Slide 5
-Before/after.
+Run the audit. Show:
 
-Knowledge coverage: **34% → 87%**
-Hiring clarity: generic JD → exact missing expertise
+```
+Knowledge Risk: HIGH
+
+Auth Domain
+├── Bus Factor: 1
+├── Documentation: 18%
+├── Incident Ownership: 92%
+└── Business Criticality: High
+```
+
+Then: *"We think Sarah is the only person who understands authentication."*
 
 ### Slide 6
-Why now.
+The fun part. Show agents ARGUING. Not agreeing.
 
-"Inference-time compute lets us audit an organization like a team of paranoid senior engineers."
+```
+Evidence Agent:   "Sarah owns auth."
+Skeptic Agent:    "Mike reviewed 40% of auth PRs."
+Evidence Agent:   "Mike never handled incidents."
+Risk Agent:       "Bus factor remains 1."
+```
+
+Animate like a group chat. This will be memorable.
 
 ### Slide 7
-Mercor angle.
+The "Oh Shit" Moment. Big red box:
 
-"We don't just ask who is qualified. We define qualified from the actual knowledge gaps."
+```
+⚠️ UNRESOLVED QUESTION
+
+Agents can't determine:
+"Why does authentication fail during Redis outages?"
+```
+
+Then say: *"We searched every ticket. Every incident. Every document. We still don't know."*
+
+Pause.
+
+### Slide 8
+Video Interview. Tavus appears. Mercor-style.
+
+The AI asks: *"Sarah, why was Redis bypassed in AUTH-4831?"*
+
+Context shown: *"Evidence Agent found 4 outages. Risk Agent found Redis correlation. Skeptic says no proof of causation."*
+
+Sarah answers.
+
+### Slide 9
+Huge animation:
+
+```
+⚡ CRITICAL KNOWLEDGE RECOVERED
+
+"Redis failover causes silent token expiration.
+ No retry logic exists."
+
+Documentation: NONE → CAPTURED
+```
+
+This is the money shot.
+
+### Slide 10
+Knowledge Risk animates:
+
+```
+HIGH → LOW
+```
+
+Everyone understands that.
+
+### Slide 11
+Hiring Intelligence.
+
+*"If Sarah leaves tomorrow… who should we hire?"*
+
+Show side-by-side:
+- Generic JD (vague, copied from Google)
+- AI-Generated Hiring Spec (hyper-specific to the actual knowledge gaps)
+
+### Slide 12
+Funny ending.
+
+```
+Without SuccessionAI:          With SuccessionAI:
+Sarah leaves                   Sarah leaves
+     ↓                              ↓
+  Chaos                        Documentation
+                                    ↓
+                               Hiring Plan
+                                    ↓
+                               Nobody panics
+```
+
+---
+
+## Why The Interview Exists (Critical — Judges Will Ask)
+
+**"If the agents are so smart, why not just use them for everything?"**
+
+The answer: **Agents can only reason over existing evidence.** They can see PRs, tickets, incidents, docs, code. But they cannot see Sarah's brain.
+
+**Example:**
+
+The agents find:
+- Incident #1: Refresh tokens failing
+- Incident #2: Refresh tokens failing
+- Incident #3: Refresh tokens failing
+- PR-4831: Redis bypass added
+
+They can infer: *"Something about Redis seems related."*
+
+But they CANNOT know: *"Redis packet loss caused stale token state, so I bypassed Redis and used the database directly"* — unless that was written somewhere.
+
+**The agents are detectives.** They gather evidence. They form theories. They challenge theories. But eventually they reach **known unknowns** — that's where the interview comes in.
+
+The interview is NOT: "Tell me what you know."
+The interview IS: "We found this contradiction. Explain it."
+
+**The demo flow:**
+```
+Data → Agent investigation → Agent disagreement → Unresolved uncertainty → Interview → Knowledge capture
+```
+
+NOT:
+```
+Data → Interview
+```
+
+**The pitch line:**
+> "The interview is only triggered when the agents cannot resolve uncertainty from available evidence."
+
+**Why this matters:**
+- The goal isn't to replace Sarah
+- The goal is to identify exactly what ONLY Sarah can explain
+- That's a much more compelling product than a generic AI exit interview
 
 ---
 
 ## Demo Script (What To Say)
 
 **Open with:**
+> "Sarah is leaving Friday."
+
+(Pause.)
+
+**Show the problem:**
 > "Every company has a Sarah. The person who knows why the system works, why it breaks, and why the docs are lying."
 
-**Then show the product:**
-> "We audit the org, identify the undocumented knowledge Sarah holds, interview her with questions generated from evidence, and convert that into hiring intelligence."
+**Show the product:**
+> "We audit the org. Five AI agents investigate, debate, and challenge each other. When they can't resolve something from evidence alone — they interview the expert."
+
+**The reveal:**
+> "Four outages. Same code path. Zero documentation. Three agents disagree on why. So we asked Sarah."
 
 **End with:**
 > "We turn institutional memory into an executable hiring spec."
+
+**RULE: Never start with architecture. Start with the story.**
 
 ---
 
@@ -375,49 +651,99 @@ Hackathon winners are clean demos, not giant apps. Your goal:
 
 ## Three Execution Rules
 
-### 1. Make the Risk Score Concrete
+### 1. Risk Scoring: Evidence, Not Magic Numbers
 
-Don't show: `Knowledge Risk Score: 94` (feels arbitrary)
+Don't show: `Knowledge Risk Score: 94` (judges ask "why 94 and not 67?")
 
-Show the breakdown that EARNS the number:
+**Show risk factors first. Derive the score from evidence.**
+
+The agents discover FACTS:
 
 ```
-Auth Domain
-├── Bus Factor: 1 (only Sarah)
-├── Documentation Coverage: 18%
-├── Incident Ownership: 92% (Sarah led)
-├── Code Ownership: 87% (Sarah authored)
-└── Departure Risk: CONFIRMED
+Authentication Domain
 
-Knowledge Risk: 94/100
+Primary expert:       Sarah Chen
+Other contributors:   Mike (surface), Jenny (none)
+Documentation:        18% fresh
+Incident ownership:   92% Sarah
+Code ownership:       87% Sarah
+Bus factor:           1
+Departure:            CONFIRMED
 ```
 
-Now the number feels earned. Judges trust it.
+Nobody argues with those. They're evidence.
+
+**Then derive risk from two dimensions:**
+
+```
+Knowledge Loss Probability (how likely to disappear?)
+├── Knowledge concentration:  90%
+├── Documentation quality:    20%
+├── Cross-training level:     15%
+└── Departure certainty:      100%
+= HIGH
+
+Impact (how bad if it disappears?)
+├── Business criticality:     100% (auth = revenue-blocking)
+├── Incident frequency:       High (4 P0s in 6 months)
+├── Dependency count:         High (every service uses auth)
+└── Customer impact:          Direct (logouts = churn)
+= CRITICAL
+```
+
+**Final display (what the UI shows):**
+
+```
+Knowledge Risk: HIGH
+
+Confidence: 91%
+
+Contributing Factors:
+• Bus Factor: 1
+• Documentation Freshness: 18%
+• Incident Ownership: 92%
+• Business Criticality: High
+
+Why HIGH?
+✓ Sarah owns 87% of auth code
+✓ Sarah led 92% of incidents
+✓ Documentation is mostly stale
+✓ Auth service is business critical
+✓ Departure confirmed
+```
+
+**After interview, animate:**
+```
+Knowledge Risk: HIGH → MEDIUM
+```
+
+Not `94 → 31`. Use qualitative levels (LOW / MEDIUM / HIGH / CRITICAL). Much easier to defend to judges.
 
 ### 2. One "Holy Shit" Moment
 
 The demo needs ONE moment judges remember after seeing 20 teams.
 
-**The moment:**
+**The setup (agent debate):**
+```
+Evidence Agent:   "4 outages involve refresh token failures."
+Risk Agent:       "Redis appears correlated."
+Skeptic Agent:    "No evidence proving causation."
+Status:           ⚠️ UNRESOLVED
+```
 
-Agent finds:
-- 4 outages
-- Same code path
-- 0 documentation
+**The interview question (targeted from dispute):**
+> "Sarah, why was Redis bypassed in AUTH-4831?"
 
-Interviewer asks:
-> "Four outages reference refresh token failures. Why?"
+**Sarah answers.**
 
-Sarah answers.
-
-UI flashes:
-
+**UI flashes:**
 ```
 ⚡ CRITICAL KNOWLEDGE RECOVERED
+
 "Redis failover causes silent token expiration.
  No retry logic exists. 3 production outages from this."
- 
- Documentation status: NONE → CAPTURED
+
+Documentation: NONE → CAPTURED
 ```
 
 That's the moment. Build everything to set up THIS reveal.
@@ -445,11 +771,40 @@ Time allocation:
 
 ## Scoring Philosophy (Critical)
 
+### Don't Use Magic Numbers. Use Evidence + Qualitative Levels.
+
+The score should be SECONDARY. The real output is:
+
+```
+CRITICAL KNOWLEDGE GAP
+
+Domain:       Authentication
+Reason:       Only Sarah understands Redis failover behavior
+Evidence:
+  - Authored 82% of related PRs
+  - Led 4 incidents
+  - No fresh documentation
+Confidence:   91%
+Status:       UNRESOLVED → REQUIRES INTERVIEW
+```
+
+That's much more compelling than a magic number.
+
+### Risk Levels (not 0-100)
+
+Use: `LOW | MEDIUM | HIGH | CRITICAL`
+
+Each level is EARNED by evidence:
+- CRITICAL = bus factor 1 + no docs + business critical + departure confirmed
+- HIGH = bus factor 1-2 + stale docs + high criticality
+- MEDIUM = some concentration + partial docs
+- LOW = distributed knowledge + fresh docs
+
 ### Expertise Score: Evidence, Not Activity
 
 PR count is garbage. 500 typo-fix PRs mean nothing. 10 PRs that saved the company mean everything.
 
-**Score by evidence quality:**
+**Weigh by evidence quality:**
 
 ```
 Auth Domain — Sarah Chen
@@ -460,7 +815,7 @@ Design decisions:          15%  (authored ADRs, drove architecture)
 PR review depth:           15%  (substantive comments, not just "LGTM")
 Documentation authorship:  10%  (fresh docs only — stale doesn't count)
 
-Expertise Confidence: 94/100
+Expertise Confidence: HIGH (91%)
 ```
 
 ### Documentation Freshness
@@ -478,17 +833,27 @@ Coverage: 80%
 Agents say: "Documentation exists but is 18 months stale and contradicts current code."
 ```
 
-### Risk Formula
+### Risk Derivation
 
 ```
-Risk Score = Knowledge Concentration × Business Criticality × Documentation Gap × Departure Risk
+Knowledge Risk = f(Knowledge Loss Probability, Business Impact)
+
+Knowledge Loss Probability:
+  - Knowledge concentration (bus factor)
+  - Documentation quality (freshness-weighted)
+  - Cross-training level
+  - Departure certainty
+
+Business Impact:
+  - Incident frequency + severity
+  - Revenue/user impact
+  - Dependency graph (what breaks if this breaks)
+  - On-call pages
 ```
 
-Let the AI infer business criticality from:
-- Incident frequency + severity
-- Revenue/user impact
-- Dependency graph (what breaks if this breaks)
-- On-call pages
+Don't show the formula to judges. Show the EXPLANATION:
+
+> "Knowledge Risk is HIGH because Sarah owns 87% of auth code, led 92% of incidents, documentation is mostly stale, auth is business critical, and her departure is confirmed."
 
 ### Candidate Evaluation: Gap Analysis, Not Ranking
 
@@ -532,9 +897,9 @@ Don't just measure what they already know. Measure how fast they can learn.
 Candidate: Alex Park
 
 Knowledge Gap Coverage:        82%
-Adaptability:                  94%
-Incident Reasoning:            91%
-Knowledge Acquisition Speed:   88%
+Adaptability:                  HIGH
+Incident Reasoning:            HIGH
+Knowledge Acquisition Speed:   HIGH
 
 Expected Ramp Time:            3 weeks
 ```
