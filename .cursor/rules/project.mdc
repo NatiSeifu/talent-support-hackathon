@@ -33,6 +33,10 @@ that expertise into hiring and onboarding intelligence.
 
 ## Read .cursor/SPEC.md for full implementation details.
 
+## Read .cursor/EVIDENCE_MODEL.md for canonical data-source and evidence semantics.
+
+## Read .cursor/evidence-schemas/ for detailed source-family schema decisions.
+
 ## Coding Rules
 
 - Use strict TypeScript for frontend code and typed Python for backend code.
