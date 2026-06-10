@@ -235,6 +235,11 @@ export default function AgentAudit({ onNavigate }: Props) {
                   />
                 </div>
               )}
+              {!lastMsg?.confidence && hasSpoken && (
+                <div className="mt-1 h-1 rounded-full bg-zinc-100 overflow-hidden">
+                  <div className="h-full rounded-full bg-zinc-300 w-full" />
+                </div>
+              )}
             </div>
           );
         })}
@@ -265,12 +270,14 @@ export default function AgentAudit({ onNavigate }: Props) {
                       <span className={`text-xs font-semibold ${style.name}`}>{msg.agent}</span>
                       <span className="text-[10px] text-[var(--color-text-muted)]">R{msg.round}</span>
                       {msg.tag && (
-                        <span className={`text-[10px] font-medium ${
-                          msg.tag === "CRITICAL" ? "text-[var(--color-danger)]" :
-                          msg.tag === "CHALLENGE" || msg.tag === "UNRESOLVED" ? "text-[var(--color-warning)]" :
-                          "text-[var(--color-text-muted)]"
+                        <span className={`text-[10px] font-medium tracking-wide ${
+                          msg.tag === "CRITICAL" ? "text-zinc-900" :
+                          msg.tag === "UNRESOLVED" ? "text-zinc-600" :
+                          msg.tag === "CHALLENGE" ? "text-zinc-500" :
+                          msg.tag === "INTERVIEW" ? "text-zinc-500" :
+                          "text-zinc-400"
                         }`}>
-                          {msg.tag}
+                          {msg.tag === "CRITICAL" && "● "}{msg.tag}
                         </span>
                       )}
                     </div>
