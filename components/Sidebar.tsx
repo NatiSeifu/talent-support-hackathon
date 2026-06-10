@@ -50,12 +50,9 @@ export default function Sidebar({
       </nav>
 
       <div className="mt-auto border-t border-[var(--color-border)] pt-4 px-2">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-red-400 animate-[pulse-subtle_2s_ease-in-out_infinite]" />
-          <span className="text-xs text-[var(--color-text-secondary)]">
-            Sarah Chen — Departing
-          </span>
-        </div>
+        <span className="text-[11px] text-[var(--color-text-muted)]">
+          Stratify · Platform Eng
+        </span>
       </div>
     </aside>
   );
