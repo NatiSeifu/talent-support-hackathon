@@ -23,11 +23,14 @@ Sarah is leaving. System audits company data → agents debate to find what know
 ## Tech Stack
 
 - **Frontend:** Next.js, Tailwind, shadcn/ui, Framer Motion, React Flow
-- **Backend:** Next.js API routes, one LLM endpoint (OpenAI-compatible)
+- **Backend:** Python, FastAPI, Pydantic, deterministic agent orchestrator
+- **Frontend API layer:** Thin Next.js proxy/client using the FastAPI OpenAPI contract
 - **Data:** JSON files (no real Jira/GitHub integration)
 - **Video Interview:** Tavus (already integrated)
-- **LLM (dev):** Claude API via OpenAI-compatible wrapper
+- **LLM (local):** Quantized Qwen3 8B through Ollama
+- **LLM (dev/fallback):** Hosted model through the same OpenAI-compatible adapter
 - **LLM (hackathon):** vLLM serving Llama 3.3 70B on 8 H100s
+- **Evaluation:** Versioned cases and graders run unchanged across all model endpoints
 - **Design:** Light mode only. Linear + Vercel + Stripe + enterprise risk dashboard.
 
 ---
@@ -76,7 +79,10 @@ Sarah is leaving. System audits company data → agents debate to find what know
 
 ---
 
-## Backend Routes
+## Backend API
+
+FastAPI owns the canonical routes, schemas, orchestration state, and SSE stream.
+Next.js routes may proxy these endpoints when needed by the browser or deployment.
 
 ```
 /api/audit/run        → kicks off multi-agent audit
@@ -111,7 +117,13 @@ No real Jira/GitHub integration. But support uploads to look real:
 
 ## The 5 Agents
 
-One LLM, five prompts. All call the same endpoint.
+One replaceable LLM endpoint, five constrained roles. Each role is defined by its
+prompt, allowed tools, Pydantic input/output schemas, supplied context, and execution
+limits. All roles may share one model instance.
+
+The agents exchange a structured `AuditState`; they do not pass an unbounded shared
+chat transcript. Claims cite evidence IDs, challenges cite claim IDs, and unresolved
+claims become interview questions.
 
 ### Agent 1: Evidence Agent
 
@@ -287,35 +299,42 @@ More compute = more investigation rounds = more certainty = fewer unanswered que
 
 ---
 
-## LLM Abstraction (GPU Adapter Layer)
+## Python Model Adapter
 
-```typescript
-// lib/llm.ts
-import OpenAI from "openai";
+The FastAPI backend owns the single provider-neutral model interface. Agent modules
+depend on this adapter and never import Ollama, OpenAI, Anthropic, or vLLM-specific
+clients directly.
 
-const client = new OpenAI({
-  apiKey: process.env.LLM_API_KEY || "local-key",
-  baseURL: process.env.LLM_BASE_URL,
-});
+```python
+# backend/app/llm.py
+from openai import AsyncOpenAI
 
-export async function runLLM(
-  messages: { role: string; content: string }[],
-  temperature = 0.2
-) {
-  const res = await client.chat.completions.create({
-    model: process.env.LLM_MODEL || "local-model",
-    messages,
-    temperature,
-  });
-  return res.choices[0]?.message?.content ?? "";
-}
+client = AsyncOpenAI(
+    api_key=settings.llm_api_key,
+    base_url=settings.llm_base_url,
+)
+
+async def run_llm(messages: list[dict[str, str]]) -> str:
+    response = await client.chat.completions.create(
+        model=settings.llm_model,
+        messages=messages,
+        temperature=0.2,
+    )
+    return response.choices[0].message.content or ""
 ```
 
-**Before hackathon:**
+**Local harness:**
 ```env
-LLM_BASE_URL=https://api.anthropic.com/v1  (or OpenAI-compatible wrapper)
-LLM_API_KEY=sk-ant-...
-LLM_MODEL=claude-sonnet-4-20250514
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_API_KEY=ollama
+LLM_MODEL=qwen3:8b
+```
+
+**Hosted development/fallback:**
+```env
+LLM_BASE_URL=<openai-compatible-provider-url>
+LLM_API_KEY=<provider-key>
+LLM_MODEL=<hosted-model>
 ```
 
 **At hackathon:**
@@ -326,6 +345,31 @@ LLM_MODEL=meta-llama/Llama-3.3-70B-Instruct
 ```
 
 App doesn't know or care which one it's talking to.
+
+Locally, all roles share one quantized model instance. Role-level evals run
+independently and the complete workflow runs sequentially. The GPU environment uses
+the same agent code and evaluation cases, then adds parallel requests and replicas.
+
+## Evaluation Contract
+
+Maintain 15-30 versioned scenarios across evidence, expertise, risk, skepticism,
+question generation, synthesis, and candidate gap analysis. Each case defines
+required facts, forbidden claims, valid evidence IDs, and expected schema behavior.
+
+Record:
+
+- Required-fact recall
+- Unsupported-claim rate
+- Evidence citation accuracy
+- Schema validity
+- Tool-call correctness
+- Question specificity
+- Latency
+- `pass@1` and `pass@3`
+
+Prefer deterministic graders. Use model or human grading only for criteria that
+cannot be expressed reliably in code. The harness and graders must not change when
+switching from Ollama to a hosted model or vLLM.
 
 ---
 
@@ -915,5 +959,3 @@ Judges trust systems that explain reasoning. Never pretend omniscience.
 - Show which evidence supports each score
 - Show where the system is uncertain
 - Let the Skeptic Agent be visible — "this claim has weak evidence"
-
-

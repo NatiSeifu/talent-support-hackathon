@@ -11,29 +11,41 @@ decisions evidence-based.
 
 ## Technical Context
 
-- Framework: Next.js App Router with TypeScript
+- Frontend: Next.js App Router with TypeScript
 - UI: React, Tailwind CSS, React Flow, D3, Framer Motion
-- Agents: Anthropic/OpenAI SDKs with deterministic local tools
+- Backend: Python, FastAPI, and Pydantic
+- Agents: provider-neutral OpenAI-compatible adapter with deterministic local tools
 - Data: synthetic JSON under `data/`
-- Core domain logic: `lib/expertise.ts`
-- Agent orchestration: `lib/agents/`
+- Current prototype domain logic: `lib/expertise.ts`
+- Target agent orchestration: Python backend with shared `AuditState`
+- Local model: quantized Qwen3 8B through Ollama
+- GPU model: vLLM-served model selected by the evaluation harness
 
 ## Agent Responsibilities
 
-### Knowledge Mapper
+### Evidence Agent
 
-Find experts, explain the supporting signals, map system ownership, and identify
-single points of failure.
+Retrieve relevant facts from PRs, incidents, tickets, docs, and code ownership.
 
-### Knowledge Capturer
+### Expertise Agent
 
-Conduct focused interviews that extract architecture decisions, failure modes,
-incident procedures, edge cases, and undocumented operational knowledge.
+Infer who knows what and cite the supporting evidence.
 
-### Talent Strategist
+### Risk Agent
 
-Turn uncovered gaps into internal successor plans, cross-training priorities,
-hiring specifications, interview assessments, and onboarding plans.
+Identify undocumented, critical, single-owner knowledge.
+
+### Skeptic Agent
+
+Challenge unsupported claims, inflated confidence, and alternative explanations.
+
+### Question Agent
+
+Turn unresolved claims into focused knowledge-capture questions.
+
+### Synthesis Agent
+
+Optionally convert resolved audit state into hiring and workforce outputs.
 
 ## Development Guidance
 
@@ -41,6 +53,10 @@ hiring specifications, interview assessments, and onboarding plans.
 - Keep important calculations deterministic and testable.
 - Require evidence for claims about expertise or risk.
 - Use structured model outputs for data consumed by application logic.
+- Keep Python as the source of truth for backend schemas and publish OpenAPI.
+- Keep orchestration deterministic; the LLM reasons within constrained roles.
+- Run role evals independently and the full local workflow sequentially.
+- Keep the evaluation harness unchanged when switching model providers.
 - Validate external input and avoid returning internal errors to clients.
 - Keep secrets server-side and read them from environment variables.
 - Maintain a demo-safe fallback for every external AI or video provider.
@@ -52,6 +68,7 @@ Before completing a code change:
 
 ```bash
 npm run build
+# Run the Python backend tests/evals when the backend is affected.
 ```
 
 Exercise affected API routes or UI flows when practical.

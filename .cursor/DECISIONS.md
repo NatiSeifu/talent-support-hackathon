@@ -1277,3 +1277,117 @@ After interview: `HIGH → MEDIUM` (not `94 → 31`)
 - Slide 9: ⚡ CRITICAL KNOWLEDGE RECOVERED (money shot)
 - Slide 12: Without/With comparison (funny ending)
 
+---
+
+## Decision 25: Python Agent Backend, Provider-Neutral Evals, and Local-First Development
+
+**Date:** June 10, 2026
+
+### Context
+
+The product needs a five-agent audit, deterministic orchestration, repeatable model
+evaluation, and an easy path from local development to vLLM. The existing prototype
+implements agent calls inside Next.js, but the team is more productive in Python and
+the Python ecosystem is a better fit for evaluation, Hugging Face, vLLM, and possible
+future training work.
+
+### Decision
+
+Use two application layers:
+
+```text
+Next.js / TypeScript
+  UI, browser state, Tavus integration, thin API proxy
+            |
+            | HTTP + SSE
+            v
+Python / FastAPI
+  agent definitions, tools, AuditState, orchestration, evaluation harness
+            |
+            | OpenAI-compatible API
+            v
+Ollama locally / hosted API in development / vLLM on H100s
+```
+
+Python is the source of truth for agent schemas and backend API contracts. Use
+Pydantic for validation and expose OpenAPI; generate or derive TypeScript client
+types from that contract rather than maintaining duplicate handwritten schemas.
+
+### What Defines an Agent
+
+All roles may use the same underlying model. A role is defined by:
+
+- System prompt and responsibility
+- Allowed tools
+- Input and output Pydantic schemas
+- Context supplied by the orchestrator
+- Iteration, timeout, and token limits
+
+The initial workflow is:
+
+```text
+Evidence
+  -> Expertise + Risk
+  -> Skeptic
+  -> challenged agents revise or concede
+  -> Question
+  -> optional Synthesis
+```
+
+The orchestrator is deterministic Python code, not another autonomous LLM. It owns
+sequencing, parallelism, retries, schema validation, state updates, stopping
+conditions, and fallbacks. Model calls perform the fuzzy reasoning within each role.
+
+Agents exchange a structured shared `AuditState`, not an ever-growing chat transcript.
+Claims reference evidence IDs; challenges reference claim IDs; unresolved claims
+become targeted interview questions. The loop stops when confidence is sufficient,
+the round budget is exhausted, or human input is required.
+
+### Model Strategy
+
+- Local harness model: quantized Qwen3 8B through Ollama; use Qwen3 4B if needed.
+- Hackathon candidate: Llama 3.3 70B served through vLLM.
+- Comparison candidate: Qwen3 32B.
+- One OpenAI-compatible provider interface must support Ollama, hosted APIs, and vLLM.
+- Model selection is determined by evaluation results, not parameter count alone.
+
+Local development does not require five model replicas. Run role evaluations
+independently and run the complete workflow sequentially. Parallel throughput and
+multi-replica behavior are GPU-environment tests.
+
+### Evaluation Strategy
+
+Start with 15-30 representative cases covering:
+
+- Evidence extraction
+- Expertise inference
+- Risk identification
+- Skeptic challenges
+- Interview-question generation
+- Final synthesis
+- Candidate gap analysis
+
+Track required-fact recall, unsupported-claim rate, citation accuracy, schema
+validity, tool-call correctness, question specificity, latency, `pass@1`, and
+`pass@3`. Use deterministic graders wherever possible and reserve model or human
+grading for genuinely qualitative criteria.
+
+The immediate purpose of the local model is to prove that the harness detects and
+reports failures correctly. Final model quality is evaluated later by running the
+same cases and graders against stronger endpoints without changing the harness.
+
+### Infrastructure Preparation
+
+- Build and debug the workflow locally first.
+- Rent 2x H100 for focused integration sessions rather than 48 continuous hours.
+- Validate vLLM startup, model download, structured outputs, tool calls, latency, and
+  the complete application path.
+- Use 8x H100 only for final concurrency tuning and clean-machine rehearsal.
+- Keep a hosted-model fallback for the live demo.
+
+### Supersedes
+
+This decision supersedes documentation that places agent orchestration in
+`lib/agents/` or requires agents to call `lib/llm.ts`. Existing TypeScript agent
+routes are transitional prototype code and will be replaced or reduced to thin
+proxies as the Python backend is introduced.

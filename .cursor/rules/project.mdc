@@ -23,9 +23,11 @@ that expertise into hiring and onboarding intelligence.
 
 ## Architecture
 
-- One LLM endpoint (OpenAI-compatible). Claude in dev, vLLM on GPU day.
+- Next.js/TypeScript owns the UI, browser state, Tavus integration, and thin API proxy.
+- Python/FastAPI owns agent definitions, tools, orchestration, schemas, and evals.
+- One OpenAI-compatible model adapter supports Ollama locally, hosted fallback, and vLLM on GPU day.
 - Five agents: Evidence, Expertise, Risk, Skeptic, Question.
-- Agents debate in rounds — findings slide in, disagreements highlighted.
+- A deterministic Python orchestrator controls debate rounds and shared `AuditState`.
 - Tavus for video interviewer. No custom avatar infra.
 - JSON data files (no real Jira/GitHub integration for demo).
 
@@ -33,18 +35,21 @@ that expertise into hiring and onboarding intelligence.
 
 ## Coding Rules
 
-- Use strict TypeScript and descriptive names.
-- Follow existing Next.js App Router patterns.
-- Validate API input with Zod.
-- All agents call `lib/llm.ts` — never call Claude directly.
-- Agent outputs are structured JSON (Zod-validated).
+- Use strict TypeScript for frontend code and typed Python for backend code.
+- Follow existing Next.js App Router patterns for UI and proxy routes.
+- Validate Python API and agent data with Pydantic.
+- Python is authoritative for backend schemas; expose OpenAPI and derive TypeScript client types.
+- All agents call the Python provider adapter, never a provider SDK directly.
+- Agent outputs are structured and Pydantic-validated.
+- Keep orchestration deterministic: code owns routing, retries, stopping conditions, and state updates.
+- Keep eval cases and graders provider-neutral so the same suite runs against Ollama, hosted APIs, and vLLM.
 - Show confidence levels and evidence citations on every claim.
 - Never claim omniscience — expose uncertainty.
 - Never say "best candidate" — say "gap coverage" (factual).
 - Use shadcn/ui components. Light mode only.
 - Design: Linear + Vercel + Stripe aesthetic. Minimal, professional.
 - Keep the demo path fast, stable, and easy to present live.
-- Run `npm run build` after meaningful changes.
+- Run frontend and Python verification after meaningful changes.
 
 ## Do NOT Build
 

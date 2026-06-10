@@ -11,13 +11,19 @@ An AI-powered organizational knowledge audit. When a key engineer is leaving, we
 ```
 Frontend (Next.js + Tailwind + shadcn/ui + Framer Motion)
     │
-    ▼
-API Layer (Next.js API routes)
+    │ HTTP + SSE
     │
     ▼
-LLM Abstraction (lib/llm.ts → OpenAI-compatible endpoint)
+Agent Backend (Python + FastAPI + Pydantic)
     │
-    ├── Dev: Claude API / OpenAI
+    ├── Deterministic orchestrator + shared AuditState
+    ├── Agent tools, schemas, retries, and evaluation harness
+    │
+    ▼
+LLM Provider Adapter (OpenAI-compatible endpoint)
+    │
+    ├── Local: Ollama (quantized Qwen3 8B)
+    ├── Dev/fallback: hosted model API
     └── Hackathon: vLLM on 8 H100s (Llama 3.3 70B)
 
 Video Interview: Tavus (external — no GPU needed from us)
@@ -53,7 +59,9 @@ The Full Loop:
 - [x] `data/docs.json` — Auth critically underdocumented
 - [x] `data/candidates.json` — 3 candidates with different profiles
 - [ ] `data/prs.json` — 60-80 PRs showing Sarah's dominance
-- [x] `lib/llm.ts` — OpenAI-compatible LLM abstraction
+- [ ] Python OpenAI-compatible model adapter
+- [ ] FastAPI health endpoint and OpenAPI contract
+- [ ] Initial evaluation cases and deterministic graders
 - [x] `.env.example` — Updated with LLM_BASE_URL config
 
 ### Day 2 (June 10) — UI Skeleton
@@ -67,16 +75,20 @@ The Full Loop:
 - [ ] All screens with FAKE data first — make it beautiful before real
 
 ### Day 3 (June 11) — Agent Backend
+- [ ] Create Python/FastAPI backend with Pydantic schemas
+- [ ] Define shared `AuditState` with evidence, claims, challenges, and questions
 - [ ] Agent 1: Evidence Agent (prompt + structured JSON output)
 - [ ] Agent 2: Expertise Agent (confidence scoring)
 - [ ] Agent 3: Risk Agent (bus factor, documentation gap, criticality)
 - [ ] Agent 4: Skeptic Agent (challenges, contradictions)
 - [ ] Agent 5: Question Agent (targeted interview questions)
-- [ ] Debate loop: multi-round orchestration (Round 1 → Skeptic challenge → Round 3 → synthesis)
+- [ ] Deterministic Python debate loop (Round 1 → Skeptic challenge → revision → synthesis)
 - [ ] All agents return structured JSON with confidence levels + evidence citations
-- [ ] Test full loop with Claude API
+- [ ] Run role-level evals locally with quantized Qwen3 8B
+- [ ] Run one complete workflow sequentially
 
 ### Day 4 (June 12) — Connect Backend → UI
+- [ ] Add thin Next.js proxy/client for the FastAPI contract
 - [ ] Stream agent findings to frontend (SSE or polling)
 - [ ] Cards slide in as agents produce findings
 - [ ] Highlight disagreements (Skeptic vs others)
@@ -120,6 +132,8 @@ The Full Loop:
 - [ ] Test with slower LLMs (simulate GPU latency)
 - [ ] Prepare `gpu/` folder with vLLM docker config
 - [ ] Test OpenAI-compatible endpoint swap
+- [ ] Run identical eval suite against local, hosted, and vLLM endpoints
+- [ ] Rent 2x H100 for a focused vLLM integration session
 - [ ] Study: vLLM, tensor parallelism, data parallelism
 - [ ] Study: Tavus conversation API
 - [ ] Study: SSE streaming patterns
@@ -193,16 +207,28 @@ components/
 ├── HiringIntelligence.tsx # Screen 5: Spec + candidate
 └── ui/                  # shadcn/ui components
 
+backend/
+├── app/
+│   ├── main.py          # FastAPI application
+│   ├── models.py        # Pydantic API and AuditState schemas
+│   ├── llm.py           # Ollama / hosted / vLLM provider adapter
+│   ├── orchestrator.py  # Deterministic debate workflow
+│   ├── agents/
+│   │   ├── evidence.py
+│   │   ├── expertise.py
+│   │   ├── risk.py
+│   │   ├── skeptic.py
+│   │   ├── question.py
+│   │   └── synthesis.py
+│   └── tools/           # Deterministic evidence retrieval
+├── evals/
+│   ├── cases/           # Versioned representative scenarios
+│   ├── graders/         # Deterministic and qualitative graders
+│   └── reports/         # Ignored generated run reports
+└── pyproject.toml
+
 lib/
-├── llm.ts              # LLM abstraction (Claude ↔ vLLM)
-├── agents/
-│   ├── evidence.ts     # Agent 1
-│   ├── expertise.ts    # Agent 2
-│   ├── risk.ts         # Agent 3
-│   ├── skeptic.ts      # Agent 4
-│   ├── question.ts     # Agent 5
-│   └── orchestrator.ts # Debate loop coordinator
-└── types.ts            # Shared types
+└── api-client/          # Generated/derived FastAPI client types
 
 data/
 ├── company.json        # Team + services
@@ -215,7 +241,7 @@ data/
 gpu/
 ├── docker-compose.yml  # vLLM setup
 ├── start-vllm.sh       # Launch script
-└── test-endpoint.ts    # Verify connection
+└── test-endpoint.py    # Verify connection
 ```
 
 ---

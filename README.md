@@ -30,6 +30,27 @@ Finally, the system converts captured knowledge into:
 
 We use GPU budget for multi-agent investigation, debate, verification, and uncertainty reduction — not just running a chatbot. More compute means more hypotheses tested, more contradictions caught, and more undocumented knowledge gaps discovered.
 
+## Architecture
+
+```text
+Next.js / TypeScript UI
+        |
+        | HTTP + SSE
+        v
+Python / FastAPI agent backend
+        |
+        | OpenAI-compatible API
+        v
+Ollama locally / hosted fallback / vLLM on H100s
+```
+
+Python owns the agent roles, Pydantic schemas, tools, shared audit state,
+deterministic orchestration, and evaluation harness. Next.js owns the UI, browser
+state, Tavus integration, and thin backend proxy.
+
+All roles can share one model instance. Local development runs them sequentially;
+the H100 environment adds parallel replicas and throughput.
+
 ## Run Locally
 
 ```bash
@@ -38,6 +59,10 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+The Python backend and Ollama setup will live under `backend/` as they are introduced.
+The initial local model target is a quantized Qwen3 8B. The purpose of that model is
+to validate orchestration and the evaluation harness, not to represent final quality.
 
 ## Environment
 
@@ -48,7 +73,7 @@ cp .env.example .env
 
 ## GPU Mode (Hackathon)
 
-Point `LLM_BASE_URL` at a vLLM instance serving Llama 3.3 70B:
+Point the Python model adapter at a vLLM instance serving the selected model:
 
 ```bash
 LLM_BASE_URL=http://gpu-box:8000/v1

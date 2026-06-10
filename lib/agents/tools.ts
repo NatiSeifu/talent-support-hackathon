@@ -1,5 +1,5 @@
 import { z } from "zod";
-import companyData from "@/data/company.json";
+import { companyData } from "@/lib/expertise";
 
 function getEmployeeById(employeeId: string) {
   return companyData.employees.find((e) => e.id === employeeId);
