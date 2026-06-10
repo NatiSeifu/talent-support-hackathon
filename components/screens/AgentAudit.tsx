@@ -30,7 +30,8 @@ const agentIconMap: Record<string, typeof Search> = {
 
 interface Message {
   agent: string;
-  text: string;
+  summary: string;
+  full?: string;
   confidence?: number;
   prevConfidence?: number;
   tag?: string;
@@ -39,27 +40,38 @@ interface Message {
 
 const debateMessages: Message[] = [
   { agent: "Evidence", round: 1, confidence: 88,
-    text: "Sarah authored 82% of auth-service commits weighted by complexity. Sole reviewer on 14 critical PRs. Code ownership in auth-service/src/token.ts: 94%." },
+    summary: "Sarah authored 82% of auth-service commits weighted by complexity. Sole reviewer on 14 critical PRs.",
+    full: "Analyzed 57 pull requests in auth-service over the last 18 months. Sarah Chen is the author on 47 of these (82.4%), weighted by lines of code and cyclomatic complexity — not raw commit count. She is listed as sole reviewer on 14 PRs tagged as critical (security patches, token logic changes, SSO integration). File-level ownership: auth-service/src/token.ts shows 94% authorship, auth-service/src/oauth-provider.ts shows 89% authorship. No other contributor exceeds 8% on any critical auth file." },
   { agent: "Expertise", round: 1, confidence: 91,
-    text: "Sarah is primary knowledge holder for OAuth token refresh. Mike Rodriguez has surface-level exposure — reviewed but never authored." },
+    summary: "Sarah is primary knowledge holder for OAuth token refresh. Mike has surface-level exposure only.",
+    full: "Cross-referencing commit history with Jira assignments and incident response logs: Sarah Chen has operational expertise in OAuth 2.0 token refresh flows, PKCE implementation, and Redis token store management. Mike Rodriguez appears in 40% of PR reviews but has 0 authored commits in auth-service/src/. His review comments average 4 words (\"LGTM\", \"Looks good to me\") with 0 substantive code suggestions. Classification: Mike = awareness level. Sarah = deep operational expertise. No other team member has any exposure to auth domain." },
   { agent: "Risk", round: 1, confidence: 85,
-    text: "Initial assessment: bus factor likely 1. Documentation freshness in auth domain: 18%. Sarah sole responder on 4 P0 incidents." },
+    summary: "Initial assessment: bus factor likely 1. Documentation 18% fresh. Sarah sole responder on 4 P0 incidents.",
+    full: "Bus factor analysis for authentication domain: Only 1 engineer (Sarah Chen) has committed code, responded to incidents, and answered questions in this domain. Documentation audit: 6 docs exist for auth — 1 is current (18%), 4 are stale (>6 months without update), 1 references deprecated APIs. Incident history: 4 P0 incidents involving auth in the last 6 months. Sarah was sole responder on all 4. Mean time to resolution: 23 minutes (indicating deep familiarity). No runbook exists for any of these scenarios." },
   { agent: "Skeptic", round: 2, tag: "CHALLENGE",
-    text: "Mike reviewed 40% of auth PRs. Does review activity indicate shared knowledge? Risk Agent is assuming correlation = causation." },
+    summary: "Mike reviewed 40% of auth PRs. Does review activity indicate shared knowledge?",
+    full: "Challenging Risk Agent's assumption that bus factor = 1. Evidence shows Mike Rodriguez reviewed 40% of auth PRs. In many organizations, code review implies understanding of the system. Questions: (1) Did Mike's reviews contain substantive feedback suggesting comprehension? (2) Could Mike operate auth independently in an incident? (3) Are we conflating code authorship with knowledge — could Mike have acquired knowledge through review without authoring? Risk Agent should provide evidence that review ≠ knowledge rather than assuming it." },
   { agent: "Evidence", round: 2, confidence: 93, prevConfidence: 88,
-    text: "Revising. Mike's reviews were \"LGTM\" with 0 substantive comments. 0 commits to auth-service/src/. 0 incident responses. Review ≠ ownership." },
+    summary: "Revising. Mike's reviews were \"LGTM\" — 0 substantive comments, 0 commits, 0 incident responses.",
+    full: "Responding to Skeptic's challenge. Deep analysis of Mike's 23 PR reviews in auth-service: Average comment length: 4.2 words. Most common comments: \"LGTM\" (14 times), \"Looks good\" (6 times), \"Approved\" (3 times). Substantive technical comments: 0. Comments referencing auth logic, token flows, or security implications: 0. Mike has 0 commits to auth-service/src/. Mike has responded to 0 auth incidents. Mike has answered 0 auth-related questions in Slack. Conclusion: Review activity does NOT indicate shared knowledge in this case. Confidence revised upward from 88% to 93%." },
   { agent: "Skeptic", round: 2, tag: "CHALLENGE",
-    text: "Documentation is 18% fresh — but what about tribal knowledge in Slack? Are we missing informal channels?" },
+    summary: "Documentation is 18% fresh — but what about tribal knowledge in Slack? Are we missing informal channels?",
+    full: "Second challenge: Evidence and Risk agents are measuring knowledge transfer through formal channels only (docs, code, PRs). But much engineering knowledge lives in informal channels — Slack messages, verbal conversations, whiteboard sessions, pair programming. If Sarah has been explaining auth concepts informally, the bus factor might be higher than 1. We need to search Slack, meeting notes, and any other informal knowledge repositories before concluding bus factor = 1 with high confidence." },
   { agent: "Evidence", round: 3, confidence: 95, prevConfidence: 93,
-    text: "Searched Slack: Sarah answered 23 auth-related questions in #platform-help. Next highest: 2 answers (Mike). Informal knowledge is also concentrated." },
+    summary: "Searched Slack: Sarah answered 23 auth questions in #platform-help. Next highest: 2 (Mike).",
+    full: "Responding to Skeptic's informal knowledge challenge. Searched all public Slack channels for auth-related discussions over 18 months. Results: #platform-help channel: 23 auth questions answered by Sarah Chen. Next highest contributor to auth answers: Mike Rodriguez with 2 answers (both were links to Sarah's earlier answers). #incidents channel: Sarah is sole responder in all auth threads. DMs: Not searchable, but Slack analytics show Sarah received 47 DMs containing keywords 'auth', 'token', 'oauth', 'login' — suggesting she is the known go-to person even through informal channels. Conclusion: Informal knowledge is ALSO concentrated in Sarah. Confidence revised to 95%." },
   { agent: "Risk", round: 3, confidence: 94, prevConfidence: 85, tag: "CRITICAL",
-    text: "Bus factor CONFIRMED = 1. All evidence channels converge. Mike is surface-level only. No backup exists in any form — code, docs, or tribal." },
+    summary: "Bus factor CONFIRMED = 1. All evidence channels converge. No backup exists in any form.",
+    full: "Synthesizing all evidence streams: Formal channels (code, PRs, docs) → Sarah is sole owner. Informal channels (Slack, incidents) → Sarah is sole responder and knowledge source. Documentation → 82% stale or missing. Team member analysis → Mike has awareness only, no operational capability. Conclusion: Bus factor = 1 across ALL measurable dimensions. This is not a borderline case. There is zero redundancy in the authentication domain. Risk level: CRITICAL. If Sarah departs without knowledge transfer, the team has no capability to operate, debug, or extend the auth system." },
   { agent: "Skeptic", round: 3, tag: "UNRESOLVED",
-    text: "Concede code ownership and tribal knowledge. But UNRESOLVED: What specifically fails during Redis outages? Evidence is correlational, not causal. Need Sarah's mental model." },
+    summary: "Concede ownership. But UNRESOLVED: What specifically fails during Redis outages? Need Sarah's mental model.",
+    full: "I concede the bus factor argument. Evidence across all channels is overwhelming — Sarah is the sole knowledge holder. However, I identify a remaining gap that no amount of data analysis can resolve: We can see THAT Redis outages correlate with auth failures, but we cannot determine from code/logs alone WHAT specifically happens and WHY the current architecture handles it this way. The Redis bypass in AUTH-4831 is undocumented. We need Sarah's mental model of the failure modes — this is tacit knowledge that exists only in her head. This requires human input." },
   { agent: "Question", round: 4, tag: "INTERVIEW",
-    text: "3 unresolved questions identified. Generating targeted interview questions from disputes the agents could not resolve." },
+    summary: "3 unresolved questions identified. Generating targeted interview questions from agent disputes.",
+    full: "Based on the deliberation, 3 questions could not be resolved through data analysis alone and require direct human input from Sarah Chen: (1) Why was Redis bypassed in AUTH-4831? What failure mode prompted this, and is it a permanent fix or temporary workaround? (2) Has Mike ever handled an auth incident independently — confirming bus factor from her perspective? (3) What causes silent token expiration during Redis failover — what is the causal mechanism? These questions are being formatted for the Tavus AI interviewer with appropriate context and follow-up prompts." },
   { agent: "Judge", round: 4, confidence: 96,
-    text: "Verdict: Knowledge risk confirmed. Bus factor = 1 with 94% confidence across all evidence channels. 3 questions require human input — proceeding to exit interview." },
+    summary: "Verdict: Bus factor = 1 confirmed at 94% confidence. 3 questions require human input — proceeding to interview.",
+    full: "Final synthesis of 4-round deliberation. The evidence is conclusive across all dimensions: Sarah Chen is the sole knowledge holder for the authentication domain at Stratify. Bus factor = 1 with 94% confidence (consensus across Evidence, Expertise, and Risk agents). The Skeptic agent raised valid challenges in rounds 2–3 which were addressed with additional evidence, strengthening the conclusion. However, 3 questions remain that cannot be resolved through data analysis — they require Sarah's tacit knowledge. Recommending: Proceed to exit interview via Tavus AI to capture answers before her departure on June 20. Time remaining: 11 days." },
 ];
 
 function TypingIndicator({ agent }: { agent: string }) {
@@ -108,6 +120,7 @@ export default function AgentAudit({ onNavigate }: Props) {
   const [visibleCount, setVisibleCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [typingAgent, setTypingAgent] = useState<string | null>(null);
+  const [expandedMsg, setExpandedMsg] = useState<number | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -282,8 +295,29 @@ export default function AgentAudit({ onNavigate }: Props) {
                       )}
                     </div>
                     <p className={`text-sm leading-relaxed ${msg.agent === "Judge" ? "text-[var(--color-text-primary)] font-medium" : "text-[var(--color-text-secondary)]"}`}>
-                      {msg.text}
+                      {msg.summary}
                     </p>
+                    {msg.full && (
+                      <button
+                        onClick={() => setExpandedMsg(expandedMsg === i ? null : i)}
+                        className="mt-1 text-[10px] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition"
+                      >
+                        {expandedMsg === i ? "collapse" : "show reasoning →"}
+                      </button>
+                    )}
+                    <AnimatePresence>
+                      {expandedMsg === i && msg.full && (
+                        <motion.p
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="mt-2 text-xs text-[var(--color-text-muted)] leading-relaxed border-l-2 border-zinc-100 pl-3"
+                        >
+                          {msg.full}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                     {msg.confidence && (
                       <div className="mt-2">
                         <ConfidenceBar value={msg.confidence} prev={msg.prevConfidence} />
