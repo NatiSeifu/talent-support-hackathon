@@ -19,9 +19,9 @@ const internalCandidates = [
     strengths: ["Worked adjacent to auth — API gateway", "Reviewed 8 of Sarah's PRs", "On-call experience (non-auth)"],
     rampWeeks: 6,
     prepPlan: [
-      "Week 1–2: Shadow auth deployments, pair on token refresh logic",
-      "Week 3–4: Lead one auth incident drill (simulated P0)",
-      "Week 5–6: Solo on-call rotation for auth with Sarah as backup",
+      "Week 1–2: Shadow auth deployments, pair on token refresh logic (before Sarah departs)",
+      "Week 3–4: Lead one auth incident drill (simulated P0) with recorded runbooks",
+      "Week 5–6: Solo on-call rotation with escalation to infrastructure team",
     ],
   },
   {
@@ -32,10 +32,10 @@ const internalCandidates = [
     strengths: ["Strong incident responder (payments)", "Managed own bus-factor-1 domain successfully", "Documented everything in payments"],
     rampWeeks: 9,
     prepPlan: [
-      "Week 1–3: Auth system deep dive — code walkthrough + architecture",
-      "Week 4–5: Pair on Redis token store operations, failover scenarios",
-      "Week 6–7: Shadow 2 real incidents (or simulated if none occur)",
-      "Week 8–9: Lead auth on-call with escalation path",
+      "Week 1–3: Auth system deep dive with Sarah (before departure) — record everything",
+      "Week 4–5: Pair on Redis token store operations using captured runbooks",
+      "Week 6–7: Lead simulated incident using knowledge recovered from exit interview",
+      "Week 8–9: Solo on-call with escalation to external consultant if needed",
     ],
   },
 ];
@@ -106,6 +106,42 @@ export default function HiringIntelligence({ onNavigate }: Props) {
         <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
           Generated from confirmed knowledge gaps &middot; Auth, Redis, Incident Response
         </p>
+      </motion.div>
+
+      {/* Judge Agent Recommendation */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ ...spring, delay: 0.05 }}
+        className="mb-8 rounded-xl border border-indigo-200 bg-indigo-50/40 p-5"
+      >
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100">
+            <span className="text-xs font-bold text-indigo-600">J</span>
+          </div>
+          <div className="flex-1">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-indigo-500 mb-1">
+              Judge Agent Recommendation
+            </p>
+            <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+              Internal transfer + parallel external search
+            </p>
+            <div className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
+              <p>
+                <span className="font-medium text-[var(--color-text-primary)]">Primary:</span> Transfer James Wu (6-week ramp). He has adjacent domain knowledge and reviewed Sarah&rsquo;s PRs — fastest path to coverage.
+              </p>
+              <p>
+                <span className="font-medium text-[var(--color-text-primary)]">Parallel:</span> Open external req for Senior Auth Engineer. James covers immediate risk; external hire brings depth the team currently lacks.
+              </p>
+              <p>
+                <span className="font-medium text-[var(--color-text-primary)]">Reasoning:</span> 11 days until departure is too short for a full external hire cycle. Internal transfer provides immediate coverage while external search finds long-term depth.
+              </p>
+            </div>
+            <div className="mt-3 flex gap-4 text-[10px] text-[var(--color-text-muted)]">
+              <span>Based on: knowledge recovery data, departure urgency, candidate proximity</span>
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       {/* Tab switcher */}
