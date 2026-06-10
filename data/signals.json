@@ -553,7 +553,7 @@
   "companyProfiles": {
     "description": "Each company configures which signals matter most based on their industry, culture, and values. Admins set weights during onboarding — AI uses these to compute expertise scores.",
     "active": {
-      "name": "Nexus Technologies",
+      "name": "Stratify",
       "industry": "SaaS",
       "selectedPreset": "balanced",
       "description": "Generic balanced configuration — all signals contribute. This is the default before a company customizes.",
