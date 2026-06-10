@@ -190,10 +190,60 @@ export default function AgentAudit({ onNavigate }: Props) {
         </div>
       </motion.div>
 
+      {/* Agent status bar — who's spoken, current confidence */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.12 }}
+        className="mb-4 flex gap-2 shrink-0"
+      >
+        {Object.entries(agentStyles).map(([name, style]) => {
+          const lastMsg = debateMessages
+            .slice(0, visibleCount)
+            .filter((m) => m.agent === name)
+            .pop();
+          const isTyping = typingAgent === name;
+          const hasSpoken = !!lastMsg;
+
+          return (
+            <div
+              key={name}
+              className={`flex-1 rounded-lg border px-2.5 py-2 transition-all duration-300 ${
+                isTyping
+                  ? "border-zinc-300 bg-zinc-50"
+                  : hasSpoken
+                  ? "border-[var(--color-border)]"
+                  : "border-transparent bg-zinc-50/50"
+              }`}
+            >
+              <div className="flex items-center gap-1.5">
+                <span className={`text-[9px] font-semibold ${hasSpoken ? style.name : "text-zinc-300"}`}>
+                  {name}
+                </span>
+                {isTyping && (
+                  <span className="flex gap-0.5">
+                    <span className="h-1 w-1 rounded-full bg-zinc-400 animate-pulse" />
+                    <span className="h-1 w-1 rounded-full bg-zinc-400 animate-pulse [animation-delay:0.15s]" />
+                  </span>
+                )}
+              </div>
+              {lastMsg?.confidence && (
+                <div className="mt-1 h-1 rounded-full bg-zinc-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-zinc-400 transition-all duration-700"
+                    style={{ width: `${lastMsg.confidence}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </motion.div>
+
       {/* Scrollable debate feed */}
       <div
         ref={feedRef}
-        className="flex-1 min-h-0 max-h-[560px] overflow-y-auto rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]"
+        className="flex-1 min-h-0 max-h-[520px] overflow-y-auto rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]"
       >
         <AnimatePresence mode="popLayout">
           {debateMessages.slice(0, visibleCount).map((msg, i) => {
