@@ -22,9 +22,9 @@ Before extending these schemas, read:
 | Identity and organization | Initial model accepted | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | [software-development.md](software-development.md) |
 | Work management | Initial model complete | [work-management.md](work-management.md) |
-| Knowledge artifacts | Not started | TBD |
-| Production operations | Not started | TBD |
-| Ownership and architecture | Not started | TBD |
+| Knowledge artifacts | Initial model complete | [knowledge-artifacts.md](knowledge-artifacts.md) |
+| Production operations | Initial model complete | [production-operations.md](production-operations.md) |
+| Ownership and architecture | Initial model complete | [ownership-and-architecture.md](ownership-and-architecture.md) |
 | Business impact | Not started | TBD |
 | Communication and collaboration | Initial model in progress | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Not started | TBD |

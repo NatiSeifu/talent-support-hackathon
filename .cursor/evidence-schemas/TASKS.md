@@ -10,9 +10,9 @@
 | Identity and organization | Initial model accepted | Existing session | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | Existing session | [software-development.md](software-development.md) |
 | Work management | Initial model complete | Existing session | [work-management.md](work-management.md) |
-| Knowledge artifacts | Not started | Unclaimed | `knowledge-artifacts.md` |
-| Production operations | Not started | Unclaimed | `production-operations.md` |
-| Ownership and architecture | Not started | Unclaimed | `ownership-and-architecture.md` |
+| Knowledge artifacts | Initial model complete | Existing session | [knowledge-artifacts.md](knowledge-artifacts.md) |
+| Production operations | Initial model complete | Delegated agent | [production-operations.md](production-operations.md) |
+| Ownership and architecture | Initial model complete | Delegated agent | [ownership-and-architecture.md](ownership-and-architecture.md) |
 | Business impact | Not started | Unclaimed | `business-impact.md` |
 | Communication and collaboration | Initial model in progress | Agent session | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Not started | Unclaimed | `knowledge-validation.md` |
