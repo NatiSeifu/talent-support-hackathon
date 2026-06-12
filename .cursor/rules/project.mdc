@@ -37,6 +37,8 @@ that expertise into hiring and onboarding intelligence.
 
 ## Read .cursor/evidence-schemas/ for detailed source-family schema decisions.
 
+## Read .cursor/evidence-schemas/CONTRIBUTING.md and TASKS.md before extending the evidence model.
+
 ## Coding Rules
 
 - Use strict TypeScript for frontend code and typed Python for backend code.
