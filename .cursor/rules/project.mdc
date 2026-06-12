@@ -41,6 +41,8 @@ that expertise into hiring and onboarding intelligence.
 
 ## Read .cursor/EVIDENCE_ROADMAP.md for the sequence from evidence schemas to synthetic data, evaluation, and implementation.
 
+## Read .cursor/evidence-contract/ before making product claims or defining shared evidence and assessment records.
+
 ## Coding Rules
 
 - Use strict TypeScript for frontend code and typed Python for backend code.

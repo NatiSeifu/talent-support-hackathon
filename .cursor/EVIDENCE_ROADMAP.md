@@ -49,6 +49,10 @@ Complete for the initial design pass.
 Create the common structures that connect source-family records without erasing
 their provenance.
 
+### Status
+
+Complete for the initial contract. Open product decisions remain active.
+
 ### Artifacts
 
 1. **Product claims and prohibited-claims table**
@@ -403,16 +407,13 @@ intelligence flow.
 
 The next concrete actions are:
 
-1. Write the product claims and prohibited-claims table.
-2. Define the shared evidence-record envelope.
-3. Define the contradiction and resolution policy.
-4. Complete the evidence-source semantics matrix.
-5. Open the product decisions register.
-6. Write the ground-truth scenario template.
-7. Specify canonical scenario 1.
-8. Generate the first mock dataset.
-9. Build the thin deterministic evidence engine.
-10. Run the first retrieval, inference, contradiction, and abstention evaluations.
+1. Resolve the scenario-blocking product decisions.
+2. Write the ground-truth scenario template.
+3. Specify canonical scenario 1.
+4. Define its expected and prohibited claim sets.
+5. Generate the first mock dataset.
+6. Build the thin deterministic evidence engine.
+7. Run the first retrieval, inference, contradiction, and abstention evaluations.
 
 Mock-data generation is therefore the next major milestone after a small set of
 cross-cutting contracts and the first ground-truth scenario, not the end of the

@@ -38,10 +38,10 @@ These begin after enough source-family semantics are stable:
 | Artifact | Status | Owner |
 |---|---|---|
 | Evidence and evaluation roadmap | Complete | Existing session |
-| Product claims and prohibited-claims table | Not started | Unclaimed |
-| Evidence-source semantics matrix | Partially represented in schema docs | Unclaimed |
-| Evidence hierarchy and contradiction policy | Not started | Unclaimed |
-| Structured evidence-record envelope | Not started | Unclaimed |
+| Product claims and prohibited-claims table | Complete | Existing session |
+| Evidence-source semantics matrix | Complete | Existing session |
+| Evidence hierarchy and contradiction policy | Complete | Existing session |
+| Structured evidence-record envelope | Complete | Existing session |
 | Ground-truth scenario template | Not started | Unclaimed |
 | Five canonical synthetic scenarios | Not started | Unclaimed |
 | Deterministic metric definitions | Not started | Unclaimed |
@@ -49,20 +49,17 @@ These begin after enough source-family semantics are stable:
 | Interview-question utility evaluation | Not started | Unclaimed |
 | Uncertainty and abstention evaluation | Not started | Unclaimed |
 | Evaluation dataset format | Not started | Unclaimed |
-| Open product decisions register | Not started | Unclaimed |
+| Open product decisions register | Active | Existing session |
 
-## Suggested Parallel Work
+## Current Coordination Guidance
 
-The lowest-conflict parallel assignments are separate source-family documents:
+The source-family pass is complete. New work should target separate Phase 2
+artifacts to avoid collisions:
 
-- Contributor A: Knowledge Artifacts
-- Contributor B: Production Operations
-- Contributor C: Ownership and Architecture
-- Contributor D: Business Impact
+- ground-truth scenario template;
+- canonical scenario specification;
+- expected and prohibited claim sets;
+- evaluation dataset format.
 
-Ownership and Architecture, Production Operations, and Business Impact should compare
-notes before finalizing cross-family relationships because all three contribute to
-knowledge-risk assessments.
-
-Avoid having two contributors edit `work-management.md` simultaneously unless they
-coordinate distinct sections.
+Changes to accepted source schemas should be driven by a concrete scenario or
+evaluation failure and should preserve the original decision rationale.

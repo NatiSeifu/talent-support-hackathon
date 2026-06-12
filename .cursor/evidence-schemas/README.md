@@ -15,6 +15,7 @@ Before extending these schemas, read:
 - [CONTRIBUTING.md](CONTRIBUTING.md) for evidence boundaries and modeling workflow
 - [TASKS.md](TASKS.md) to claim a source family or object
 - [../EVIDENCE_ROADMAP.md](../EVIDENCE_ROADMAP.md) for the path from schemas to mock data and evaluation
+- [../evidence-contract/README.md](../evidence-contract/README.md) for shared claims, evidence, and contradiction semantics
 
 ## Schema Documents
 
