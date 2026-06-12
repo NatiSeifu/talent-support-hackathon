@@ -26,7 +26,7 @@ Before extending these schemas, read:
 | Production operations | Not started | TBD |
 | Ownership and architecture | Not started | TBD |
 | Business impact | Not started | TBD |
-| Communication and collaboration | Not started | TBD |
+| Communication and collaboration | Initial model in progress | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Not started | TBD |
 | Candidate and successor evidence | Not started | TBD |
 

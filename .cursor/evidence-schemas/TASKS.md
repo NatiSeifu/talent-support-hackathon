@@ -14,7 +14,7 @@
 | Production operations | Not started | Unclaimed | `production-operations.md` |
 | Ownership and architecture | Not started | Unclaimed | `ownership-and-architecture.md` |
 | Business impact | Not started | Unclaimed | `business-impact.md` |
-| Communication and collaboration | Not started | Unclaimed | `communication-and-collaboration.md` |
+| Communication and collaboration | Initial model in progress | Agent session | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Not started | Unclaimed | `knowledge-validation.md` |
 | Candidate and successor evidence | Not started | Unclaimed | `candidate-and-successor-evidence.md` |
 
