@@ -256,10 +256,11 @@ When corroborated by code ownership and incident data:
    deep NLP. Misclassification is tolerable because volume patterns matter more
    than individual message accuracy.
 
-3. **Proposed**: Messages classified as `SOCIAL`, `BOT_GENERATED`, or containing
-   only reactions/acknowledgments without technical content are excluded from
-   substantive-answer counts. The filtering criterion is intent classification,
-   not message length.
+3. **Proposed**: Whether a message is substantive depends on thread context, not
+   the message in isolation. A short reply ("yes", "no", "it does") to a technical
+   question is a substantive confirmation or denial. A short standalone message
+   with no technical thread context ("thanks", "lol") is not. Classification should
+   consider the parent message's intent when evaluating replies.
 
 4. **Proposed**: A "question-answer pair" is identified when a thread-reply from
    a different person follows a message classified as a question. The answerer
