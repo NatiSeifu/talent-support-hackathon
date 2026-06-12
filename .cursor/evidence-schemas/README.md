@@ -14,21 +14,22 @@ Before extending these schemas, read:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) for evidence boundaries and modeling workflow
 - [TASKS.md](TASKS.md) to claim a source family or object
+- [../EVIDENCE_ROADMAP.md](../EVIDENCE_ROADMAP.md) for the path from schemas to mock data and evaluation
 
 ## Schema Documents
 
 | Inventory member | Status | Document |
 |---|---|---|
-| Identity and organization | Initial model accepted | [identity-and-organization.md](identity-and-organization.md) |
+| Identity and organization | Initial model complete | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | [software-development.md](software-development.md) |
 | Work management | Initial model complete | [work-management.md](work-management.md) |
 | Knowledge artifacts | Initial model complete | [knowledge-artifacts.md](knowledge-artifacts.md) |
 | Production operations | Initial model complete | [production-operations.md](production-operations.md) |
 | Ownership and architecture | Initial model complete | [ownership-and-architecture.md](ownership-and-architecture.md) |
 | Business impact | Initial model complete | [business-impact.md](business-impact.md) |
-| Communication and collaboration | Initial model in progress | [communication-and-collaboration.md](communication-and-collaboration.md) |
+| Communication and collaboration | Initial model complete | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Initial model complete | [knowledge-validation.md](knowledge-validation.md) |
-| Candidate and successor evidence | Initial model in progress | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
+| Candidate and successor evidence | Initial model complete | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
 
 ## Standard Analysis Template
 

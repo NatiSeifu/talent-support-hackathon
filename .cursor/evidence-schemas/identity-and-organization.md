@@ -1,6 +1,6 @@
 # Identity And Organization Schema
 
-> Status: Initial model accepted for continued evidence-model design.
+> Status: Initial model complete.
 
 ## Purpose
 
@@ -472,4 +472,3 @@ The evaluation dataset should include:
 - Whether probable identity links may contribute to person-level assessments
 - Retention and deletion requirements for identity history
 - Whether identity corrections trigger automatic recomputation of assessments
-

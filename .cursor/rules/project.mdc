@@ -39,6 +39,8 @@ that expertise into hiring and onboarding intelligence.
 
 ## Read .cursor/evidence-schemas/CONTRIBUTING.md and TASKS.md before extending the evidence model.
 
+## Read .cursor/EVIDENCE_ROADMAP.md for the sequence from evidence schemas to synthetic data, evaluation, and implementation.
+
 ## Coding Rules
 
 - Use strict TypeScript for frontend code and typed Python for backend code.

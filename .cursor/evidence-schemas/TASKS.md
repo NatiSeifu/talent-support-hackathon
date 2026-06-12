@@ -7,16 +7,16 @@
 
 | Source family | Status | Owner | Document |
 |---|---|---|---|
-| Identity and organization | Initial model accepted | Existing session | [identity-and-organization.md](identity-and-organization.md) |
+| Identity and organization | Initial model complete | Existing session | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | Existing session | [software-development.md](software-development.md) |
 | Work management | Initial model complete | Existing session | [work-management.md](work-management.md) |
 | Knowledge artifacts | Initial model complete | Existing session | [knowledge-artifacts.md](knowledge-artifacts.md) |
 | Production operations | Initial model complete | Delegated agent | [production-operations.md](production-operations.md) |
 | Ownership and architecture | Initial model complete | Delegated agent | [ownership-and-architecture.md](ownership-and-architecture.md) |
 | Business impact | Initial model complete | Delegated agent | [business-impact.md](business-impact.md) |
-| Communication and collaboration | Initial model in progress | Agent session | [communication-and-collaboration.md](communication-and-collaboration.md) |
+| Communication and collaboration | Initial model complete | Agent session, reviewed by existing session | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Initial model complete | Delegated agent | [knowledge-validation.md](knowledge-validation.md) |
-| Candidate and successor evidence | Initial model in progress | Agent session | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
+| Candidate and successor evidence | Initial model complete | Agent session, refactored by existing session | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
 
 ## Work Management Objects
 
@@ -37,6 +37,7 @@ These begin after enough source-family semantics are stable:
 
 | Artifact | Status | Owner |
 |---|---|---|
+| Evidence and evaluation roadmap | Complete | Existing session |
 | Product claims and prohibited-claims table | Not started | Unclaimed |
 | Evidence-source semantics matrix | Partially represented in schema docs | Unclaimed |
 | Evidence hierarchy and contradiction policy | Not started | Unclaimed |
