@@ -16,7 +16,7 @@
 | Business impact | Initial model complete | Delegated agent | [business-impact.md](business-impact.md) |
 | Communication and collaboration | Initial model in progress | Agent session | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Initial model complete | Delegated agent | [knowledge-validation.md](knowledge-validation.md) |
-| Candidate and successor evidence | Not started | Unclaimed | `candidate-and-successor-evidence.md` |
+| Candidate and successor evidence | Initial model in progress | Agent session | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
 
 ## Work Management Objects
 

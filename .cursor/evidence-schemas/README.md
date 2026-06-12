@@ -28,7 +28,7 @@ Before extending these schemas, read:
 | Business impact | Initial model complete | [business-impact.md](business-impact.md) |
 | Communication and collaboration | Initial model in progress | [communication-and-collaboration.md](communication-and-collaboration.md) |
 | Knowledge validation | Initial model complete | [knowledge-validation.md](knowledge-validation.md) |
-| Candidate and successor evidence | Not started | TBD |
+| Candidate and successor evidence | Initial model in progress | [candidate-and-successor-evidence.md](candidate-and-successor-evidence.md) |
 
 ## Standard Analysis Template
 
