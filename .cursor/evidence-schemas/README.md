@@ -25,9 +25,9 @@ Before extending these schemas, read:
 | Knowledge artifacts | Initial model complete | [knowledge-artifacts.md](knowledge-artifacts.md) |
 | Production operations | Initial model complete | [production-operations.md](production-operations.md) |
 | Ownership and architecture | Initial model complete | [ownership-and-architecture.md](ownership-and-architecture.md) |
-| Business impact | Not started | TBD |
+| Business impact | Initial model complete | [business-impact.md](business-impact.md) |
 | Communication and collaboration | Initial model in progress | [communication-and-collaboration.md](communication-and-collaboration.md) |
-| Knowledge validation | Not started | TBD |
+| Knowledge validation | Initial model complete | [knowledge-validation.md](knowledge-validation.md) |
 | Candidate and successor evidence | Not started | TBD |
 
 ## Standard Analysis Template

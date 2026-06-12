@@ -13,9 +13,9 @@
 | Knowledge artifacts | Initial model complete | Existing session | [knowledge-artifacts.md](knowledge-artifacts.md) |
 | Production operations | Initial model complete | Delegated agent | [production-operations.md](production-operations.md) |
 | Ownership and architecture | Initial model complete | Delegated agent | [ownership-and-architecture.md](ownership-and-architecture.md) |
-| Business impact | Not started | Unclaimed | `business-impact.md` |
+| Business impact | Initial model complete | Delegated agent | [business-impact.md](business-impact.md) |
 | Communication and collaboration | Initial model in progress | Agent session | [communication-and-collaboration.md](communication-and-collaboration.md) |
-| Knowledge validation | Not started | Unclaimed | `knowledge-validation.md` |
+| Knowledge validation | Initial model complete | Delegated agent | [knowledge-validation.md](knowledge-validation.md) |
 | Candidate and successor evidence | Not started | Unclaimed | `candidate-and-successor-evidence.md` |
 
 ## Work Management Objects
