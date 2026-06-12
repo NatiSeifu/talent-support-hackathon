@@ -9,7 +9,7 @@
 |---|---|---|---|
 | Identity and organization | Initial model accepted | Existing session | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | Existing session | [software-development.md](software-development.md) |
-| Work management | In progress | Existing session | [work-management.md](work-management.md) |
+| Work management | Initial model complete | Existing session | [work-management.md](work-management.md) |
 | Knowledge artifacts | Not started | Unclaimed | `knowledge-artifacts.md` |
 | Production operations | Not started | Unclaimed | `production-operations.md` |
 | Ownership and architecture | Not started | Unclaimed | `ownership-and-architecture.md` |
@@ -22,14 +22,14 @@
 
 | Object | Status | Owner |
 |---|---|---|
-| Workspace and project | Not started | Unclaimed |
+| Workspace and project | Accepted, lightweight | Existing session |
 | Work item | Accepted | Existing session |
 | Assignment history | Accepted | Existing session |
 | Status transition | Accepted | Existing session |
 | Comment | Accepted, lightweight | Existing session |
-| Dependency and relationship | Next | Unclaimed |
-| Acceptance or sign-off | Not started | Unclaimed |
-| Iteration, sprint, or milestone | Not started | Unclaimed |
+| Dependency and relationship | Accepted, lightweight | Existing session |
+| Acceptance or sign-off | Accepted, lightweight | Existing session |
+| Iteration, sprint, or milestone | Accepted, lightweight | Existing session |
 
 ## Cross-Cutting Artifacts
 
@@ -65,4 +65,3 @@ knowledge-risk assessments.
 
 Avoid having two contributors edit `work-management.md` simultaneously unless they
 coordinate distinct sections.
-

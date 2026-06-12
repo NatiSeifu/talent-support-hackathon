@@ -21,7 +21,7 @@ Before extending these schemas, read:
 |---|---|---|
 | Identity and organization | Initial model accepted | [identity-and-organization.md](identity-and-organization.md) |
 | Software development | Initial model complete | [software-development.md](software-development.md) |
-| Work management | Work item through lightweight comments accepted; remaining objects in progress | [work-management.md](work-management.md) |
+| Work management | Initial model complete | [work-management.md](work-management.md) |
 | Knowledge artifacts | Not started | TBD |
 | Production operations | Not started | TBD |
 | Ownership and architecture | Not started | TBD |

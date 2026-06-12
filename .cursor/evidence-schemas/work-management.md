@@ -1,7 +1,6 @@
 # Work Management Schema
 
-> Status: Work item through lightweight comments accepted; remaining objects in
-> progress.
+> Status: Initial model complete.
 
 ## Purpose
 
@@ -27,6 +26,34 @@ deployment.
 6. Dependency and relationship
 7. Acceptance or sign-off
 8. Iteration, sprint, or milestone
+
+## Workspace And Project
+
+Workspaces and projects are minimal source containers used to scope identifiers and
+group work items.
+
+```python
+class WorkWorkspace(BaseModel):
+    workspace_id: str
+    source_system: str
+    source_tenant_id: str
+    external_workspace_id: str
+    name: str | None = None
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+
+
+class WorkProject(BaseModel):
+    project_id: str
+    workspace_id: str
+    external_project_id: str
+    name: str
+    lifecycle_reported: str | None = None
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+```
+
+These records establish source scope and organizational grouping only. Project
+membership, leadership, status, or naming does not establish contribution,
+expertise, ownership, criticality, or successful delivery.
 
 ## Work Item
 
@@ -735,6 +762,419 @@ Comments alone cannot establish:
 
 ## Next Object
 
-The next object is dependency and relationship data: issue hierarchy, duplicates,
-blocking relationships, supersession, general relationships, and links to pull
-requests, incidents, documents, systems, and releases.
+The next object is acceptance or sign-off: limited evidence that someone evaluated
+whether work met stated expectations.
+
+## Dependency And Relationship
+
+### Purpose And Scope
+
+Relationships connect a work item to the small set of records that materially enrich
+expertise and knowledge-risk analysis.
+
+The initial model retains:
+
+- parent or child context needed to avoid false attribution;
+- duplicate or superseding links needed to avoid double-counting;
+- blocking links that explain dependencies or specialized handoffs;
+- links to pull requests, incidents, documents, systems, components, deployments,
+  and releases that enable multi-source corroboration.
+
+SuccessionAI is not attempting to reproduce the full Jira or Linear relationship
+model. Generic planning relationships that do not improve evidence interpretation
+may remain only in the raw payload.
+
+### Retrieval
+
+Useful relationships may come from:
+
+- structured Jira or Linear relationship fields;
+- GitHub and work-management integrations;
+- incident-created follow-up links;
+- component or system fields;
+- explicit identifiers in ticket, PR, incident, or document text;
+- human-confirmed mappings.
+
+Structured source links and text-extracted references remain distinguishable.
+
+### Layer 1: Faithful Source Record
+
+```python
+class SourceWorkItemRelationshipRecord(BaseModel):
+    source_record_id: str
+    source_system: str
+    source_tenant_id: str
+    source_external_work_item_id: str
+
+    target_external_id: str
+    target_type_reported: str | None = None
+    relationship_reported: str
+
+    created_by_external_actor_id: str | None = None
+    source_created_at: datetime | None = None
+    observed_at: datetime
+    raw_payload_ref: str
+```
+
+Source vocabulary is preserved because relationship labels are configurable and may
+carry organization-specific meaning.
+
+### Layer 2: Minimal Normalized Relationship
+
+```python
+class WorkItemRelationKind(str, Enum):
+    PARENT_OR_CHILD = "parent_or_child"
+    BLOCKS_OR_DEPENDS_ON = "blocks_or_depends_on"
+    DUPLICATES = "duplicates"
+    SUPERSEDES = "supersedes"
+    IMPLEMENTED_BY = "implemented_by"
+    FOLLOW_UP_TO = "follow_up_to"
+    DOCUMENTED_BY = "documented_by"
+    AFFECTS = "affects"
+    INCLUDED_IN = "included_in"
+    RELATED_TO = "related_to"
+    UNKNOWN = "unknown"
+
+
+class WorkItemRelationTargetType(str, Enum):
+    WORK_ITEM = "work_item"
+    PULL_REQUEST = "pull_request"
+    COMMIT = "commit"
+    INCIDENT = "incident"
+    DOCUMENT = "document"
+    SYSTEM = "system"
+    COMPONENT = "component"
+    DEPLOYMENT = "deployment"
+    RELEASE = "release"
+    UNKNOWN = "unknown"
+
+
+class RelationshipOrigin(str, Enum):
+    SOURCE_STRUCTURED = "source_structured"
+    SOURCE_INTEGRATION = "source_integration"
+    TEXT_REFERENCE = "text_reference"
+    CROSS_SOURCE_REFERENCE = "cross_source_reference"
+    HUMAN_CONFIRMED = "human_confirmed"
+
+
+class WorkItemRelation(BaseModel):
+    work_item_relation_id: str
+    work_item_id: str
+
+    target_type: WorkItemRelationTargetType
+    target_id: str
+    relation_kind: WorkItemRelationKind
+    origin: RelationshipOrigin
+    resolution_status: RelationshipResolutionStatus
+
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+    contradicting_source_record_ids: list[str] = Field(default_factory=list)
+```
+
+Direction-specific source vocabulary remains available on the faithful record. The
+normalized categories stay broad because their purpose is evidence assembly, not
+project-management workflow reproduction.
+
+### Inclusion Test
+
+Normalize a relationship only when it helps answer at least one of these questions:
+
+- What domain, system, or component did this work concern?
+- What implementation or operational action corroborates the work item?
+- Did another record supersede or duplicate this evidence?
+- Was the work prompted by an incident or followed by deployment?
+- Does the relationship explain a dependency, handoff, or concentrated capability?
+
+Otherwise, retain the source data in `raw_payload_ref` without creating a normalized
+relationship.
+
+### Supported Use
+
+Relationships may support:
+
+- connecting expected work to implementation, review, documentation, incidents, or
+  operational outcomes;
+- locating work within a system or component;
+- preventing duplicate and superseded work items from inflating activity;
+- explaining why work moved between people or waited on specialized input;
+- constructing corroborated evidence chains across source families.
+
+For example, an assignment plus a linked pull request and incident response is more
+informative than assignment alone.
+
+### Cannot Establish
+
+A relationship alone cannot establish:
+
+- that the link is correct or current;
+- that a pull request fully implemented a ticket;
+- that a blocker truly prevented progress;
+- that a duplicate contains no unique evidence;
+- that an incident follow-up resolved the underlying risk;
+- that a document is accurate;
+- ownership, expertise, or successful outcome.
+
+### Canonical Failure Cases
+
+1. A pull request claims to fix a ticket but addresses only part of it.
+2. A ticket links to abandoned and merged pull requests.
+3. Duplicate tickets contain different useful evidence.
+4. A stale blocker remains after the dependency is resolved.
+5. An epic relationship causes credit to flow to the epic assignee.
+6. A textual identifier resolves to the wrong project.
+7. A superseded ticket contains unique technical discussion.
+8. A component link is stale after reorganization.
+9. A deployment contains the change behind a disabled feature flag.
+10. Restricted access exposes only one side of a relationship.
+
+### Accepted Relationship Decisions
+
+1. Model only relationships that enrich expertise or knowledge-risk context.
+2. Preserve source-specific relationship vocabulary in the faithful layer.
+3. Use broad normalized categories rather than reproducing Jira workflows.
+4. Distinguish structured, integrated, textual, cross-source, and human-confirmed
+   links.
+5. Keep duplicate and superseded records; link rather than discard them.
+6. Do not propagate contribution credit through hierarchy.
+7. Preserve provenance, contradictions, direction, and access limitations.
+8. Treat relationships as corroborating context, not outcome proof.
+
+## Next Object
+
+The final object is iteration, sprint, or milestone context. It should remain minimal
+because scheduling containers add little direct expertise evidence.
+
+## Acceptance Or Sign-Off
+
+### Purpose And Scope
+
+Acceptance records that a person, team, or automation performed a recorded approval,
+verification, or sign-off action against a work item.
+
+Useful examples include:
+
+- product or stakeholder acceptance;
+- quality-assurance verification;
+- security or compliance sign-off;
+- operational readiness approval;
+- explicit acceptance-criteria confirmation.
+
+This is supporting evidence that evaluation occurred. It is not automatic proof that
+the work was correct, complete, deployed, or understood deeply by the approver.
+
+Code-review approvals remain in Software Development. This object covers acceptance
+recorded in the work-management process.
+
+### Retrieval
+
+Acceptance may come from:
+
+- structured approval or verification fields;
+- workflow transitions with explicit approval semantics;
+- acceptance-criteria checklists;
+- dedicated sign-off comments;
+- linked test or validation records;
+- organization-specific custom fields.
+
+Generic movement to a completed status is not enough to create an acceptance record.
+
+### Minimal Model
+
+```python
+class AcceptanceKind(str, Enum):
+    PRODUCT = "product"
+    QUALITY_ASSURANCE = "quality_assurance"
+    SECURITY = "security"
+    COMPLIANCE = "compliance"
+    OPERATIONAL_READINESS = "operational_readiness"
+    ACCEPTANCE_CRITERIA = "acceptance_criteria"
+    OTHER = "other"
+    UNKNOWN = "unknown"
+
+
+class AcceptanceOutcome(str, Enum):
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+    CONDITIONAL = "conditional"
+    REVOKED = "revoked"
+    UNKNOWN = "unknown"
+
+
+class WorkItemAcceptance(BaseModel):
+    acceptance_id: str
+    work_item_id: str
+
+    acceptance_kind: AcceptanceKind
+    outcome: AcceptanceOutcome
+    evaluator_source_account_id: str | None = None
+    evaluator_team_id: str | None = None
+
+    criteria_text: list[str] = Field(default_factory=list)
+    notes: str | None = None
+
+    occurred_at: datetime | None = None
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+```
+
+The faithful source record should preserve the original field, comment, checklist,
+or transition from which this normalized record was derived.
+
+### Supported Use
+
+Acceptance may support:
+
+- a recorded evaluation occurred;
+- an account or team accepted, rejected, conditionally accepted, or revoked work;
+- specific visible criteria were considered;
+- a person participated in product, quality, security, compliance, or operational
+  evaluation;
+- work received corroborating evaluation beyond assignment and completion.
+
+Repeated substantive sign-off in a domain may suggest trusted evaluative
+responsibility. It does not independently establish expertise.
+
+### Cannot Establish
+
+Acceptance alone cannot establish:
+
+- that the work was objectively correct;
+- that every requirement was tested;
+- deployment or production success;
+- implementation authorship;
+- complete understanding by the evaluator;
+- expertise or ownership;
+- that a checklist was performed rather than administratively checked;
+- that acceptance remained valid after later changes.
+
+### Canonical Failure Cases
+
+1. An approver signs off administratively without inspection.
+2. Acceptance occurs before later implementation changes.
+3. A team name is recorded without the actual evaluator.
+4. Automation marks acceptance after tests pass.
+5. A conditional approval is interpreted as complete acceptance.
+6. Acceptance is later revoked or the ticket reopened.
+7. Visible criteria omit an important hidden requirement.
+8. The implementer self-approves because no independent evaluator is available.
+
+### Accepted Acceptance Decisions
+
+1. Create acceptance records only from explicit approval or verification evidence.
+2. Do not infer acceptance from completed status alone.
+3. Preserve evaluator, evaluation kind, outcome, visible criteria, and time.
+4. Distinguish human, team, automated, and unresolved evaluators.
+5. Preserve conditional, rejected, and revoked outcomes.
+6. Treat acceptance as corroborating evaluation, not correctness proof.
+7. Keep code review approvals in Software Development.
+
+## Next Object
+
+The final object is lightweight iteration, sprint, or milestone context.
+
+## Iteration, Sprint, Or Milestone
+
+### Purpose And Scope
+
+Planning containers provide limited temporal and organizational grouping:
+
+- when work was planned;
+- which work items were grouped into the same delivery period or objective;
+- whether a work item moved into a later planning period;
+- whether work was associated with a named milestone.
+
+They are not expertise, productivity, reliability, or performance evidence.
+
+### Minimal Model
+
+```python
+class PlanningContainerKind(str, Enum):
+    ITERATION = "iteration"
+    SPRINT = "sprint"
+    MILESTONE = "milestone"
+    CYCLE = "cycle"
+    UNKNOWN = "unknown"
+
+
+class PlanningContainer(BaseModel):
+    planning_container_id: str
+    workspace_id: str
+
+    container_kind: PlanningContainerKind
+    external_container_id: str
+    name: str
+
+    starts_at: datetime | None = None
+    ends_at: datetime | None = None
+    completed_at: datetime | None = None
+
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+
+
+class WorkItemPlanningAssignment(BaseModel):
+    planning_assignment_id: str
+    work_item_id: str
+    planning_container_id: str
+
+    assigned_at: datetime | None = None
+    removed_at: datetime | None = None
+
+    supporting_source_record_ids: list[str] = Field(default_factory=list)
+```
+
+Source-specific records should preserve the original sprint, cycle, iteration, or
+milestone fields and timestamps from Jira or Linear.
+
+### Supported Use
+
+Planning context may support:
+
+- a work item was planned during an observed period;
+- several items were grouped in one planning container;
+- an item moved between planning periods;
+- a work item was associated with a named milestone.
+
+This context may help interpret timing and related work. It should not produce a
+person-level expertise signal.
+
+### Cannot Establish
+
+Planning context cannot establish:
+
+- who performed the work;
+- expertise or understanding;
+- work difficulty;
+- productivity, reliability, or team performance;
+- why an item moved between periods;
+- actual work start or completion time;
+- whether a milestone shipped.
+
+Velocity, story-point completion, sprint participation, capacity, and rollover rates
+are excluded from expertise and knowledge-risk inference.
+
+### Accepted Planning Decisions
+
+1. Keep planning containers and work-item assignments lightweight.
+2. Use them only for temporal and organizational grouping.
+3. Do not model velocity, capacity, or planning-performance analytics.
+4. Do not infer person-level expertise or reliability from sprint participation or
+   rollover.
+5. Preserve source-specific planning vocabulary in the faithful layer.
+
+## Work Management Summary
+
+The initial Work Management model now covers:
+
+1. Workspaces and projects as minimal source containers
+2. Work items as organizational statements of intended work
+3. Assignment history as expected-responsibility and routing context
+4. Status transitions as workflow lifecycle context
+5. Comments as lightweight attributed discussion
+6. Relationships as selective cross-source evidence links
+7. Acceptance as explicit recorded evaluation
+8. Planning containers as minimal temporal grouping
+
+The governing boundary remains:
+
+> Work-management data explains what the organization intended, assigned, discussed,
+> linked, and accepted. Claims about performed work, expertise, ownership, successful
+> outcomes, and knowledge risk require corroboration from other source families.
