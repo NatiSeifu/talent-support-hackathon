@@ -27,9 +27,67 @@ Read these documents before contributing:
 1. [`../EVIDENCE_MODEL.md`](../EVIDENCE_MODEL.md)
 2. [`README.md`](README.md)
 3. [`TASKS.md`](TASKS.md)
-4. The existing schema document most similar to your assigned source family
+4. [`../evidence-scenarios/README.md`](../evidence-scenarios/README.md)
+5. [`../evidence-scenarios/ground-truth-template.md`](../evidence-scenarios/ground-truth-template.md)
+6. The existing schema or scenario document most similar to your assignment
 
 The project implementation spec does not override evidence semantics defined here.
+
+## Current Parallel Work Plan
+
+The source-family schema pass is complete. Current work is scenario and evaluation
+fixture design.
+
+### Workstream A: Scenario 01 Dataset Generation
+
+Primary owner: existing session / Nati.
+
+Files:
+
+- [`../evidence-scenarios/scenario-01-auth-refresh.md`](../evidence-scenarios/scenario-01-auth-refresh.md)
+- `../evidence-datasets/scenario-01-auth-refresh/ground_truth/*.yaml`
+- `../evidence-datasets/scenario-01-auth-refresh/source_records/*.yaml`
+- `../evidence-datasets/scenario-01-auth-refresh/expected_outputs/*.yaml`
+
+Scope:
+
+- turn Scenario 01 into ground-truth, source-record, and expected-output YAMLs;
+- keep hidden truth, observable records, and expected outputs separate;
+- do not modify Scenario 02 unless coordinating explicitly.
+
+### Workstream B: Scenario 02 Spec Completion
+
+Primary owner: parallel contributor.
+
+Files:
+
+- [`../evidence-scenarios/scenario-02-deployment-pipeline.md`](../evidence-scenarios/scenario-02-deployment-pipeline.md)
+- [`../evidence-scenarios/ground-truth-template.md`](../evidence-scenarios/ground-truth-template.md) for structure only
+
+Scope:
+
+- promote Scenario 02 from brief to full canonical scenario spec;
+- stay within engineering evidence sources: repositories, PRs, reviews, incidents,
+  work tickets, internal docs, ownership/service metadata, deployments,
+  interviews, and candidate evidence;
+- do not generate Scenario 02 dataset YAMLs yet;
+- do not edit Scenario 01 dataset files.
+
+Scenario 02 should be about deployment pipeline and release rollback knowledge
+risk, not billing, sales, customer success, or broader business-process knowledge.
+
+### Remote Collaboration Rules
+
+- Prefer separate branches or separate pull requests per workstream.
+- Do not edit the same file in parallel unless explicitly coordinated.
+- If a contributor needs a shared ID or concept, add it to their own scenario spec
+  first and document why it is needed.
+- Source records must not leak hidden truth. They should look like records a real
+  source system could expose.
+- Expected outputs must not be written into source-record files.
+- Scenario specs should be reviewed before dataset YAML generation begins.
+- If a scenario exposes a gap in the accepted source schemas, record the gap as a
+  scenario-driven schema question rather than silently expanding the source model.
 
 ## Non-Negotiable Evidence Boundaries
 
@@ -270,4 +328,3 @@ A source family is ready for its initial design pass when:
 
 This does not mean the schema is frozen. Evaluation design may reveal that fields or
 boundaries need revision.
-

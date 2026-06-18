@@ -98,6 +98,11 @@ system is allowed to observe.
 4. **Prohibited inference set**
 5. **Access-profile variants**
 
+### Status
+
+Ground-truth template and canonical scenario 1 specification created. Scenario 1
+expected and prohibited claim sets are included in the scenario spec.
+
 ### Recommended First Scenario
 
 Use one small, intentionally legible scenario:
@@ -178,7 +183,9 @@ exercise the core claim:
 - Business Impact: one current criticality declaration and recovery objective
 - Knowledge Validation: one interview and one successor exercise
 
-Communication and candidate records can be added when their schemas are accepted.
+Communication and candidate records should be included if they are needed to test
+collaboration evidence or candidate gap coverage. They should stay scoped to the
+scenario claim, not expanded into full Slack or recruiting simulations.
 
 ### Required Imperfections
 
@@ -407,13 +414,10 @@ intelligence flow.
 
 The next concrete actions are:
 
-1. Resolve the scenario-blocking product decisions.
-2. Write the ground-truth scenario template.
-3. Specify canonical scenario 1.
-4. Define its expected and prohibited claim sets.
-5. Generate the first mock dataset.
-6. Build the thin deterministic evidence engine.
-7. Run the first retrieval, inference, contradiction, and abstention evaluations.
+1. Define the evaluation dataset file format.
+2. Generate the first mock dataset for Scenario 01.
+3. Build the thin deterministic evidence engine.
+4. Run the first retrieval, inference, contradiction, and abstention evaluations.
 
 Mock-data generation is therefore the next major milestone after a small set of
 cross-cutting contracts and the first ground-truth scenario, not the end of the

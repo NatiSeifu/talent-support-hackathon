@@ -43,6 +43,8 @@ that expertise into hiring and onboarding intelligence.
 
 ## Read .cursor/evidence-contract/ before making product claims or defining shared evidence and assessment records.
 
+## Read .cursor/evidence-scenarios/ before generating synthetic data or evaluation cases.
+
 ## Coding Rules
 
 - Use strict TypeScript for frontend code and typed Python for backend code.

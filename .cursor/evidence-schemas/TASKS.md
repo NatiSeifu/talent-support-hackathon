@@ -42,8 +42,10 @@ These begin after enough source-family semantics are stable:
 | Evidence-source semantics matrix | Complete | Existing session |
 | Evidence hierarchy and contradiction policy | Complete | Existing session |
 | Structured evidence-record envelope | Complete | Existing session |
-| Ground-truth scenario template | Not started | Unclaimed |
-| Five canonical synthetic scenarios | Not started | Unclaimed |
+| Ground-truth scenario template | Complete | Existing session |
+| Canonical scenario 1 specification | Complete | Existing session |
+| Expected/prohibited claim set for scenario 1 | Complete | Existing session |
+| Five canonical synthetic scenarios | In progress | Scenario 02 brief created |
 | Deterministic metric definitions | Not started | Unclaimed |
 | Human/model grading rubrics | Not started | Unclaimed |
 | Interview-question utility evaluation | Not started | Unclaimed |
