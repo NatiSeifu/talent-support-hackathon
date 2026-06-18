@@ -1,1 +1,89 @@
-# Hidden evaluator-only expected claims for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+expected_claims:
+  - claim_id: claim_sarah_impl_experience
+    claim_kind: implementation_experience
+    claim_text: Sarah has recorded substantive implementation experience in token refresh.
+    expected_resolution: supported
+    required_source_families:
+      - software_development
+    hidden_truth_basis:
+      - person_sarah_chen can perform cap_token_refresh_impl independently.
+
+  - claim_id: claim_sarah_operational_capability
+    claim_kind: operational_capability
+    claim_text: Sarah has evidence of scoped operational capability for Redis failover recovery.
+    expected_resolution: supported_after_interview_validation
+    required_source_families:
+      - production_operations
+      - knowledge_validation
+    hidden_truth_basis:
+      - person_sarah_chen knows undocumented Redis bypass step.
+
+  - claim_id: claim_docs_insufficient
+    claim_kind: documentation_gap
+    claim_text: Existing accessible docs do not establish transferable Redis failover procedure.
+    expected_resolution: supported
+    required_source_families:
+      - knowledge_artifacts
+      - knowledge_validation
+    hidden_truth_basis:
+      - artifact_auth_runbook is stale and incomplete.
+
+  - claim_id: claim_alex_formal_not_capable
+    claim_kind: ownership_capability_distinction
+    claim_text: Alex is formally referenced in ownership records, but available evidence does not support technical capability.
+    expected_resolution: supported
+    required_source_families:
+      - ownership_and_architecture
+      - knowledge_validation
+    hidden_truth_basis:
+      - person_alex_kim cannot perform auth failover capabilities.
+
+  - claim_id: claim_mike_partial
+    claim_kind: partial_capability
+    claim_text: Mike has conceptual/review familiarity but not demonstrated independent Redis failover capability.
+    expected_resolution: partially_supported
+    required_source_families:
+      - software_development
+      - knowledge_validation
+    hidden_truth_basis:
+      - person_mike_jones can review but cannot execute Redis failover independently.
+
+  - claim_id: claim_priya_partial
+    claim_kind: partial_capability
+    claim_text: Priya can perform generic rollback/monitoring but not the undocumented Redis bypass without help.
+    expected_resolution: partially_supported
+    required_source_families:
+      - production_operations
+      - knowledge_validation
+    hidden_truth_basis:
+      - person_priya_raman has partial capability only.
+
+  - claim_id: claim_knowledge_loss_concern
+    claim_kind: knowledge_loss_concern
+    claim_text: Auth Redis failover presents a knowledge-loss concern because a business-important procedure is concentrated in Sarah and not transferable from current docs alone.
+    expected_resolution: supported_with_limitations
+    required_source_families:
+      - business_impact
+      - production_operations
+      - knowledge_artifacts
+      - knowledge_validation
+      - identity_and_organization
+    hidden_truth_basis:
+      - cap_redis_failover_proc is business-important.
+      - Sarah has planned departure exposure.
+      - Redis failover knowledge is concentrated in Sarah.
+      - Current docs fail transfer validation.
+
+  - claim_id: claim_jordan_gap_coverage
+    claim_kind: candidate_gap_coverage
+    claim_text: Jordan has adjacent/corroborated general OAuth evidence but insufficient evidence for company-specific Redis failover coverage.
+    expected_resolution: supported
+    required_source_families:
+      - candidate_and_successor_evidence
+      - knowledge_validation
+    hidden_truth_basis:
+      - candidate_jordan_lee has adjacent evidence only for cap_token_refresh_impl and unknown coverage for cap_redis_failover_proc.

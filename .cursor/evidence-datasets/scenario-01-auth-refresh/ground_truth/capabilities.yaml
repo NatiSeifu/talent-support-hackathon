@@ -1,1 +1,60 @@
-# Hidden evaluator-only capability taxonomy for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+capabilities:
+  - capability_id: cap_token_refresh_impl
+    name: OAuth/token refresh implementation
+    type: implementation_capability
+    system_components:
+      - auth-service/token-refresh
+    why_it_matters: Incorrect changes can break customer sessions.
+    expected_transfer_difficulty: moderate
+
+  - capability_id: cap_redis_failover_proc
+    name: Redis failover recovery procedure
+    type: operational_procedure
+    system_components:
+      - redis-token-cache
+      - auth-service
+    why_it_matters: Required during auth outage when Redis consistency degrades.
+    expected_transfer_difficulty: high
+
+  - capability_id: cap_auth_incident_diag
+    name: Incident diagnosis for auth outages
+    type: diagnostic_reasoning
+    system_components:
+      - auth-service
+      - redis-token-cache
+      - customer-api-gateway
+    why_it_matters: Separates token refresh defects from Redis/cache symptoms.
+    expected_transfer_difficulty: high
+
+  - capability_id: cap_auth_rollback_mitigation
+    name: Operational rollback/mitigation
+    type: operational_procedure
+    system_components:
+      - auth-service-deployment
+      - auth-refresh-feature-flag
+    why_it_matters: Needed to stabilize sessions during outage.
+    expected_transfer_difficulty: moderate
+
+  - capability_id: cap_auth_arch_rationale
+    name: Architecture rationale for current design
+    type: decision_rationale
+    system_components:
+      - auth-service
+      - session-service
+      - redis-token-cache
+    why_it_matters: Needed to avoid unsafe rewrites and understand tradeoffs.
+    expected_transfer_difficulty: moderate
+
+capability_groups:
+  - group_id: group_auth_refresh_continuity
+    name: Auth refresh continuity
+    capability_ids:
+      - cap_token_refresh_impl
+      - cap_redis_failover_proc
+      - cap_auth_incident_diag
+      - cap_auth_rollback_mitigation
+      - cap_auth_arch_rationale

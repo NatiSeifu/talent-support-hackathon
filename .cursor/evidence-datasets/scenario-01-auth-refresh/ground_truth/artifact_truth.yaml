@@ -1,1 +1,83 @@
-# Hidden evaluator-only documentation/artifact truth for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+artifacts:
+  - artifact_id: artifact_auth_runbook
+    title: Auth Redis Failover Runbook
+    artifact_type: runbook
+    owning_team_id: team_platform
+    related_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_rollback_mitigation
+    truth_state: stale_incomplete
+    truth_summary: Stale and incomplete; omits Redis bypass ordering.
+    tempting_but_wrong_inference: Runbook existence proves the procedure is transferable.
+    correct_inference: A runbook exists but does not establish transferable procedure.
+
+  - artifact_id: artifact_token_refresh_design
+    title: Token Refresh Design Note
+    artifact_type: design_doc
+    owning_team_id: team_platform
+    related_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_arch_rationale
+    truth_state: mostly_current_but_incomplete
+    truth_summary: Mostly current but lacks recent incident learnings.
+    tempting_but_wrong_inference: Design rationale is fully captured in docs.
+    correct_inference: Design note supports some rationale but should be supplemented by interview.
+
+  - artifact_id: artifact_auth_incident_playbook
+    title: Auth Incident Playbook
+    artifact_type: playbook
+    owning_team_id: team_platform
+    related_capability_ids:
+      - cap_auth_incident_diag
+      - cap_auth_rollback_mitigation
+    truth_state: incomplete
+    truth_summary: Incomplete; overemphasizes application rollback.
+    tempting_but_wrong_inference: Auth outages should be solved by rollback first.
+    correct_inference: Playbook is partial and may bias responders toward the wrong first action.
+
+ownership_architecture_truth:
+  - subject_id: component_auth_token_refresh
+    subject_label: auth-service/src/token-refresh
+    declared_truth: CODEOWNERS names Platform team and Alex as required reviewer.
+    actual_observed_truth: Sarah performs most substantive implementation and operational response.
+    intended_contradiction: Formal owner differs from observed steward.
+
+  - subject_id: dependency_redis_token_cache
+    subject_label: Redis token cache dependency
+    declared_truth: Service catalog says Redis is a supporting dependency.
+    actual_observed_truth: Production incidents show Redis behavior is central to auth recovery.
+    intended_contradiction: Catalog understates operational dependency.
+
+business_impact_truth:
+  - capability_id: cap_redis_failover_proc
+    impact_truth: Material customer session impact if mishandled.
+    source_visible_declaration: Customer authentication is Tier A under the organization's native criticality scale.
+    avoid_inference: Do not convert Tier A into an invented numeric risk score.
+
+  - capability_id: cap_token_refresh_impl
+    impact_truth: High customer-facing impact.
+    source_visible_declaration: SLO registry states availability target for login/session refresh.
+    avoid_inference: Do not infer exact financial exposure from redacted business records.
+
+transferability_truth:
+  - capability_id: cap_redis_failover_proc
+    transferability_state: not_transferable_from_current_docs_alone
+    validation_plan:
+      - Ask Sarah targeted interview question q_redis_order.
+      - Have Priya attempt procedure from runbook.
+
+  - capability_id: cap_auth_incident_diag
+    transferability_state: partially_transferable_through_interview_plus_incident_timeline
+    validation_plan:
+      - Ask why Redis bypass happened before rollback.
+      - Compare answer against incident timeline.
+
+  - capability_id: cap_auth_arch_rationale
+    transferability_state: transferable_if_sarah_explains_original_design_tradeoff
+    validation_plan:
+      - Ask q_arch_tradeoff.
+      - Update design note if answer adds undocumented rationale.

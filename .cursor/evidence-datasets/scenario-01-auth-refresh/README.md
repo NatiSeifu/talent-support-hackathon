@@ -1,6 +1,6 @@
 # Scenario 01 Dataset: Auth Refresh And Redis Failover
 
-> Status: Scaffold created. Records not yet generated.
+> Status: Initial YAML dataset generated.
 
 This dataset implements the scenario defined in:
 
@@ -23,3 +23,18 @@ Every source record should trace to either:
 - an intentional distractor/contradiction from the scenario spec.
 
 If a record does neither, it probably does not belong in the first dataset.
+
+## Current Contents
+
+- Hidden ground truth: populated.
+- Observable source records: populated across all ten source families.
+- Expected outputs: populated for claim resolutions, retrieval requirements,
+  contradiction handling, abstentions, and interview-question utility.
+
+## Validation Checks
+
+Current manual checks:
+
+- all Scenario 01 YAML files parse;
+- every required retrieval record ID exists in `source_records/`;
+- `git diff --check` passes.

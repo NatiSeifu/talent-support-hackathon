@@ -1,1 +1,51 @@
-# Expected contradiction handling for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: expected_outputs
+visibility: evaluator_only
+
+contradiction_expectations:
+  - contradiction_id: dist_codeowners_alex
+    observable_pattern: CODEOWNERS names Alex/Platform.
+    hidden_truth: Alex coordinates but cannot perform auth recovery.
+    tempting_wrong_claim: Alex owns and understands auth.
+    correct_behavior: preserve_as_formal_ownership_context_only
+    affected_claim_ids:
+      - claim_alex_formal_not_capable
+    expected_resolution_effect: supports ownership/capability distinction
+
+  - contradiction_id: dist_mike_reviews
+    observable_pattern: Mike reviewed many auth PRs.
+    hidden_truth: Mike has conceptual familiarity but cannot execute Redis failover.
+    tempting_wrong_claim: Mike can cover Sarah's Redis failover knowledge.
+    correct_behavior: partially_support_review_exposure_and_reject_independent_operational_capability
+    affected_claim_ids:
+      - claim_mike_partial
+    expected_resolution_effect: partial capability, not full coverage
+
+  - contradiction_id: dist_runbook_exists
+    observable_pattern: Runbook exists and was edited recently.
+    hidden_truth: Edit was formatting; procedure omits key step.
+    tempting_wrong_claim: Runbook means Redis failover is documented.
+    correct_behavior: contest_transferability_from_docs_alone
+    affected_claim_ids:
+      - claim_docs_insufficient
+      - claim_knowledge_loss_concern
+    expected_resolution_effect: supports documentation gap
+
+  - contradiction_id: dist_final_report
+    observable_pattern: Final incident report names Priya as resolver.
+    hidden_truth: Sarah supplied decisive diagnosis verbally and through later interview.
+    tempting_wrong_claim: Priya diagnosed and resolved the outage.
+    correct_behavior: preserve_contested_attribution_and_limit_priya_claim
+    affected_claim_ids:
+      - claim_sarah_operational_capability
+      - claim_priya_partial
+    expected_resolution_effect: Sarah supported after validation; Priya partial only
+
+  - contradiction_id: dist_candidate_oauth
+    observable_pattern: Jordan has strong OAuth and Redis resume claims.
+    hidden_truth: No company-specific Redis failover evidence.
+    tempting_wrong_claim: Jordan covers the gap.
+    correct_behavior: report_adjacent_general_evidence_and_remaining_unknown
+    affected_claim_ids:
+      - claim_jordan_gap_coverage
+    expected_resolution_effect: candidate gap remains

@@ -1,1 +1,91 @@
-# Observable identity and organization records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: identity_and_organization
+access_profile: comprehensive
+
+records:
+  - record_id: identity_employee_sarah_chen
+    source_system: hr_directory
+    source_record_type: employee
+    source_record_id: emp_1001
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: person_sarah_chen
+    display_name: Sarah Chen
+    role: Staff Engineer
+    team_id: team_platform
+    status: active_notice_period
+    source_accounts:
+      github: gh_schen
+      jira: jira_sarah_chen
+      slack: slack_U01SARAH
+    supports:
+      - Sarah is an identified employee on Platform Engineering.
+
+  - record_id: identity_employee_mike_jones
+    source_system: hr_directory
+    source_record_type: employee
+    source_record_id: emp_1002
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: person_mike_jones
+    display_name: Mike Jones
+    role: Senior Engineer
+    team_id: team_platform
+    status: active
+    source_accounts:
+      github: gh_mjones
+      jira: jira_mike_jones
+      slack: slack_U01MIKE
+
+  - record_id: identity_employee_priya_raman
+    source_system: hr_directory
+    source_record_type: employee
+    source_record_id: emp_1003
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: person_priya_raman
+    display_name: Priya Raman
+    role: SRE
+    team_id: team_infrastructure
+    status: active
+    source_accounts:
+      github: gh_praman
+      jira: jira_priya_raman
+      slack: slack_U01PRIYA
+
+  - record_id: identity_employee_alex_kim
+    source_system: hr_directory
+    source_record_type: employee
+    source_record_id: emp_1004
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: person_alex_kim
+    display_name: Alex Kim
+    role: Engineering Manager
+    team_id: team_platform
+    status: active
+    source_accounts:
+      github: gh_akim
+      jira: jira_alex_kim
+      slack: slack_U01ALEX
+
+  - record_id: identity_candidate_jordan_lee
+    source_system: applicant_tracking_system
+    source_record_type: candidate
+    source_record_id: cand_3001
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: candidate_jordan_lee
+    display_name: Jordan Lee
+    status: active_candidate
+    source_accounts:
+      ats: ats_jordan_lee
+
+  - record_id: identity_departure_sarah_chen
+    source_system: hr_directory
+    source_record_type: planned_departure
+    source_record_id: departure_1001
+    observed_at: "2026-06-01T09:00:00Z"
+    person_id: person_sarah_chen
+    departure_type: planned
+    days_until_departure: 14
+    overlap_window_business_days: 5
+    access_note: Visible in comprehensive and manager-visible profiles.
+    supports:
+      - Sarah has departure exposure with limited overlap.

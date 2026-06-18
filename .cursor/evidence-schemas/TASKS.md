@@ -1,7 +1,8 @@
 # Evidence Model Task Board
 
-> Claim work here before editing a source-family schema. Replace `Unclaimed` with a
-> contributor name or agent identifier and update status as decisions are accepted.
+> Claim work here before editing evidence schemas, scenarios, datasets, or engine
+> contracts. Replace `Unclaimed` with a contributor name or agent identifier and
+> update status as decisions are accepted.
 
 ## Source Families
 
@@ -33,7 +34,8 @@
 
 ## Cross-Cutting Artifacts
 
-These begin after enough source-family semantics are stable:
+These artifacts define product semantics, scenario fixtures, and evaluation
+contracts:
 
 | Artifact | Status | Owner |
 |---|---|---|
@@ -45,23 +47,54 @@ These begin after enough source-family semantics are stable:
 | Ground-truth scenario template | Complete | Existing session |
 | Canonical scenario 1 specification | Complete | Existing session |
 | Expected/prohibited claim set for scenario 1 | Complete | Existing session |
+| Scenario 1 initial YAML dataset | Complete | Existing session |
+| Scenario 2 canonical specification | In progress | Parallel contributor |
 | Five canonical synthetic scenarios | In progress | Scenario 02 brief created |
-| Deterministic metric definitions | Not started | Unclaimed |
+| Thin deterministic evidence engine contract | Complete | Existing session |
+| Deterministic metric definitions | Next | Unclaimed |
 | Human/model grading rubrics | Not started | Unclaimed |
 | Interview-question utility evaluation | Not started | Unclaimed |
 | Uncertainty and abstention evaluation | Not started | Unclaimed |
-| Evaluation dataset format | Not started | Unclaimed |
+| Evaluation dataset format | In progress | Initial Scenario 01 structure created |
 | Open product decisions register | Active | Existing session |
+
+## Scenario 01 Dataset Tasks
+
+| Task | Status | Owner |
+|---|---|---|
+| Dataset scaffold | Complete | Existing session |
+| Ground-truth YAMLs | Complete | Existing session |
+| Observable source-record YAMLs | Complete | Existing session |
+| Expected-output YAMLs | Complete | Existing session |
+| YAML parse validation | Complete | Existing session |
+| Required retrieval ID validation | Complete | Existing session |
+| Review dataset for over-obvious source records | Next | Unclaimed |
+| Add manager-visible/restricted dataset variants | Not started | Unclaimed |
+
+## Evidence Engine Tasks
+
+| Task | Status | Owner |
+|---|---|---|
+| Thin deterministic engine contract | Complete | Existing session |
+| Define deterministic metric formulas | Next | Unclaimed |
+| Define engine run output fixture format | Next | Unclaimed |
+| Implement thin deterministic engine | Not started | Unclaimed |
+| Run Scenario 01 retrieval evaluation | Not started | Unclaimed |
+| Run Scenario 01 inference evaluation | Not started | Unclaimed |
+| Run Scenario 01 contradiction evaluation | Not started | Unclaimed |
+| Run Scenario 01 abstention evaluation | Not started | Unclaimed |
+| Run Scenario 01 interview-utility evaluation | Not started | Unclaimed |
 
 ## Current Coordination Guidance
 
-The source-family pass is complete. New work should target separate Phase 2
-artifacts to avoid collisions:
+The source-family pass is complete. New work should target separate artifacts to
+avoid collisions:
 
-- ground-truth scenario template;
-- canonical scenario specification;
-- expected and prohibited claim sets;
-- evaluation dataset format.
+- Scenario 01 dataset/evaluation work;
+- Scenario 02 canonical scenario spec;
+- deterministic metric definitions;
+- engine run output format;
+- human/model grading rubrics.
 
 Changes to accepted source schemas should be driven by a concrete scenario or
 evaluation failure and should preserve the original decision rationale.

@@ -1,1 +1,80 @@
-# Observable documentation, runbook, and revision records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: knowledge_artifacts
+access_profile: comprehensive
+
+records:
+  - record_id: doc_auth_runbook
+    source_system: confluence
+    source_record_type: runbook
+    source_record_id: conf_auth_runbook_77
+    observed_at: "2026-06-01T09:15:00Z"
+    title: Auth Redis Failover Runbook
+    artifact_id: artifact_auth_runbook
+    owner_account_id: jira_alex_kim
+    last_updated_at: "2026-05-20T17:00:00Z"
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_rollback_mitigation
+    visible_sections:
+      - identify elevated refresh-token failures
+      - check Redis cluster health
+      - rollback auth-service deployment
+      - verify login and session refresh
+    omitted_truth_not_visible_to_engine: Redis token validation bypass order is missing.
+    supports:
+      - A runbook exists for Auth Redis failover.
+    cannot_establish:
+      - The runbook fully transfers the procedure.
+
+  - record_id: doc_revision_auth_runbook_formatting
+    source_system: confluence
+    source_record_type: document_revision
+    source_record_id: conf_auth_runbook_77/rev/14
+    observed_at: "2026-06-01T09:15:00Z"
+    artifact_id: artifact_auth_runbook
+    editor_account_id: jira_mike_jones
+    mapped_editor_person_id: person_mike_jones
+    edited_at: "2026-05-20T17:00:00Z"
+    change_summary: Reordered headings and updated screenshots.
+    semantic_change_level: formatting_or_navigation_only
+    supports:
+      - The runbook was edited recently.
+    cannot_establish:
+      - The missing Redis bypass procedure was added.
+
+  - record_id: doc_token_refresh_design
+    source_system: google_docs
+    source_record_type: design_doc
+    source_record_id: gdoc_token_refresh_design
+    observed_at: "2026-06-01T09:15:00Z"
+    title: Token Refresh State Design
+    artifact_id: artifact_token_refresh_design
+    primary_author_account_id: gh_schen
+    mapped_primary_author_person_id: person_sarah_chen
+    last_updated_at: "2026-02-10T13:30:00Z"
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_arch_rationale
+    visible_summary: Explains Redis-backed refresh state and retry semantics.
+    known_limitation_visible: Does not include AUTH-219 incident learning.
+    supports:
+      - Some architecture rationale exists in documentation.
+
+  - record_id: doc_auth_incident_playbook
+    source_system: confluence
+    source_record_type: playbook
+    source_record_id: conf_auth_playbook_31
+    observed_at: "2026-06-01T09:15:00Z"
+    title: Auth Incident Playbook
+    artifact_id: artifact_auth_incident_playbook
+    owner_account_id: jira_priya_raman
+    last_updated_at: "2025-11-02T10:00:00Z"
+    linked_capability_ids:
+      - cap_auth_incident_diag
+      - cap_auth_rollback_mitigation
+    visible_summary: Prioritizes application rollback for auth-service incidents.
+    supports:
+      - A playbook exists for auth incidents.
+    cannot_establish:
+      - The playbook covers Redis stale-cache diagnosis.

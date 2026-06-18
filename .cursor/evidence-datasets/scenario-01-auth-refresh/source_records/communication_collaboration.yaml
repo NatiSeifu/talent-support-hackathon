@@ -1,1 +1,46 @@
-# Observable public/team communication and collaboration records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: communication_and_collaboration
+access_profile: comprehensive
+privacy_note: Direct messages are excluded; only public/team-channel records are included.
+
+records:
+  - record_id: slack_release_auth_ask_sarah
+    source_system: slack
+    source_record_type: channel_message
+    source_record_id: C_AUTH_RELEASES/1747246980.000100
+    observed_at: "2026-06-01T09:35:00Z"
+    channel: "#auth-releases"
+    posted_at: "2026-05-14T18:23:00Z"
+    author_account_id: slack_U01MIKE
+    mapped_author_person_id: person_mike_jones
+    message_summary: Mike asks Sarah to confirm whether rollback should wait until Redis refresh checks are bypassed.
+    mentioned_person_ids:
+      - person_sarah_chen
+    linked_source_record_ids:
+      - incident_auth_219
+    supports:
+      - Teammates referred to Sarah for auth rollback/Redis order context.
+    cannot_establish:
+      - Sarah was correct without validation.
+
+  - record_id: slack_incident_auth_219_sarah_context
+    source_system: slack
+    source_record_type: channel_message
+    source_record_id: C_INCIDENTS/1747247420.000200
+    observed_at: "2026-06-01T09:35:00Z"
+    channel: "#incidents"
+    posted_at: "2026-05-14T18:30:00Z"
+    author_account_id: slack_U01PRIYA
+    mapped_author_person_id: person_priya_raman
+    message_summary: Priya says Sarah pointed out stale Redis validation and asks for confirmation before rollback.
+    mentioned_person_ids:
+      - person_sarah_chen
+      - person_priya_raman
+    linked_source_record_ids:
+      - incident_auth_219
+    supports:
+      - Sarah was publicly referenced as providing Redis stale-cache context.
+      - Priya participated in mitigation coordination.
+    cannot_establish:
+      - Full diagnosis attribution without incident timeline/interview.

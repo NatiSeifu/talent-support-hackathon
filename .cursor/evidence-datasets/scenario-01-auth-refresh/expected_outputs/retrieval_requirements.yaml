@@ -1,1 +1,110 @@
-# Expected retrieval requirements for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: expected_outputs
+visibility: evaluator_only
+
+retrieval_requirements:
+  - requirement_id: ret_identity_core_people
+    source_family: identity_and_organization
+    required_record_ids:
+      - identity_employee_sarah_chen
+      - identity_employee_mike_jones
+      - identity_employee_priya_raman
+      - identity_employee_alex_kim
+      - identity_candidate_jordan_lee
+      - identity_departure_sarah_chen
+    evaluates:
+      - identity_resolution
+      - departure_exposure
+
+  - requirement_id: ret_software_auth_work
+    source_family: software_development
+    required_record_ids:
+      - pr_auth_184_token_refresh_retry
+      - pr_auth_197_refresh_invariant_review
+      - pr_auth_213_redis_cache_guard
+      - review_mike_auth_197
+      - review_sarah_auth_213
+    evaluates:
+      - implementation_experience
+      - review_exposure_not_expertise
+
+  - requirement_id: ret_work_management_auth_followups
+    source_family: work_management
+    required_record_ids:
+      - ticket_auth_219_followup
+      - ticket_auth_231_runbook_update
+      - ticket_auth_238_successor_validation
+    evaluates:
+      - assignment_is_not_completion
+      - source_linking
+
+  - requirement_id: ret_knowledge_artifacts
+    source_family: knowledge_artifacts
+    required_record_ids:
+      - doc_auth_runbook
+      - doc_token_refresh_design
+      - doc_auth_incident_playbook
+      - doc_revision_auth_runbook_formatting
+    evaluates:
+      - documentation_existence_vs_transferability
+      - staleness
+
+  - requirement_id: ret_production_incidents
+    source_family: production_operations
+    required_record_ids:
+      - incident_auth_219
+      - incident_auth_226
+      - incident_auth_244
+      - deployment_auth_2026_05_14
+      - rollback_auth_2026_05_14
+    evaluates:
+      - participation_vs_decisive_diagnosis
+      - operational_capability
+
+  - requirement_id: ret_ownership_architecture
+    source_family: ownership_and_architecture
+    required_record_ids:
+      - codeowners_auth_service
+      - service_catalog_auth_service
+      - dependency_redis_token_cache
+      - component_token_refresh
+    evaluates:
+      - formal_ownership_vs_capability
+      - dependency_criticality_context
+
+  - requirement_id: ret_business_impact
+    source_family: business_impact
+    required_record_ids:
+      - impact_auth_tier_a
+      - slo_login_refresh
+    evaluates:
+      - business_importance_without_numeric_risk
+
+  - requirement_id: ret_communication_referrals
+    source_family: communication_and_collaboration
+    required_record_ids:
+      - slack_release_auth_ask_sarah
+      - slack_incident_auth_219_sarah_context
+    evaluates:
+      - perceived_relevance_not_validated_expertise
+
+  - requirement_id: ret_knowledge_validation
+    source_family: knowledge_validation
+    required_record_ids:
+      - interview_sarah_redis_order
+      - exercise_priya_runbook_walkthrough
+      - exercise_mike_auth_diagnosis
+    evaluates:
+      - transferability
+      - partial_capability
+      - interview_utility
+
+  - requirement_id: ret_candidate_successor
+    source_family: candidate_and_successor_evidence
+    required_record_ids:
+      - candidate_jordan_resume
+      - candidate_jordan_public_oauth_project
+      - candidate_gap_assessment_jordan_auth
+    evaluates:
+      - candidate_gap_coverage
+      - adjacent_vs_company_specific_evidence

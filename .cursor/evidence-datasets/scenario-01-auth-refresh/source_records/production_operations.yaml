@@ -1,1 +1,110 @@
-# Observable incident, alert, deployment, and operational records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: production_operations
+access_profile: comprehensive
+
+records:
+  - record_id: incident_auth_219
+    source_system: incident_io
+    source_record_type: incident
+    source_record_id: AUTH-219
+    observed_at: "2026-06-01T09:20:00Z"
+    title: Elevated refresh failures after Redis failover
+    severity: sev2
+    started_at: "2026-05-14T18:06:00Z"
+    resolved_at: "2026-05-14T19:02:00Z"
+    incident_commander_account_id: slack_U01ALEX
+    final_resolver_account_id: slack_U01PRIYA
+    affected_systems:
+      - auth-service
+      - redis-token-cache
+      - customer-api-gateway
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_incident_diag
+      - cap_auth_rollback_mitigation
+    final_report_summary: Priya rolled back auth-service and restored refresh success rate.
+    attribution_limitation: Final report does not capture verbal diagnostic contribution from Sarah.
+    supports:
+      - Priya participated in mitigation.
+      - Auth outage involved Redis token cache behavior.
+    cannot_establish:
+      - Priya independently diagnosed the root cause.
+
+  - record_id: deployment_auth_2026_05_14
+    source_system: deploy_tracker
+    source_record_type: deployment
+    source_record_id: deploy_auth_20260514_1712
+    observed_at: "2026-06-01T09:20:00Z"
+    service: auth-service
+    environment: production
+    deployed_at: "2026-05-14T17:12:00Z"
+    initiated_by_account_id: gh_mjones
+    mapped_person_id: person_mike_jones
+    change_source_record_ids:
+      - pr_auth_213_redis_cache_guard
+    supports:
+      - Mike initiated a production deployment.
+    cannot_establish:
+      - Mike understands Redis failover recovery.
+
+  - record_id: rollback_auth_2026_05_14
+    source_system: deploy_tracker
+    source_record_type: rollback
+    source_record_id: rollback_auth_20260514_1841
+    observed_at: "2026-06-01T09:20:00Z"
+    service: auth-service
+    environment: production
+    executed_at: "2026-05-14T18:41:00Z"
+    executed_by_account_id: slack_U01PRIYA
+    mapped_person_id: person_priya_raman
+    linked_incident_record_id: incident_auth_219
+    verification_status: refresh_success_rate_recovered_after_additional_cache_action
+    supports:
+      - Priya executed rollback.
+    cannot_establish:
+      - Rollback alone resolved the incident.
+
+  - record_id: incident_auth_226
+    source_system: incident_io
+    source_record_type: incident
+    source_record_id: AUTH-226
+    observed_at: "2026-06-01T09:20:00Z"
+    title: Redis token cache stale reads during regional failover test
+    severity: sev3
+    started_at: "2026-04-18T16:14:00Z"
+    resolved_at: "2026-04-18T16:48:00Z"
+    responders:
+      - account_id: slack_U01SARAH
+        mapped_person_id: person_sarah_chen
+        role: technical_lead
+      - account_id: slack_U01PRIYA
+        mapped_person_id: person_priya_raman
+        role: on_call_sre
+    timeline_summary: Sarah identified stale cache behavior; Priya monitored Redis and auth-service recovery.
+    supports:
+      - Sarah has operational diagnostic evidence.
+      - Priya has monitoring and rollback exposure.
+
+  - record_id: incident_auth_244
+    source_system: incident_io
+    source_record_type: incident
+    source_record_id: AUTH-244
+    observed_at: "2026-06-01T09:20:00Z"
+    title: Customer API gateway reports session refresh errors
+    severity: sev3
+    started_at: "2026-01-22T07:55:00Z"
+    resolved_at: "2026-01-22T08:20:00Z"
+    responders:
+      - account_id: slack_U01SARAH
+        mapped_person_id: person_sarah_chen
+        role: auth_service_responder
+      - account_id: slack_U01MIKE
+        mapped_person_id: person_mike_jones
+        role: application_engineer
+    timeline_summary: Sarah traced gateway errors to refresh-token invalidation behavior.
+    supports:
+      - Sarah has repeated incident diagnosis exposure.
+      - Mike had incident participation.
+    cannot_establish:
+      - Mike independently diagnosed the issue.

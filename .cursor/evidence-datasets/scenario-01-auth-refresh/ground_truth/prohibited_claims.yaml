@@ -1,1 +1,40 @@
-# Hidden evaluator-only prohibited claims for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+prohibited_claims:
+  - prohibited_id: prohibit_bus_factor_1
+    prohibited_claim: Bus factor is exactly 1.
+    tempting_evidence: Sarah dominates incidents and PRs.
+    why_prohibited: Mike and Priya have partial capability; observability matters.
+    correct_safer_wording: Evidence is concentrated in Sarah, with partial coverage from Mike/Priya.
+
+  - prohibited_id: prohibit_alex_owner_expert
+    prohibited_claim: Alex owns and understands auth.
+    tempting_evidence: CODEOWNERS and manager role.
+    why_prohibited: Formal ownership is not expertise.
+    correct_safer_wording: Alex is referenced in formal ownership context.
+
+  - prohibited_id: prohibit_docs_sufficient
+    prohibited_claim: Runbook means the procedure is documented.
+    tempting_evidence: Runbook exists and was edited.
+    why_prohibited: Content is incomplete and validation fails.
+    correct_safer_wording: A runbook exists but does not establish transferable procedure.
+
+  - prohibited_id: prohibit_priya_resolved
+    prohibited_claim: Priya diagnosed and resolved the outage.
+    tempting_evidence: Final incident report names Priya.
+    why_prohibited: Timeline/interview contradict decisive diagnosis attribution.
+    correct_safer_wording: Priya participated in mitigation; diagnosis attribution is contested.
+
+  - prohibited_id: prohibit_jordan_ready
+    prohibited_claim: Jordan covers the gap.
+    tempting_evidence: OAuth/Redis resume claims.
+    why_prohibited: No company-specific demonstrated capability.
+    correct_safer_wording: Jordan has adjacent evidence and remaining gap coverage unknown.
+
+  - prohibited_id: prohibit_knowledge_score
+    prohibited_claim: Knowledge score improved from X to Y.
+    tempting_evidence: Interview captured new facts.
+    why_prohibited: No validated score construct.
+    correct_safer_wording: Interview changed resolution state for specific gaps.

@@ -1,1 +1,64 @@
-# Expected interview-question utility outcomes for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: expected_outputs
+visibility: evaluator_only
+
+interview_question_expectations:
+  - question_id: q_redis_order
+    targeted_claim_ids:
+      - claim_docs_insufficient
+      - claim_sarah_operational_capability
+      - claim_knowledge_loss_concern
+    question: During AUTH-219, why did you bypass Redis token validation before rolling back the auth deployment?
+    information_sought:
+      - undocumented_order_of_operations
+      - rationale_for_bypass_before_rollback
+      - stale_cache_failure_mode
+    useful_answer_characteristics:
+      - mentions stale token cache entries poisoning refresh checks
+      - explains why bypass happens before rollback
+      - identifies verification step after bypass
+    expected_resolution_change:
+      before: unresolved_or_contested_for_undocumented_step
+      after: supports_sarah_held_undocumented_procedure
+    does_not_resolve:
+      - durable_transfer_to_successor
+      - full_documentation_completion
+
+  - question_id: q_arch_tradeoff
+    targeted_claim_ids:
+      - claim_sarah_impl_experience
+    targeted_capability_ids:
+      - cap_auth_arch_rationale
+    question: What tradeoff led us to keep token refresh state in Redis instead of pushing all refresh state into the session database?
+    information_sought:
+      - latency_tradeoff
+      - invalidation_tradeoff
+      - failure_mode_tradeoff
+    useful_answer_characteristics:
+      - goes beyond existing design doc text
+      - explains why current architecture was chosen
+      - identifies what would make the design unsafe to change
+    expected_resolution_change:
+      before: partially_supported_architecture_rationale
+      after: supports_sarah_architecture_rationale_with_limitations
+    does_not_resolve:
+      - operational_redis_failover_transfer
+
+  - question_id: q_successor_test
+    targeted_claim_ids:
+      - claim_priya_partial
+      - claim_docs_insufficient
+    question: Priya, using the current runbook only, walk through recovery for a Redis stale-token incident.
+    information_sought:
+      - whether_runbook_transfers_procedure
+      - whether_priya_discovers_missing_bypass_order
+    useful_answer_characteristics:
+      - identifies steps from runbook
+      - misses undocumented bypass order without hint
+      - exposes doc gap without treating Priya as incapable overall
+    expected_resolution_change:
+      before: runbook_transferability_unproven
+      after: supports_docs_insufficient_and_priya_partial_capability
+    does_not_resolve:
+      - Sarah departure risk by itself
+      - candidate coverage

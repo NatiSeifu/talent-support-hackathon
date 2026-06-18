@@ -1,1 +1,34 @@
-# Expected abstentions and uncertainty behavior for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: expected_outputs
+visibility: evaluator_only
+
+abstention_expectations:
+  - abstention_id: abstain_exact_bus_factor
+    prohibited_output: exact bus factor
+    reason: Partial coverage exists and observability is incomplete.
+    acceptable_output: Evidence is concentrated in Sarah, with partial coverage from Mike and Priya.
+    related_prohibited_claim_id: prohibit_bus_factor_1
+
+  - abstention_id: abstain_numeric_risk_score
+    prohibited_output: numeric risk score or confidence percentage
+    reason: No calibrated score construct or threshold has been justified.
+    acceptable_output: Categorical knowledge-loss concern with evidence and limitations.
+    related_claim_id: claim_knowledge_loss_concern
+
+  - abstention_id: abstain_candidate_readiness
+    prohibited_output: Jordan is ready or best candidate.
+    reason: Candidate evidence is adjacent and not company-specific.
+    acceptable_output: Jordan has adjacent OAuth/Redis evidence; company-specific Redis failover coverage remains unknown.
+    related_claim_id: claim_jordan_gap_coverage
+
+  - abstention_id: abstain_durable_transfer
+    prohibited_output: Knowledge has been durably transferred after one interview.
+    reason: Interview can reveal knowledge, but durable transfer requires documentation update and successor validation.
+    acceptable_output: Interview resolved a specific gap; transferability still requires validation.
+    related_question_id: q_redis_order
+
+  - abstention_id: abstain_hidden_verbal_context_without_interview
+    prohibited_output: Sarah supplied the decisive diagnosis when interview evidence is absent.
+    reason: Verbal contribution is intentionally not visible until knowledge validation.
+    acceptable_output: Diagnosis attribution is contested or unresolved under restricted access.
+    related_contradiction_id: dist_final_report

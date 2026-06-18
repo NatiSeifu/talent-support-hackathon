@@ -1,1 +1,64 @@
-# Observable interview, exercise, and validation records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: knowledge_validation
+access_profile: comprehensive
+
+records:
+  - record_id: interview_sarah_redis_order
+    source_system: successionai_interview
+    source_record_type: knowledge_capture_answer
+    source_record_id: interview_sarah_001/q_redis_order
+    observed_at: "2026-06-01T09:40:00Z"
+    participant_person_id: person_sarah_chen
+    question_id: q_redis_order
+    question: During AUTH-219, why did you bypass Redis token validation before rolling back the auth deployment?
+    answer_summary: >
+      Sarah explains that stale token-cache entries caused refresh checks to
+      reject otherwise valid sessions. Bypassing Redis token validation first
+      prevented the rollback from repeatedly reading poisoned cache state.
+    corroborating_source_record_ids:
+      - incident_auth_219
+      - slack_incident_auth_219_sarah_context
+      - doc_auth_runbook
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_incident_diag
+    supports:
+      - Sarah holds an undocumented Redis bypass ordering rationale.
+    cannot_establish:
+      - The procedure is now durably transferred.
+
+  - record_id: exercise_priya_runbook_walkthrough
+    source_system: successionai_validation
+    source_record_type: successor_exercise
+    source_record_id: validation_priya_redis_walkthrough
+    observed_at: "2026-06-01T09:40:00Z"
+    participant_person_id: person_priya_raman
+    prompt: Use the current runbook only to walk through recovery for a Redis stale-token incident.
+    result_state: partial_completion
+    result_summary: Priya follows rollback and monitoring steps but misses the Redis token-validation bypass until prompted.
+    linked_source_record_ids:
+      - doc_auth_runbook
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_rollback_mitigation
+    supports:
+      - Priya has partial rollback/monitoring capability.
+      - Current runbook does not fully transfer the Redis failover procedure.
+
+  - record_id: exercise_mike_auth_diagnosis
+    source_system: successionai_validation
+    source_record_type: diagnostic_exercise
+    source_record_id: validation_mike_auth_diag
+    observed_at: "2026-06-01T09:40:00Z"
+    participant_person_id: person_mike_jones
+    prompt: Diagnose a spike in token refresh failures after Redis failover.
+    result_state: partial_completion
+    result_summary: Mike identifies auth-service retry behavior but does not identify stale Redis token validation as the blocking recovery step.
+    linked_capability_ids:
+      - cap_auth_incident_diag
+      - cap_redis_failover_proc
+    supports:
+      - Mike has conceptual auth diagnosis familiarity.
+    cannot_establish:
+      - Mike can independently perform Redis failover recovery.

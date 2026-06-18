@@ -153,6 +153,12 @@ contract and the core reasoning path.
 
 This is where mock-data generation should begin.
 
+### Status
+
+Initial Scenario 01 YAML dataset generated with separate `ground_truth/`,
+`source_records/`, and `expected_outputs/` layers. The dataset currently parses as
+YAML, and required retrieval IDs resolve to observable source records.
+
 ### Dataset Layers
 
 Keep three separate layers:
@@ -213,6 +219,12 @@ The first dataset must include:
 ### Objective
 
 Test whether the evidence model works before introducing multi-agent reasoning.
+
+### Status
+
+Initial engine contract created in
+`.cursor/evidence-engine/thin-deterministic-engine-contract.md`. Implementation is
+not started.
 
 ### Initial Capabilities
 
@@ -414,11 +426,13 @@ intelligence flow.
 
 The next concrete actions are:
 
-1. Define the evaluation dataset file format.
-2. Generate the first mock dataset for Scenario 01.
-3. Build the thin deterministic evidence engine.
-4. Run the first retrieval, inference, contradiction, and abstention evaluations.
+1. Define deterministic metric formulas for Scenario 01.
+2. Define the engine run output fixture format.
+3. Review Scenario 01 source records for over-obvious or hidden-truth leakage.
+4. Implement the thin deterministic evidence engine.
+5. Run the first retrieval, inference, contradiction, abstention, and
+   interview-utility evaluations.
 
-Mock-data generation is therefore the next major milestone after a small set of
-cross-cutting contracts and the first ground-truth scenario, not the end of the
-entire evaluation program.
+The first mock dataset and engine contract now exist. The next milestone is making
+the evaluation executable and measurable without introducing agents or scoring
+claims we have not justified.

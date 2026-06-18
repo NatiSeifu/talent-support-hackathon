@@ -1,1 +1,127 @@
-# Observable pull request, commit, review, and release records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: software_development
+access_profile: comprehensive
+
+records:
+  - record_id: pr_auth_184_token_refresh_retry
+    source_system: github
+    source_record_type: pull_request
+    source_record_id: auth-service#184
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    title: Harden token refresh retry semantics
+    author_account_id: gh_schen
+    mapped_person_id: person_sarah_chen
+    merged_at: "2025-10-08T18:22:00Z"
+    changed_paths:
+      - src/token-refresh/retry_policy.py
+      - src/token-refresh/refresh_handler.py
+      - tests/token_refresh/test_retry_policy.py
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_arch_rationale
+    source_summary: Sarah authored and merged substantive token refresh retry changes.
+    supports:
+      - recorded_implementation_activity
+    cannot_establish:
+      - operational_redis_failover_capability
+
+  - record_id: pr_auth_197_refresh_invariant_review
+    source_system: github
+    source_record_type: pull_request
+    source_record_id: auth-service#197
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    title: Normalize refresh-token invalidation checks
+    author_account_id: gh_mjones
+    mapped_person_id: person_mike_jones
+    merged_at: "2025-12-12T21:40:00Z"
+    changed_paths:
+      - src/token-refresh/invalidation.py
+      - tests/token_refresh/test_invalidation.py
+    linked_capability_ids:
+      - cap_token_refresh_impl
+    source_summary: Mike authored a bounded token refresh change reviewed heavily by Sarah.
+    supports:
+      - Mike has implementation exposure to token refresh.
+    cannot_establish:
+      - Mike can independently diagnose Redis failover incidents.
+
+  - record_id: review_sarah_auth_197
+    source_system: github
+    source_record_type: pull_request_review
+    source_record_id: auth-service#197/review/8221
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    pull_request_record_id: pr_auth_197_refresh_invariant_review
+    reviewer_account_id: gh_schen
+    mapped_person_id: person_sarah_chen
+    submitted_at: "2025-12-12T19:10:00Z"
+    review_state: changes_requested
+    review_summary: Sarah identified a refresh-token invariant violation involving stale cache reads.
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_incident_diag
+    supports:
+      - Sarah demonstrated technical judgment in token refresh semantics.
+
+  - record_id: pr_auth_213_redis_cache_guard
+    source_system: github
+    source_record_type: pull_request
+    source_record_id: auth-service#213
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    title: Add guardrails for Redis-backed refresh checks
+    author_account_id: gh_schen
+    mapped_person_id: person_sarah_chen
+    merged_at: "2026-03-03T16:05:00Z"
+    changed_paths:
+      - src/token-refresh/redis_guard.py
+      - src/token-refresh/refresh_handler.py
+      - tests/token_refresh/test_redis_guard.py
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_incident_diag
+    source_summary: Sarah authored Redis-backed refresh guardrails after recurring auth incidents.
+    supports:
+      - Sarah has recorded implementation activity near Redis-backed refresh behavior.
+
+  - record_id: review_sarah_auth_213
+    source_system: github
+    source_record_type: pull_request_review
+    source_record_id: auth-service#213/review/8917
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    pull_request_record_id: pr_auth_213_redis_cache_guard
+    reviewer_account_id: gh_schen
+    mapped_person_id: person_sarah_chen
+    submitted_at: "2026-03-03T15:18:00Z"
+    review_state: commented
+    review_summary: Sarah noted that Redis stale reads can make rollback appear ineffective unless token validation is bypassed first.
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_incident_diag
+    supports:
+      - Sarah connected Redis stale-cache behavior to recovery ordering in code review.
+    cannot_establish:
+      - The recovery procedure is fully documented.
+
+  - record_id: review_mike_auth_197
+    source_system: github
+    source_record_type: pull_request_review
+    source_record_id: auth-service#197/review/8244
+    observed_at: "2026-06-01T09:05:00Z"
+    repository: auth-service
+    pull_request_record_id: pr_auth_197_refresh_invariant_review
+    reviewer_account_id: gh_mjones
+    mapped_person_id: person_mike_jones
+    submitted_at: "2025-12-12T20:03:00Z"
+    review_state: approved
+    review_summary: Mike approved after Sarah's requested changes were addressed.
+    linked_capability_ids:
+      - cap_token_refresh_impl
+    supports:
+      - Mike has review exposure to token refresh.
+    cannot_establish:
+      - Mike independently understands Redis failover procedure.

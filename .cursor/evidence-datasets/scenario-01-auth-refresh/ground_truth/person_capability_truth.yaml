@@ -1,1 +1,126 @@
-# Hidden evaluator-only person-capability truth for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+allowed_capability_states:
+  - can_perform_independently
+  - can_perform_with_help
+  - conceptual_familiarity
+  - observed_only
+  - cannot_perform
+  - adjacent_evidence
+  - unknown
+
+person_capability_truth:
+  - person_id: person_sarah_chen
+    capability_id: cap_token_refresh_impl
+    true_capability_state: can_perform_independently
+    scope: Full implementation and review.
+    evidence_visibility_plan: visible
+
+  - person_id: person_sarah_chen
+    capability_id: cap_redis_failover_proc
+    true_capability_state: can_perform_independently
+    scope: Includes undocumented Redis bypass order.
+    evidence_visibility_plan: partially_visible
+    hidden_detail: Redis token validation must be bypassed before rollback when stale cache entries are poisoning refresh checks.
+
+  - person_id: person_sarah_chen
+    capability_id: cap_auth_incident_diag
+    true_capability_state: can_perform_independently
+    scope: Full diagnostic path across gateway, auth-service, and Redis token cache.
+    evidence_visibility_plan: partially_visible
+    contradiction: Final incident report misattributes one decisive diagnosis to Priya.
+
+  - person_id: person_sarah_chen
+    capability_id: cap_auth_rollback_mitigation
+    true_capability_state: can_perform_independently
+    scope: Feature flag disablement, rollback selection, and verification.
+    evidence_visibility_plan: visible
+
+  - person_id: person_sarah_chen
+    capability_id: cap_auth_arch_rationale
+    true_capability_state: can_perform_independently
+    scope: Original tradeoff and retry semantics.
+    evidence_visibility_plan: partially_visible
+
+  - person_id: person_mike_jones
+    capability_id: cap_token_refresh_impl
+    true_capability_state: conceptual_familiarity
+    scope: Reviews and small changes only.
+    evidence_visibility_plan: visible
+
+  - person_id: person_mike_jones
+    capability_id: cap_redis_failover_proc
+    true_capability_state: cannot_perform
+    scope: Knows Redis is involved but not order of operations.
+    evidence_visibility_plan: visible_through_failed_validation
+
+  - person_id: person_mike_jones
+    capability_id: cap_auth_incident_diag
+    true_capability_state: can_perform_with_help
+    scope: Can identify auth layer but misses Redis stale-cache edge case.
+    evidence_visibility_plan: partially_visible
+
+  - person_id: person_priya_raman
+    capability_id: cap_auth_rollback_mitigation
+    true_capability_state: can_perform_with_help
+    scope: Generic rollback and monitoring.
+    evidence_visibility_plan: visible
+
+  - person_id: person_priya_raman
+    capability_id: cap_redis_failover_proc
+    true_capability_state: can_perform_with_help
+    scope: Can follow documented steps but document is incomplete.
+    evidence_visibility_plan: visible_through_validation
+
+  - person_id: person_alex_kim
+    capability_id: cap_token_refresh_impl
+    true_capability_state: observed_only
+    scope: Coordination and formal ownership only.
+    evidence_visibility_plan: visible
+
+  - person_id: person_alex_kim
+    capability_id: cap_redis_failover_proc
+    true_capability_state: cannot_perform
+    scope: No direct technical capability for auth failover.
+    evidence_visibility_plan: visible_by_absence_and_validation_context
+
+  - person_id: person_alex_kim
+    capability_id: cap_auth_incident_diag
+    true_capability_state: cannot_perform
+    scope: Coordinates incident communication but does not diagnose.
+    evidence_visibility_plan: visible_by_absence_and_validation_context
+
+  - person_id: candidate_jordan_lee
+    capability_id: cap_token_refresh_impl
+    true_capability_state: adjacent_evidence
+    scope: General OAuth experience.
+    evidence_visibility_plan: candidate_claim_and_partial_corroboration
+
+  - person_id: candidate_jordan_lee
+    capability_id: cap_redis_failover_proc
+    true_capability_state: unknown
+    scope: No company-specific evidence.
+    evidence_visibility_plan: observable_as_insufficient_evidence
+
+knowledge_concentration_truth:
+  - capability_id: cap_redis_failover_proc
+    concentrated_in_person_id: person_sarah_chen
+    partial_coverage_person_ids:
+      - person_priya_raman
+      - person_mike_jones
+    concentration_summary: >
+      Sarah is the only person known to independently know the undocumented
+      bypass order. Priya and Mike provide partial coverage only.
+    exact_bus_factor_known: false
+
+  - capability_id: cap_auth_incident_diag
+    concentrated_in_person_id: person_sarah_chen
+    partial_coverage_person_ids:
+      - person_mike_jones
+      - person_priya_raman
+    concentration_summary: >
+      Sarah has the full diagnostic path. Mike and Priya can participate but miss
+      the Redis stale-cache edge case without help.
+    exact_bus_factor_known: false

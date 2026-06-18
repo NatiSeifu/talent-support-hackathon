@@ -1,1 +1,128 @@
-# Hidden evaluator-only people and identity truth for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: ground_truth
+visibility: evaluator_only
+
+organization:
+  organization_id: org_mock_saas
+  company_type: B2B SaaS
+  company_size: 50
+  primary_team_id: team_platform
+  primary_team_name: Platform Engineering
+  relevant_systems:
+    - auth-service
+    - session-service
+    - redis-token-cache
+    - customer-api-gateway
+  scenario_time_window: P12M
+
+teams:
+  - team_id: team_platform
+    name: Platform Engineering
+    size: 8
+  - team_id: team_infrastructure
+    name: Infrastructure
+    size: 6
+
+people:
+  - person_id: person_sarah_chen
+    display_name: Sarah Chen
+    employment_type: employee
+    role: Staff Engineer
+    team_id: team_platform
+    departure_exposure:
+      state: planned_departure
+      days_until_departure: 14
+      overlap_window_business_days: 5
+    ground_truth_summary: >
+      Can independently implement, diagnose, mitigate, and explain auth refresh
+      and Redis failover. Knows an undocumented Redis bypass ordering step.
+
+  - person_id: person_mike_jones
+    display_name: Mike Jones
+    employment_type: employee
+    role: Senior Engineer
+    team_id: team_platform
+    departure_exposure:
+      state: active
+    ground_truth_summary: >
+      Can review auth changes and explain token refresh concepts. Cannot
+      independently perform Redis failover recovery.
+
+  - person_id: person_priya_raman
+    display_name: Priya Raman
+    employment_type: employee
+    role: SRE
+    team_id: team_infrastructure
+    departure_exposure:
+      state: active
+    ground_truth_summary: >
+      Can execute generic rollback and observe Redis symptoms. Can perform part
+      of recovery with runbook help, but not the undocumented bypass.
+
+  - person_id: person_alex_kim
+    display_name: Alex Kim
+    employment_type: employee
+    role: Engineering Manager
+    team_id: team_platform
+    departure_exposure:
+      state: active
+    ground_truth_summary: >
+      Listed in some ownership records and coordinates work. No direct
+      technical capability for auth failover.
+
+  - person_id: candidate_jordan_lee
+    display_name: Jordan Lee
+    employment_type: candidate
+    role: External candidate
+    team_id: null
+    departure_exposure:
+      state: not_applicable
+    ground_truth_summary: >
+      Strong general OAuth and Redis experience. No company-specific operational
+      evidence.
+
+identity_aliases:
+  - person_id: person_sarah_chen
+    aliases:
+      - source: github
+        source_account_id: gh_schen
+        handle: schen
+      - source: jira
+        source_account_id: jira_sarah_chen
+      - source: slack
+        source_account_id: slack_U01SARAH
+        handle: sarah
+  - person_id: person_mike_jones
+    aliases:
+      - source: github
+        source_account_id: gh_mjones
+        handle: mjones
+      - source: jira
+        source_account_id: jira_mike_jones
+      - source: slack
+        source_account_id: slack_U01MIKE
+        handle: mike
+  - person_id: person_priya_raman
+    aliases:
+      - source: github
+        source_account_id: gh_praman
+        handle: praman
+      - source: jira
+        source_account_id: jira_priya_raman
+      - source: slack
+        source_account_id: slack_U01PRIYA
+        handle: priya
+  - person_id: person_alex_kim
+    aliases:
+      - source: github
+        source_account_id: gh_akim
+        handle: akim
+      - source: jira
+        source_account_id: jira_alex_kim
+      - source: slack
+        source_account_id: slack_U01ALEX
+        handle: alex
+  - person_id: candidate_jordan_lee
+    aliases:
+      - source: ats
+        source_account_id: ats_jordan_lee

@@ -1,1 +1,45 @@
-# Observable business impact, SLO, and criticality records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: business_impact
+access_profile: comprehensive
+
+records:
+  - record_id: impact_auth_tier_a
+    source_system: service_criticality_registry
+    source_record_type: criticality_declaration
+    source_record_id: crit_auth_tier_a
+    observed_at: "2026-06-01T09:30:00Z"
+    subject: customer authentication
+    native_criticality_label: Tier A
+    applies_to_services:
+      - auth-service
+      - customer-api-gateway
+    linked_capability_ids:
+      - cap_redis_failover_proc
+      - cap_auth_incident_diag
+    redactions:
+      - exact_revenue_exposure
+      - named_customer_accounts
+    supports:
+      - Auth recovery capabilities are business-important under the organization's native scale.
+    cannot_establish:
+      - Numeric risk score.
+
+  - record_id: slo_login_refresh
+    source_system: slo_registry
+    source_record_type: slo
+    source_record_id: slo_login_session_refresh
+    observed_at: "2026-06-01T09:30:00Z"
+    user_journey: login and session refresh
+    services:
+      - auth-service
+      - session-service
+      - customer-api-gateway
+    objective_description: Availability target for login/session refresh.
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_rollback_mitigation
+    supports:
+      - Token refresh and rollback behavior are tied to customer-facing reliability.
+    cannot_establish:
+      - Who can perform the required capability.

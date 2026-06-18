@@ -1,1 +1,58 @@
-# Observable candidate and successor evidence records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: candidate_and_successor_evidence
+access_profile: comprehensive
+
+records:
+  - record_id: candidate_jordan_resume
+    source_system: applicant_tracking_system
+    source_record_type: resume
+    source_record_id: ats_jordan_lee/resume
+    observed_at: "2026-06-01T09:45:00Z"
+    candidate_person_id: candidate_jordan_lee
+    claimed_experience:
+      - OAuth 2.0 refresh-token flows
+      - Redis-backed session stores
+      - Node/Python auth services
+    linked_capability_ids:
+      - cap_token_refresh_impl
+      - cap_redis_failover_proc
+    supports:
+      - Jordan claims adjacent OAuth and Redis experience.
+    cannot_establish:
+      - Company-specific Redis failover capability.
+
+  - record_id: candidate_jordan_public_oauth_project
+    source_system: github_public
+    source_record_type: public_project
+    source_record_id: public/jordan-lee/oauth-refresh-demo
+    observed_at: "2026-06-01T09:45:00Z"
+    candidate_person_id: candidate_jordan_lee
+    project_summary: Public OAuth refresh-token sample with Redis-backed token revocation.
+    corroborates_resume_claims:
+      - OAuth refresh-token familiarity
+      - Redis-adjacent implementation exposure
+    linked_capability_ids:
+      - cap_token_refresh_impl
+    supports:
+      - Jordan has corroborated adjacent OAuth experience.
+    cannot_establish:
+      - Knowledge of this company's auth-service recovery procedure.
+
+  - record_id: candidate_gap_assessment_jordan_auth
+    source_system: successionai_assessment_note
+    source_record_type: candidate_gap_assessment
+    source_record_id: gap_jordan_auth_001
+    observed_at: "2026-06-01T09:45:00Z"
+    candidate_person_id: candidate_jordan_lee
+    assessed_capabilities:
+      - capability_id: cap_token_refresh_impl
+        evidence_state: adjacent_corroborated
+        limitation: Not company-specific.
+      - capability_id: cap_redis_failover_proc
+        evidence_state: insufficient
+        limitation: No demonstrated knowledge of undocumented Redis bypass order.
+    supports:
+      - Jordan has adjacent evidence but does not cover company-specific Redis failover gap.
+    cannot_establish:
+      - Jordan is the best candidate.

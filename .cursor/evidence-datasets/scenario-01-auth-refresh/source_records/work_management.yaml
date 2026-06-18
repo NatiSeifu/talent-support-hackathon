@@ -1,1 +1,67 @@
-# Observable Jira/Linear-style work-management records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: work_management
+access_profile: comprehensive
+
+records:
+  - record_id: ticket_auth_219_followup
+    source_system: jira
+    source_record_type: issue
+    source_record_id: AUTH-219
+    observed_at: "2026-06-01T09:10:00Z"
+    title: Follow up on stale-token auth incident
+    issue_type: incident_followup
+    status: done
+    assignee_account_id: jira_priya_raman
+    mapped_assignee_person_id: person_priya_raman
+    reporter_account_id: jira_alex_kim
+    linked_source_record_ids:
+      - incident_auth_219
+      - rollback_auth_2026_05_14
+    labels:
+      - auth
+      - redis
+      - incident-followup
+    source_summary: Priya was assigned incident follow-up after AUTH-219.
+    supports:
+      - Priya participated in follow-up work.
+    cannot_establish:
+      - Priya supplied decisive diagnosis.
+
+  - record_id: ticket_auth_231_runbook_update
+    source_system: jira
+    source_record_type: issue
+    source_record_id: AUTH-231
+    observed_at: "2026-06-01T09:10:00Z"
+    title: Update Auth Redis failover runbook
+    issue_type: documentation_task
+    status: done
+    assignee_account_id: jira_mike_jones
+    mapped_assignee_person_id: person_mike_jones
+    linked_source_record_ids:
+      - doc_auth_runbook
+      - doc_revision_auth_runbook_formatting
+    source_summary: Mike closed a runbook-update ticket, but linked revision is formatting-only.
+    supports:
+      - A documentation task was completed.
+    cannot_establish:
+      - Missing procedure steps were captured.
+
+  - record_id: ticket_auth_238_successor_validation
+    source_system: jira
+    source_record_type: issue
+    source_record_id: AUTH-238
+    observed_at: "2026-06-01T09:10:00Z"
+    title: Validate successor coverage for Redis stale-token recovery
+    issue_type: validation_task
+    status: in_progress
+    assignee_account_id: jira_alex_kim
+    mapped_assignee_person_id: person_alex_kim
+    linked_source_record_ids:
+      - exercise_priya_runbook_walkthrough
+      - exercise_mike_auth_diagnosis
+    source_summary: Alex coordinates successor validation tasks.
+    supports:
+      - Alex coordinates the validation process.
+    cannot_establish:
+      - Alex has technical recovery capability.

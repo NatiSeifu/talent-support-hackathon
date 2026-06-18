@@ -1,1 +1,69 @@
-# Observable ownership, service catalog, dependency, and architecture records for Scenario 01.
+scenario_id: scenario_01_auth_refresh
+dataset_layer: source_records
+source_family: ownership_and_architecture
+access_profile: comprehensive
+
+records:
+  - record_id: codeowners_auth_service
+    source_system: github
+    source_record_type: codeowners
+    source_record_id: auth-service/.github/CODEOWNERS
+    observed_at: "2026-06-01T09:25:00Z"
+    repository: auth-service
+    path_pattern: /src/token-refresh/
+    declared_owners:
+      - team_id: team_platform
+      - person_id: person_alex_kim
+        source_account_id: gh_akim
+    supports:
+      - Alex and Platform are formally referenced for token-refresh ownership/review.
+    cannot_establish:
+      - Alex has technical capability.
+
+  - record_id: service_catalog_auth_service
+    source_system: backstage
+    source_record_type: service_catalog_entry
+    source_record_id: svc_auth_service
+    observed_at: "2026-06-01T09:25:00Z"
+    service: auth-service
+    owner_team_id: team_platform
+    escalation_owner_person_id: person_alex_kim
+    lifecycle: production
+    dependencies:
+      - dependency_redis_token_cache
+      - session-service
+    supports:
+      - Auth-service is production and owned by Platform in catalog.
+    cannot_establish:
+      - The catalog owner can execute recovery.
+
+  - record_id: dependency_redis_token_cache
+    source_system: backstage
+    source_record_type: dependency
+    source_record_id: dep_redis_token_cache
+    observed_at: "2026-06-01T09:25:00Z"
+    dependency_name: Redis token cache
+    dependency_type: cache
+    declared_role: supporting_dependency
+    used_by:
+      - auth-service
+      - session-service
+    note: Catalog labels Redis as supporting dependency; incident records show central recovery importance.
+    supports:
+      - Redis is a declared auth-service dependency.
+
+  - record_id: component_token_refresh
+    source_system: architecture_catalog
+    source_record_type: component
+    source_record_id: comp_auth_token_refresh
+    observed_at: "2026-06-01T09:25:00Z"
+    component_name: token-refresh
+    service: auth-service
+    repository_path: auth-service/src/token-refresh
+    related_capability_ids:
+      - cap_token_refresh_impl
+      - cap_auth_arch_rationale
+    declared_steward_person_id: person_sarah_chen
+    steward_basis: recent design and implementation history
+    supports:
+      - Sarah is recorded as observed steward for token-refresh component.
